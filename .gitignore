@@ -19,6 +19,10 @@ _ReSharper.*
 **/coverage.xml
 **/coveragereport
 
+# Frontend
+wwwroot/
+!playground/TestProject.Client.Wasm/wwwroot/
+
 # Docker
 .env
 
