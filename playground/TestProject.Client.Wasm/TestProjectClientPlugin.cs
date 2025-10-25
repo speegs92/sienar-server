@@ -56,7 +56,6 @@ public class TestProjectClientPlugin : IPlugin
 
 	private void ConfigureStyles()
 	{
-		_styleProvider.Add("/styles.css");
 		_styleProvider.Add("/TestProject.Client.Wasm.styles.css");
 	}
 
