@@ -21,7 +21,8 @@ _ReSharper.*
 
 # Frontend
 wwwroot/
-!playground/TestProject.Client.Wasm/wwwroot/
+!playground/TestProject.Client.Wasm/wwwroot
+node_modules/
 
 # Docker
 .env
