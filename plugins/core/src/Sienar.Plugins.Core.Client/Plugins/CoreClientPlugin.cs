@@ -162,7 +162,6 @@ public class CoreClientPlugin : IPlugin
 	public static void ConfigureApp(SienarAppBuilder builder)
 	{
 		builder
-			.AddPlugin<MudBlazorPlugin>()
 			.AddPlugin<AllThemesPlugin>()
 			.AddPlugin<WasmPlugin>();
 	}

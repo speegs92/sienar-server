@@ -1,5 +1,4 @@
-﻿using MudBlazor;
-using Sienar.Menus;
+﻿using Sienar.Menus;
 
 namespace TestProject.Client.Extensions;
 
@@ -14,24 +13,24 @@ public static class MenuProviderExtensions
 				{
 					Url = "/",
 					Text = "Home",
-					Icon = Icons.Material.Filled.Home
+					Icon = "Icons.Material.Filled.Home"
 				},
 				new()
 				{
 					Url = "/dashboard",
 					Text = "Dashboard",
-					Icon = Icons.Material.Filled.Dashboard
+					Icon = "Icons.Material.Filled.Dashboard"
 				},
 				new()
 				{
 					Url = "https://google.com",
-					Icon = Icons.Material.Filled.Apps,
+					Icon = "Icons.Material.Filled.Apps",
 					ChildMenu = Menus.Social
 				},
 				new()
 				{
 					Url = "https://google.com",
-					Icon = Icons.Material.Filled.LocalActivity,
+					Icon = "Icons.Material.Filled.LocalActivity",
 					ChildMenu = Menus.Hobbies
 				}
 			);
@@ -43,13 +42,13 @@ public static class MenuProviderExtensions
 				{
 					Url = "https://facebook.com",
 					Text = "Facebook",
-					Icon = Icons.Custom.Brands.Facebook
+					Icon = "Icons.Custom.Brands.Facebook"
 				},
 				new()
 				{
 					Url = "https://twitter.com",
 					Text = "Twitter",
-					Icon = Icons.Custom.Brands.Twitter
+					Icon = "Icons.Custom.Brands.Twitter"
 				});
 
 		self
@@ -58,13 +57,13 @@ public static class MenuProviderExtensions
 				new()
 				{
 					Url = "https://google.com",
-					Icon = Icons.Material.Filled.Sports,
+					Icon = "Icons.Material.Filled.Sports",
 					ChildMenu = Menus.Sports
 				},
 				new()
 				{
 					Url = "https://google.com",
-					Icon = Icons.Material.Filled.Computer,
+					Icon = "Icons.Material.Filled.Computer",
 					ChildMenu = Menus.OperatingSystems
 				});
 
@@ -75,19 +74,19 @@ public static class MenuProviderExtensions
 				{
 					Url = "https://nba.com",
 					Text = "Basketball",
-					Icon = Icons.Material.Filled.SportsBasketball
+					Icon = "Icons.Material.Filled.SportsBasketball"
 				},
 				new()
 				{
 					Url = "https://nfl.com",
 					Text = "Football",
-					Icon = Icons.Material.Filled.SportsFootball
+					Icon = "Icons.Material.Filled.SportsFootball"
 				},
 				new()
 				{
 					Url = "https://mlb.com",
 					Text = "Baseball",
-					Icon = Icons.Material.Filled.SportsBaseball
+					Icon = "Icons.Material.Filled.SportsBaseball"
 				});
 
 		self
@@ -97,19 +96,19 @@ public static class MenuProviderExtensions
 				{
 					Url = "https://chrome.com",
 					Text = "Microsoft Windows",
-					Icon = Icons.Custom.Brands.MicrosoftWindows
+					Icon = "Icons.Custom.Brands.MicrosoftWindows"
 				},
 				new()
 				{
 					Url = "https://apple.com",
 					Text = "Apple macOS",
-					Icon = Icons.Custom.Brands.Apple
+					Icon = "Icons.Custom.Brands.Apple"
 				},
 				new()
 				{
 					Url = "https://linux.org",
 					Text = "Linux",
-					Icon = Icons.Custom.Brands.Linux
+					Icon = "Icons.Custom.Brands.Linux"
 				});
 	}
 }
