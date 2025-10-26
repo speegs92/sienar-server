@@ -163,6 +163,7 @@ public class CoreClientPlugin : IPlugin
 	{
 		builder
 			.AddPlugin<MudBlazorPlugin>()
+			.AddPlugin<AllThemesPlugin>()
 			.AddPlugin<WasmPlugin>();
 	}
 }
