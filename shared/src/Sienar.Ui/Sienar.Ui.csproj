@@ -40,4 +40,21 @@
 			Include="Sienar.Utils" Version="0.1.1"/>
 	</ItemGroup>
 
+	<Target
+		Name="NpmBuild"
+		BeforeTargets="Build">
+		<Message
+			Importance="high"
+			Text="Installing NPM packages..."/>
+		<Exec
+			Command="npm i"
+			WorkingDirectory="$(ProjectDir)wwwsrc"/>
+		<Message
+			Importance="high"
+			Text="Building client assets..."/>
+		<Exec
+			Command="npm run build"
+			WorkingDirectory="$(ProjectDir)wwwsrc"/>
+	</Target>
+
 </Project>
