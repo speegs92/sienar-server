@@ -3,7 +3,7 @@
 /// <summary>
 /// The theme colors supported by Sienar
 /// </summary>
-public enum ThemeColor
+public enum Color
 {
 	/// <summary>
 	/// The primary color

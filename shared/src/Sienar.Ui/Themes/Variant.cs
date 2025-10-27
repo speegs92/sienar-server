@@ -3,7 +3,7 @@
 /// <summary>
 /// The solidity variants supported by Sienar
 /// </summary>
-public enum ThemeVariant
+public enum Variant
 {
 	/// <summary>
 	/// A solid variant; generally filled with a single color and with an offset text color

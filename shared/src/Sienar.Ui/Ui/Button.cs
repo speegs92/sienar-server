@@ -23,13 +23,13 @@ public class Button : ComponentBase
 	/// The theme color of the button
 	/// </summary>
 	[Parameter]
-	public ThemeColor? Color { get; set; } = ThemeColor.Primary;
+	public Color? Color { get; set; } = Themes.Color.Primary;
 
 	/// <summary>
 	/// The variant of the button
 	/// </summary>
 	[Parameter]
-	public ThemeVariant Variant { get; set; }
+	public Variant Variant { get; set; }
 
 	/// <summary>
 	/// The child content of the button
