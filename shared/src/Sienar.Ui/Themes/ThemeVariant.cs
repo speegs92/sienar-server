@@ -1,5 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-namespace Sienar.Ui;
+﻿namespace Sienar.Themes;
 
 /// <summary>
 /// The solidity variants supported by Sienar

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Sienar.Extensions;
 using Sienar.Html;
+using Sienar.Themes;
 
 namespace Sienar.Ui;
 
