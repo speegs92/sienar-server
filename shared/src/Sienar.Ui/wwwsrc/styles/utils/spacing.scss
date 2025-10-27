@@ -1,0 +1,91 @@
+﻿@use 'sass:map';
+@use '../variables';
+
+$breakpoints: ('': 0);
+$breakpoints: map.merge($breakpoints, variables.$breakpoints);
+
+@mixin create-sizing-utils($infix) {
+	@for $level from 0 through variables.$spacer-count {
+		$size: var(--spacer-#{$level});
+		$negative-size: var(--spacer-n#{$level});
+
+		.p#{$infix}-#{$level} {
+			padding: $size;
+		}
+		.m#{$infix}-#{$level} {
+			margin: $size;
+		}
+
+		.px#{$infix}-#{$level}, .pl#{$infix}-#{$level} {
+			padding-left: $size;
+		}
+		.mx#{$infix}-#{$level}, .ml#{$infix}-#{$level} {
+			margin-left: $size;
+		}
+
+		.px#{$infix}-#{$level}, .pr#{$infix}-#{$level} {
+			padding-right: $size;
+		}
+		.mx#{$infix}-#{$level}, .mr#{$infix}-#{$level} {
+			margin-right: $size;
+		}
+
+		.py#{$infix}-#{$level}, .pt#{$infix}-#{$level} {
+			padding-top: $size;
+		}
+		.my#{$infix}-#{$level}, .mt#{$infix}-#{$level} {
+			margin-top: $size;
+		}
+
+		.py#{$infix}-#{$level}, .pb#{$infix}-#{$level} {
+			padding-bottom: $size;
+		}
+		.my#{$infix}-#{$level}, .mb#{$infix}-#{$level} {
+			margin-bottom: $size;
+		}
+
+		@if $level > 0 {
+			.m#{$infix}-n#{$level} {
+				margin: $negative-size;
+			}
+			.mx#{$infix}-n#{$level}, .ml#{$infix}-n#{$level} {
+				margin-left: $negative-size;
+			}
+			.mx#{$infix}-n#{$level}, .mr#{$infix}-n#{$level} {
+				margin-right: $negative-size;
+			}
+			.my#{$infix}-n#{$level}, .mt#{$infix}-n#{$level} {
+				margin-top: $negative-size;
+			}
+			.my#{$infix}-n#{$level}, .mb#{$infix}-n#{$level} {
+				margin-bottom: $negative-size;
+			}
+		}
+	}
+
+	.m#{$infix}-auto {
+		margin: auto;
+	}
+	.mx#{$infix}-auto, .ml#{$infix}-auto {
+		margin-left: auto;
+	}
+	.mx#{$infix}-auto, .mr#{$infix}-auto {
+		margin-right: auto;
+	}
+	.my#{$infix}-auto, .mt#{$infix}-auto {
+		margin-top: auto;
+	}
+	.my#{$infix}-auto, .mb#{$infix}-auto {
+		margin-bottom: auto;
+	}
+}
+
+@each $breakpoint, $width in $breakpoints {
+	@if $breakpoint != '' {
+		@media (min-width: $width) {
+			@include create-sizing-utils('-#{$breakpoint}');
+		}
+	} @else {
+		@include create-sizing-utils('');
+	}
+}
