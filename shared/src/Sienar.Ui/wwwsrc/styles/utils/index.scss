@@ -1,5 +1,6 @@
 ﻿@use '../reset';
 @use '../css-variables';
+@use 'display';
 
 .extra-special-form-field {
 	position: fixed;
@@ -17,8 +18,4 @@
 
 .min-vh-100 {
 	min-height: 100vh;
-}
-
-.d-contents {
-	display: contents;
 }
