@@ -1,0 +1,72 @@
+﻿@use 'sass:map';
+@use '../../variables';
+
+$button-padding-x: var(--spacer-2);
+$button-padding-y: var(--spacer-2);
+
+$theme-colors: (default: ());
+$theme-colors: map.merge($theme-colors, variables.$theme-colors);
+
+@mixin make-themed-button($color-infix, $color-value) {
+	&#{$color-infix}.button--solid {
+		background: var(--color-#{$color-value});
+		border-color: var(--color-#{$color-value});
+		color: var(--color-#{$color-value}-lighten);
+
+		&:hover {
+			background: var(--color-#{$color-value}-darken);
+			border-color: var(--color-#{$color-value}-darken);
+		}
+	}
+
+	&#{$color-infix}.button--outlined {
+		background: transparent;
+		border-color: var(--color-#{$color-value});
+		color: var(--color-#{$color-value});
+
+		&:hover {
+			background: var(--color-#{$color-value}-translucent);
+		}
+	}
+
+	&#{$color-infix}.button--text {
+		background: transparent;
+		border-color: transparent;
+		color: var(--color-#{$color-value});
+
+		&:hover {
+			background: var(--color-#{$color-value}-translucent);
+			border-color: var(--color-#{$color-value}-translucent);
+		}
+	}
+}
+
+.button {
+	display: inline-block;
+	border: 1px solid;
+	cursor: pointer;
+	text-decoration: none;
+	padding: $button-padding-y $button-padding-x;
+
+	// Default styles
+	@include make-themed-button('', 'dark');
+
+	// Themed styles
+	@each $color in map.keys(variables.$theme-colors) {
+		@include make-themed-button('.button--#{$color}', $color);
+	}
+
+	&.button--icon {
+		height: 40px;
+		aspect-ratio: 1/1;
+	}
+
+	& .icon {
+		&:first-child {
+			padding-left: 0;
+		}
+		&:last-child {
+			padding-right: 0;
+		}
+	}
+}
