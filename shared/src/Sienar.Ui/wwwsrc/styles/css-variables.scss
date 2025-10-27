@@ -1,0 +1,31 @@
+﻿@use 'sass:color';
+@use 'sass:map';
+@use 'variables';
+
+:root {
+	@each $color, $shades in variables.$theme-colors {
+		@each $shadeName, $shadeValue in $shades {
+			$solid-value: $shadeValue;
+			$translucent-value: rgba($shadeValue, variables.$translucent-background-opacity);
+
+			@if $shadeName == 'default' {
+				--color-#{$color}: #{$shadeValue};
+				--color-#{$color}-translucent: #{$translucent-value};
+			} @else {
+				--color-#{$color}-#{$shadeName}: #{$shadeValue};
+				--color-#{$color}-#{$shadeName}-translucent: #{$translucent-value};
+			}
+		}
+	}
+
+	--spacer-size: #{variables.$spacer-size};
+
+	@for $i from 0 through variables.$spacer-count {
+		@if $i > 0 {
+			--spacer-#{$i}: calc(var(--spacer-size) * #{$i});
+			--spacer-n#{$i}: calc(var(--spacer-size) * -#{$i});
+		} @else {
+			--spacer-0: 0;
+		}
+	}
+}

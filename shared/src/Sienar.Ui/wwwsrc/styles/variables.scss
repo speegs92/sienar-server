@@ -1,0 +1,87 @@
+﻿@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+
+// region Spacing
+
+$breakpoints: (
+	sm: 576px,
+	md: 768px,
+	lg: 992px,
+	xl: 1200px,
+	xxl: 1400px
+) !default;
+
+$spacer-count: 16; // There should always be 16 spacers, so it can't be overridden
+$spacer-size: 4px !default;
+
+// endregion
+
+// region Colors
+
+$translucent-background-opacity: .13;
+
+$primary: rgb(89, 74, 226);
+$secondary: rgb(255, 64, 129);
+$tertiary: rgb(30, 200, 165);
+$success: rgb(0, 200, 83);
+$info: rgb(33, 150, 243);
+$warning: rgb(255, 152, 0);
+$error: rgb(242, 28, 13);
+$light: rgb(194, 194, 194);
+$dark: rgb(66, 66, 66);
+$white: rgb(255, 255, 255);
+
+$theme-colors: () !default;
+
+$default-theme-colors: (
+	primary: (
+		default: $primary,
+		lighten: color.scale($primary, $lightness: 90%),
+		darken: #3e2cde
+	),
+	secondary: (
+		default: $secondary,
+		lighten: color.scale($secondary, $lightness: 90%),
+		darken: #ff1f69
+	),
+	tertiary: (
+		default: $tertiary,
+		lighten: color.scale($tertiary, $lightness: 90%),
+		darken: #19a98c
+	),
+	success: (
+		default: $success,
+		lighten: color.scale($success, $lightness: 90%),
+		darken: #00a344
+	),
+	info: (
+		default: $info,
+		lighten: color.scale($info, $lightness: 90%),
+		darken: #0c80df
+	),
+	warning: (
+		default: $warning,
+		lighten: color.scale($warning, $lightness: 90%),
+		darken: #d68100
+	),
+	error: (
+		default: $error,
+		lighten: color.scale($error, $lightness: 90%),
+		darken: #f21c0d
+	),
+	light: (
+		default: $light,
+		lighten: color.scale($light, $lightness: 90%),
+		darken: #aeaeae
+	),
+	dark: (
+		default: $dark,
+		lighten: color.scale($dark, $lightness: 90%),
+		darken: #2e2e2e
+	)
+);
+
+$theme-colors: map.merge($default-theme-colors, $theme-colors);
+
+// endregion
