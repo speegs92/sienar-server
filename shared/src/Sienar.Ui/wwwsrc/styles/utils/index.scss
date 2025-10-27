@@ -1,4 +1,6 @@
-﻿.extra-special-form-field {
+﻿@use '../reset';
+
+.extra-special-form-field {
 	position: fixed;
 	top: -1px;
 	left: -1px;
