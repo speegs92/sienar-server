@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Sienar.Extensions;
 using Sienar.Html;
 
-// ReSharper disable once CheckNamespace
 namespace Sienar.Ui;
 
 /// <summary>
