@@ -34,13 +34,11 @@ public class Button : SienarComponentBase
 	}
 
 	/// <inheritdoc />
-	protected override string? CreateCss()
-		=> new CssBuilder()
+	protected override void AddCss(CssBuilder b)
+		=> b
 			.AddClass("button")
-			.AddClass($"button--{Color?.ToString().ToLower()}", Color is not null)
-			.AddClass($"button--{Variant.ToString().ToLower()}")
-			.AddClass((string?) UserAttributes.TryGetValue("class"))
-			.Build();
+			.AddClass($"button--{ThemeUtilities.GetCssString(Color)}", Color is not null)
+			.AddClass($"button--{ThemeUtilities.GetCssString(Variant)}");
 
 	/// <inheritdoc />
 	protected override Dictionary<string, object> CreateAttributes()

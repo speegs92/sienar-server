@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using Sienar.Extensions;
+using Sienar.Html;
 
 namespace Sienar.Ui;
 
@@ -30,9 +32,13 @@ public abstract class SienarComponentBase : ComponentBase
 	/// <inheritdoc />
 	protected override void BuildRenderTree(RenderTreeBuilder builder)
 	{
+		var cssBuilder = new CssBuilder();
+		cssBuilder.AddClass(UserAttributes.TryGetValue("class")?.ToString());
+		AddCss(cssBuilder);
+
 		builder.OpenElement(0, Tag);
 		builder.AddMultipleAttributes(1, CreateAttributes());
-		builder.AddAttribute(2, "class", CreateCss());
+		builder.AddAttribute(2, "class", cssBuilder.Build());
 		builder.AddContent(3, ChildContent);
 		builder.OpenRegion(4);
 		ModifyRenderTree(builder);
@@ -44,7 +50,7 @@ public abstract class SienarComponentBase : ComponentBase
 	/// A method to create CSS class names for the underlying HTML element
 	/// </summary>
 	/// <returns>The CSS class names to render on the element</returns>
-	protected virtual string? CreateCss() => null;
+	protected virtual void AddCss(CssBuilder b) {}
 
 	/// <summary>
 	/// A method to create HTML attributes for the underlying HTML element

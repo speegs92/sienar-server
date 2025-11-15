@@ -25,10 +25,9 @@ public class Container : SienarComponentBase
 	public Breakpoint? MaxWidth { get; set; }
 
 	/// <inheritdoc />
-	protected override string? CreateCss()
-		=> new CssBuilder()
+	protected override void AddCss(CssBuilder b)
+		=> b
 			.AddClass("container")
-			.AddClass($"container--{Alignment.ToString().ToLower()}")
-			.AddClass($"container--{MaxWidth?.ToString().ToLower()}", MaxWidth is not null)
-			.Build();
+			.AddClass($"container--{ThemeUtilities.GetCssString(Alignment)}")
+			.AddClass($"container--{ThemeUtilities.GetCssString(MaxWidth)}", MaxWidth is not null);
 }
