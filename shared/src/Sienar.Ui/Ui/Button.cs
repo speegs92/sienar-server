@@ -10,14 +10,9 @@ namespace Sienar.Ui;
 /// <summary>
 /// A button which can function as either a hyperlink or an action trigger
 /// </summary>
-public class Button : ComponentBase
+public class Button : SienarComponentBase
 {
-	private string? Css => new CssBuilder()
-		.AddClass("button")
-		.AddClass($"button--{Color?.ToString().ToLower()}", Color is not null)
-		.AddClass($"button--{Variant.ToString().ToLower()}")
-		.AddClass((string?) UserAttributes.TryGetValue("class"))
-		.Build();
+	private bool IsLink => UserAttributes.ContainsKey("href");
 
 	/// <summary>
 	/// The theme color of the button
@@ -31,36 +26,33 @@ public class Button : ComponentBase
 	[Parameter]
 	public Variant Variant { get; set; }
 
-	/// <summary>
-	/// The child content of the button
-	/// </summary>
-	[Parameter]
-	public RenderFragment? ChildContent { get; set; }
-
-	/// <summary>
-	/// The user-supplied element attributes
-	/// </summary>
-	[Parameter(CaptureUnmatchedValues = true)]
-	public Dictionary<string, object> UserAttributes { get; set; } = new();
-
 	/// <inheritdoc />
 	protected override void BuildRenderTree(RenderTreeBuilder builder)
 	{
-		var isLink = UserAttributes.ContainsKey("href");
-		var tag = isLink ? "a" : "button";
+		Tag = IsLink ? "a" : "button";
+		base.BuildRenderTree(builder);
+	}
 
-		builder.OpenElement(0, tag);
-		builder.AddMultipleAttributes(1, UserAttributes);
-		builder.AddAttribute(2, "class", Css);
+	/// <inheritdoc />
+	protected override string? CreateCss()
+		=> new CssBuilder()
+			.AddClass("button")
+			.AddClass($"button--{Color?.ToString().ToLower()}", Color is not null)
+			.AddClass($"button--{Variant.ToString().ToLower()}")
+			.AddClass((string?) UserAttributes.TryGetValue("class"))
+			.Build();
 
-		if (!isLink)
+	/// <inheritdoc />
+	protected override Dictionary<string, object> CreateAttributes()
+	{
+		var attributes = new Dictionary<string, object>(UserAttributes);
+
+		if (IsLink)
 		{
-			builder.AddAttribute(3, "role", "button");
+			attributes.Add("role", "button");
 		}
 
-		builder.AddContent(4, ChildContent);
-
-		builder.CloseElement();
+		return attributes;
 	}
 }
 
