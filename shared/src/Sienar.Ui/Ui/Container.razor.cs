@@ -7,8 +7,14 @@ namespace Sienar.Ui;
 /// <summary>
 /// A generic HTML container which accepts a maximum width and an alignment
 /// </summary>
-public class Container : SienarComponentBase
+public partial class Container
 {
+	private string? Css => new CssBuilder()
+		.AddClass("container")
+		.AddClass($"container--{ThemeUtilities.GetCssString(Alignment)}")
+		.AddClass($"container--{ThemeUtilities.GetCssString(MaxWidth)}", MaxWidth is not null)
+		.Build();
+
 	/// <summary>
 	/// The alignment of the container within its parent
 	/// </summary>
@@ -23,11 +29,4 @@ public class Container : SienarComponentBase
 	/// </remarks>
 	[Parameter]
 	public Breakpoint? MaxWidth { get; set; }
-
-	/// <inheritdoc />
-	protected override void AddCss(CssBuilder b)
-		=> b
-			.AddClass("container")
-			.AddClass($"container--{ThemeUtilities.GetCssString(Alignment)}")
-			.AddClass($"container--{ThemeUtilities.GetCssString(MaxWidth)}", MaxWidth is not null);
 }

@@ -6,8 +6,17 @@ namespace Sienar.Ui;
 /// <summary>
 /// A Bootstrap-style column component with support for 12 columns and breakpoint-specific column sizes
 /// </summary>
-public class Column : SienarComponentBase
+public partial class Column
 {
+	private string? Css => new CssBuilder()
+		.AddClass($"col-{Col}")
+		.AddClass($"col-sm-{Sm}", Sm.HasValue)
+		.AddClass($"col-md-{Md}", Md.HasValue)
+		.AddClass($"col-lg-{Lg}", Lg.HasValue)
+		.AddClass($"col-xl-{Xl}", Xl.HasValue)
+		.AddClass($"col-xxl-{Xxl}", Xxl.HasValue)
+		.Build();
+
 	/// <summary>
 	/// The column size for the smallest screens
 	/// </summary>
@@ -43,14 +52,4 @@ public class Column : SienarComponentBase
 	/// </summary>
 	[Parameter]
 	public int? Xxl { get; set; }
-
-	/// <inheritdoc />
-	protected override void AddCss(CssBuilder b)
-		=> b
-			.AddClass($"col-{Col}")
-			.AddClass($"col-sm-{Sm}", Sm.HasValue)
-			.AddClass($"col-md-{Md}", Md.HasValue)
-			.AddClass($"col-lg-{Lg}", Lg.HasValue)
-			.AddClass($"col-xl-{Xl}", Xl.HasValue)
-			.AddClass($"col-xxl-{Xxl}", Xxl.HasValue);
 }

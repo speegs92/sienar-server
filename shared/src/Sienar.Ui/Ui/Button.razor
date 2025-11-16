@@ -1,0 +1,12 @@
+﻿@inherits SienarComponentBase
+
+@{
+	Tag = IsLink ? "a" : "button";
+}
+
+<DynamicElement
+	Tag="@Tag"
+	Classes="@Css"
+	@attributes="UserAttributes">
+	@ChildContent
+</DynamicElement>
