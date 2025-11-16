@@ -123,7 +123,6 @@ public class CoreClientPlugin : IPlugin
 				.AddStartupTask<InitializeCsrfTokenOnAppStartHook>()
 				.AddStartupTask<LoadUserDataProcessor>();
 
-			s.TryAddScoped<INotifier, DefaultNotifier>();
 			s.TryAddScoped<IUserClaimsFactory, UserClaimsFactory>();
 
 			s

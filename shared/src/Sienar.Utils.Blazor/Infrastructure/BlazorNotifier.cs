@@ -1,6 +1,6 @@
 ﻿namespace Sienar.Infrastructure;
 
-public class DefaultNotifier : INotifier
+public class BlazorNotifier : INotifier
 {
 	/// <inheritdoc />
 	public void Success(string message)

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Sienar.Hooks;
+using Sienar.Infrastructure;
 using Sienar.Security;
 using Sienar.Ui;
 
@@ -23,7 +24,7 @@ public static class SienarUtilsBlazorServiceCollectionExtensions
 		self.TryAddScoped<AuthenticationStateProvider>(
 			sp => sp.GetRequiredService<SienarAuthenticationStateProvider>());
 
-		return self;
+		return self.AddScoped<INotifier, BlazorNotifier>();
 	}
 
 	/// <summary>
