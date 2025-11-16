@@ -41,11 +41,10 @@ public class DynamicElement : ComponentBase
 		var cssBuilder = new CssBuilder()
 			.AddClass(UserAttributes.TryGetValue("class")?.ToString())
 			.AddClass(Classes);
-		var finalCss = cssBuilder.Build();
 
 		builder.OpenElement(0, Tag);
 		builder.AddMultipleAttributes(1, UserAttributes);
-		builder.AddAttribute(2, "class", finalCss);
+		builder.AddAttribute(2, "class", cssBuilder.Build());
 		builder.AddContent(3, ChildContent);
 		builder.CloseElement();
 	}

@@ -37,12 +37,12 @@
 		<PackageReference
 			Condition=" '$(Configuration)' == 'Release' "
 			Include="Sienar.Utils" Version="0.1.1"/>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Ui\Buttons\LoadingButton.razor" />
-	  <UpToDateCheckInput Remove="Ui\Buttons\ToggleButton.razor" />
-	  <UpToDateCheckInput Remove="Ui\Forms\StandardForm.razor" />
+		<ProjectReference
+			Condition=" '$(Configuration)' != 'Release' "
+			Include="..\Sienar.Utils.Blazor\Sienar.Utils.Blazor.csproj"/>
+		<PackageReference
+			Condition=" '$(Configuration)' == 'Release' "
+			Include="Sienar.Utils.Blazor" Version="0.1.0"/>
 	</ItemGroup>
 
 	<Target
