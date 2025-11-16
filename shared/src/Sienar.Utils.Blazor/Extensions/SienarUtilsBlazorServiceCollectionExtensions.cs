@@ -23,8 +23,10 @@ public static class SienarUtilsBlazorServiceCollectionExtensions
 		self.TryAddScoped<SienarAuthenticationStateProvider>();
 		self.TryAddScoped<AuthenticationStateProvider>(
 			sp => sp.GetRequiredService<SienarAuthenticationStateProvider>());
+		self.TryAddScoped<IDelegateHandler, DefaultDelegateHandler>();
+		self.TryAddScoped<INotifier, BlazorNotifier>();
 
-		return self.AddScoped<INotifier, BlazorNotifier>();
+		return self;
 	}
 
 	/// <summary>

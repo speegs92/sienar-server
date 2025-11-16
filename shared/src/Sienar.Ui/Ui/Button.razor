@@ -7,6 +7,7 @@
 <DynamicElement
 	Tag="@Tag"
 	Classes="@Css"
+	@onclick="@(e => DelegateHandler.Handle(OnClick, e))"
 	@attributes="UserAttributes">
 	@ChildContent
 </DynamicElement>

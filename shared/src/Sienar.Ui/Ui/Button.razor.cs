@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System;
+using Microsoft.AspNetCore.Components;
 using Sienar.Html;
+using Sienar.Infrastructure;
 using Sienar.Themes;
 
 namespace Sienar.Ui;
@@ -28,4 +30,16 @@ public partial class Button
 	/// </summary>
 	[Parameter]
 	public Variant Variant { get; set; }
+
+	/// <summary>
+	/// A delegate to invoke when the button is clicked
+	/// </summary>
+	/// <remarks>
+	/// The provided delegate can have any method signature. The intention is to allow developers to inject dependencies into the delegate from the DI container. The developer can also request the <see cref="Microsoft.AspNetCore.Components.Web.MouseEventArgs"/>, which will be the instance of the event arguments provided by Blazor.
+	/// </remarks>
+	[Parameter]
+	public Delegate? OnClick { get; set; }
+
+	[Inject]
+	private IDelegateHandler DelegateHandler { get; set; } = null!;
 }
