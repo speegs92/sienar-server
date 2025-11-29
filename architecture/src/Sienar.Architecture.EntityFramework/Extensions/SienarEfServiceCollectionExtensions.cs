@@ -93,68 +93,67 @@ public static class SienarEfServiceCollectionExtensions
 	/// </summary>
 	/// <param name="self">The service collection</param>
 	/// <typeparam name="TDto">The type of the DTO</typeparam>
-	/// <typeparam name="TMapper">The type of the DTO mapper</typeparam>
+	/// <typeparam name="TDtoToEntityMapper">The type of the DTO-to-entity mapper</typeparam>
+	/// <typeparam name="TEntityToDtoMapper">The type of the entity-to-DTO mapper</typeparam>
 	/// <typeparam name="TEntity">The type of the entity</typeparam>
 	/// <typeparam name="TFilterProcessor">The type of the filter processor</typeparam>
 	/// <typeparam name="TContext">The type of the <see cref="DbContext"/></typeparam>
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddEfEntity<
 		TDto,
-		TMapper,
+		TDtoToEntityMapper,
+		TEntityToDtoMapper,
 		TEntity,
 		TFilterProcessor,
 		TContext>(this IServiceCollection self)
 		where TDto : class, new()
-		where TMapper : class, IMapper<TDto, TEntity>
+		where TDtoToEntityMapper : class, IMapper<TDto, TEntity>
+		where TEntityToDtoMapper : class, IMapper<TEntity, TDto>
 		where TEntity : EntityBase, new()
 		where TFilterProcessor : class, IEntityFrameworkFilterProcessor<TEntity>
 		where TContext : DbContext
-		=> AddEfEntity<TDto, TMapper, TDto, TMapper, TDto, TMapper, TEntity, TFilterProcessor, TContext>(self);
+		=> AddEfEntity<TDto, TEntityToDtoMapper, TDto, TDtoToEntityMapper, TDto, TDtoToEntityMapper, TEntity, TFilterProcessor, TContext>(self);
 
 	/// <summary>
 	/// Adds the necessary services to use an entity via Entity Framework
 	/// </summary>
 	/// <param name="self">The service collection</param>
 	/// <typeparam name="TViewDto">The type of the view DTO</typeparam>
-	/// <typeparam name="TViewDtoMapper">The type of the view DTO mapper</typeparam>
+	/// <typeparam name="TEntityToViewDtoMapper">The type of the entity-to-view-DTO mapper</typeparam>
 	/// <typeparam name="TAddDto">The type of the add DTO</typeparam>
-	/// <typeparam name="TAddDtoMapper">The type of the add DTO mapper</typeparam>
+	/// <typeparam name="TAddDtoToEntityMapper">The type of the add-DTO-to-entity mapper</typeparam>
 	/// <typeparam name="TEditDto">The type of the edit DTO</typeparam>
-	/// <typeparam name="TEditDtoMapper">The type of the edit DTO mapper</typeparam>
+	/// <typeparam name="TEditDtoToEntityMapper">The type of the edit-DTO-to-entity mapper</typeparam>
 	/// <typeparam name="TEntity">The type of the entity</typeparam>
 	/// <typeparam name="TFilterProcessor">The type of the filter processor</typeparam>
 	/// <typeparam name="TContext">The type of the <see cref="DbContext"/></typeparam>
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddEfEntity<
 		TViewDto,
-		TViewDtoMapper,
+		TEntityToViewDtoMapper,
 		TAddDto,
-		TAddDtoMapper,
+		TAddDtoToEntityMapper,
 		TEditDto,
-		TEditDtoMapper,
+		TEditDtoToEntityMapper,
 		TEntity,
 		TFilterProcessor,
 		TContext>(this IServiceCollection self)
 		where TViewDto : class, new()
-		where TViewDtoMapper : class, IMapper<TViewDto, TEntity>
+		where TEntityToViewDtoMapper : class, IMapper<TEntity, TViewDto>
 		where TAddDto : class, new()
-		where TAddDtoMapper : class, IMapper<TAddDto, TEntity>
+		where TAddDtoToEntityMapper : class, IMapper<TAddDto, TEntity>
 		where TEditDto : class, new()
-		where TEditDtoMapper : class, IMapper<TEditDto, TEntity>
+		where TEditDtoToEntityMapper : class, IMapper<TEditDto, TEntity>
 		where TEntity : EntityBase, new()
 		where TFilterProcessor : class, IEntityFrameworkFilterProcessor<TEntity>
 		where TContext : DbContext
 	{
-		self.TryAddScoped<IMapper<TViewDto, TEntity>, TViewDtoMapper>();
+		self.TryAddScoped<IMapper<TEntity, TViewDto>, TEntityToViewDtoMapper>();
+		self.TryAddScoped<IMapper<TAddDto, TEntity>, TAddDtoToEntityMapper>();
 
-		if (typeof(TAddDtoMapper) != typeof(TViewDtoMapper))
+		if (typeof(TEditDtoToEntityMapper) != typeof(TAddDtoToEntityMapper))
 		{
-			self.TryAddScoped<IMapper<TAddDto, TEntity>, TAddDtoMapper>();
-		}
-
-		if (typeof(TEditDtoMapper) != typeof(TViewDtoMapper) && typeof(TEditDtoMapper) != typeof(TAddDtoMapper))
-		{
-			self.TryAddScoped<IMapper<TEditDto, TEntity>, TEditDtoMapper>();
+			self.TryAddScoped<IMapper<TEditDto, TEntity>, TEditDtoToEntityMapper>();
 		}
 
 		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
