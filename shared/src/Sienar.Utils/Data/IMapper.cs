@@ -2,25 +2,18 @@
 namespace Sienar.Data;
 
 /// <summary>
-/// Maps between entities and their associated DTOs
+/// Maps between two class instances
 /// </summary>
-/// <typeparam name="TDto">The type of the DTO</typeparam>
-/// <typeparam name="TEntity">The type of the entity</typeparam>
-public interface IMapper<TDto, TEntity>
-	where TDto : class
-	where TEntity : EntityBase
+/// <typeparam name="TSource">The type of the source class</typeparam>
+/// <typeparam name="TTarget">The type of the target class</typeparam>
+public interface IMapper<TSource, TTarget>
+	where TSource : class
+	where TTarget : class
 {
 	/// <summary>
-	/// Maps a DTO to its associated entity
+	/// Maps a source class to a target class
 	/// </summary>
-	/// <param name="dto">The DTO to map</param>
-	/// <param name="entity">The entity to which to map</param>
-	void MapToEntity(TDto dto, TEntity entity);
-
-	/// <summary>
-	/// Maps an entity to its associated DTO
-	/// </summary>
-	/// <param name="dto">The DTO to which to map</param>
-	/// <param name="entity">The entity to map</param>
-	void MapToDto(TDto dto, TEntity entity);
+	/// <param name="source">The object from which to map</param>
+	/// <param name="target">The object onto which to map</param>
+	void Map(TSource source, TTarget target);
 }
