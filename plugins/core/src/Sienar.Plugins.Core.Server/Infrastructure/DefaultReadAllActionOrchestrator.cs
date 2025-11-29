@@ -10,22 +10,22 @@ public class DefaultReadAllActionOrchestrator<TDto, TEntity> : IReadAllActionOrc
 	where TDto : EntityBase, new()
 	where TEntity : EntityBase
 {
-	private readonly IMapper<TDto, TEntity> _dtoMapper;
+	private readonly IMapper<TEntity, TDto> _entityToDtoMapper;
 	private readonly IEntityReader<TEntity> _entityReader;
 	private readonly IOperationResultMapper _resultMapper;
 
 	/// <summary>
 	/// Creates a new <c>DefaultReadAllActionOrchestrator</c>
 	/// </summary>
-	/// <param name="dtoMapper">The DTO mapper</param>
+	/// <param name="entityToDtoMapper">The entity-to-DTO mapper</param>
 	/// <param name="entityReader">The entity reader</param>
 	/// <param name="resultMapper">The result mapper</param>
 	public DefaultReadAllActionOrchestrator(
-		IMapper<TDto, TEntity> dtoMapper,
+		IMapper<TEntity, TDto> entityToDtoMapper,
 		IEntityReader<TEntity> entityReader,
 		IOperationResultMapper resultMapper)
 	{
-		_dtoMapper = dtoMapper;
+		_entityToDtoMapper = entityToDtoMapper;
 		_entityReader = entityReader;
 		_resultMapper = resultMapper;
 	}
@@ -45,7 +45,7 @@ public class DefaultReadAllActionOrchestrator<TDto, TEntity> : IReadAllActionOrc
 		foreach (var entity in result.Result!.Items)
 		{
 			var dto = new TDto();
-			_dtoMapper.MapToDto(dto, entity);
+			_entityToDtoMapper.Map(entity, dto);
 			mappedDtos.Add(dto);
 		}
 

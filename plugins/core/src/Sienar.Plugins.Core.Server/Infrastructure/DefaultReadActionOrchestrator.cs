@@ -10,22 +10,22 @@ public class DefaultReadActionOrchestrator<TDto, TEntity>
 	where TDto : EntityBase, new()
 	where TEntity : EntityBase
 {
-	private readonly IMapper<TDto, TEntity> _dtoMapper;
+	private readonly IMapper<TEntity, TDto> _entityToDtoMapper;
 	private readonly IEntityReader<TEntity> _entityReader;
 	private readonly IOperationResultMapper _resultMapper;
 
 	/// <summary>
 	/// Creates a new instance of <c>DefaultReadActionOrchestrator</c>
 	/// </summary>
-	/// <param name="dtoMapper">The DTO mapper</param>
+	/// <param name="entityToDtoMapper">The entity-to-DTO mapper</param>
 	/// <param name="entityReader">The entity reader</param>
 	/// <param name="resultMapper">The result mapper</param>
 	public DefaultReadActionOrchestrator(
-		IMapper<TDto,TEntity> dtoMapper,
+		IMapper<TEntity, TDto> entityToDtoMapper,
 		IEntityReader<TEntity> entityReader,
 		IOperationResultMapper resultMapper)
 	{
-		_dtoMapper = dtoMapper;
+		_entityToDtoMapper = entityToDtoMapper;
 		_entityReader = entityReader;
 		_resultMapper = resultMapper;
 	}
@@ -42,7 +42,7 @@ public class DefaultReadActionOrchestrator<TDto, TEntity>
 			return _resultMapper.MapToObjectResult(result);
 		}
 
-		_dtoMapper.MapToDto(dto, result.Result);
+		_entityToDtoMapper.Map(result.Result, dto);
 
 		return _resultMapper.MapToObjectResult(new OperationResult<TDto>(
 			result.Status,
