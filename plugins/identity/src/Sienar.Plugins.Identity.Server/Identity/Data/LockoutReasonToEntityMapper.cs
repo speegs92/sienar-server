@@ -4,15 +4,15 @@ using Sienar.Extensions;
 namespace Sienar.Identity.Data;
 
 /// <summary>
-/// Maps between <see cref="LockoutReasonDto"/> and <see cref="LockoutReason"/>
+/// Maps from <see cref="LockoutReasonDto"/> to <see cref="LockoutReason"/>
 /// </summary>
-public class LockoutReasonMapper : IMapper<LockoutReasonDto, LockoutReason>
+public class LockoutReasonToEntityMapper : IMapper<LockoutReasonDto, LockoutReason>
 {
 	/// <inheritdoc />
-	public void MapToEntity(LockoutReasonDto dto, LockoutReason entity)
+	public void Map(LockoutReasonDto source, LockoutReason target)
 	{
-		entity.Reason = dto.Reason;
-		entity.NormalizedReason = dto.Reason.ToNormalized();
+		target.Reason = source.Reason;
+		target.NormalizedReason = source.Reason.ToNormalized();
 	}
 
 	/// <inheritdoc />
