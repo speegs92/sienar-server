@@ -1,10 +1,8 @@
 ﻿@using Sienar.Errors
-@inherits FormPage<LockUserAccountRequest>
 @attribute [Authorize(Roles = Roles.Admin)]
-@attribute [Route($"{DashboardUrls.Users.Index}/{{userId:guid}}/lock")]
-@inject IEntityReader<SienarUser> UserReader
-@inject IEntityReader<LockoutReason> LockoutReasonReader
-@inject IStatusService<LockUserAccountRequest> LockAccountService
+@attribute [Route($"{DashboardUrls.Users.Index}/{{userId:int}}/lock")]
+@inject IEntityReader<ViewUserDto> UserReader
+@inject IEntityReader<LockoutReasonDto> LockoutReasonReader
 
 @if (_user is null)
 {
@@ -14,59 +12,55 @@
 
 <NarrowContainer>
 	<StandardForm
-    	Model="Model"
+    	TFormModel="LockUserAccountRequest"
     	OnSubmit="@OnSubmit"
     	Title="@($"Lock {_user.Username}'s account")"
     	SubmitText="@($"Lock {_user.Username}'s account")"
     	ThemeColor="Color.Error">
 		<Fields>
 			<Select
-				T="LockoutReason"
 				Label="Select one or more reasons to lock the user out"
 				@bind-SelectedValues="@_selectedReasons"
-				MultiSelection>
+				MultiSelection
+				ToStringFunc="@(r => r.Reason)">
 				@foreach (var reason in _lockoutReasons)
 				{
-					<MudSelectItem
-						T="LockoutReason"
-						Value="reason">
-						@reason.Reason
-					</MudSelectItem>
+					<MudSelectItem Value="reason"/>
 				}
 			</Select>
 			<MudRadioGroup
 				T="LockDuration"
 				Class="mt-4"
-				SelectedOption="_lockDuration"
-				SelectedOptionChanged="UpdateLockDuration">
+				Value="_lockDuration"
+				ValueChanged="UpdateLockDuration">
 				<Radio
 					T="LockDuration"
-					Option="@LockDuration.OneDay">
+					Value="@LockDuration.OneDay">
 					One day
 				</Radio>
 				<Radio
 					T="LockDuration"
-					Option="@LockDuration.OneWeek">
+					Value="@LockDuration.OneWeek">
 					One week
 				</Radio>
 				<Radio
 					T="LockDuration"
-					Option="@LockDuration.OneMonth">
+					Value="@LockDuration.OneMonth">
 					One month
 				</Radio>
 				<Radio
 					T="LockDuration"
-					Option="@LockDuration.OneYear">
+					Value="@LockDuration.OneYear">
 					One year
 				</Radio>
 				<Radio
 					T="LockDuration"
-					Option="@LockDuration.Permanent">
+					Value="@LockDuration.Permanent">
 					Permanently
 				</Radio>
 				<Radio
 					T="LockDuration"
-					Option="@LockDuration.Custom">
+					Value="@LockDuration.Custom">
 					<MudDatePicker
 						Label="Select a date"
 						@bind-Date="_lockEnd"
@@ -88,12 +82,15 @@
 
 @code {
 
-	private SienarUser? _user;
-	private IEnumerable<LockoutReason> _lockoutReasons = Array.Empty<LockoutReason>();
+	private ViewUserDto? _user;
+	private IEnumerable<LockoutReasonDto> _lockoutReasons = [];
 	private LockDuration _lockDuration = LockDuration.OneDay;
 	private DateTime? _lockEnd = DateTime.Now.AddDays(1);
-	private IEnumerable<LockoutReason> _selectedReasons = [];
+	private IEnumerable<LockoutReasonDto> _selectedReasons = [];
 
+	/// <summary>
+	/// The ID of the user to lock
+	/// </summary>
 	[Parameter]
 	public int UserId { get; set; }
 
@@ -116,12 +113,12 @@
 		_lockoutReasons = (await LockoutReasonReader.Read(Filter.GetAll())).Result?.Items ?? [];
 	}
 
-	/// <summary>
-	/// Submits a request to lock the specified user's account
-	/// </summary>
-	protected async Task OnSubmit()
+	private async Task OnSubmit(
+		IStatusService<LockUserAccountRequest> lockAccountService,
+		LockUserAccountRequest request,
+		NavigationManager navManager)
 	{
-		Model.UserId = UserId;
+		request.UserId = UserId;
 
 		var selectedReasons = _selectedReasons
 			.Select(r => r.Id)
@@ -131,7 +128,7 @@
 			Notifier.Error($"You must select at least one reason to lock {_user!.Username}'s account");
 			return;
 		}
-		Model.Reasons = selectedReasons;
+		request.Reasons = selectedReasons;
 
 		if (!_lockEnd.HasValue)
 		{
@@ -139,12 +136,13 @@
 			return;
 		}
 
-		Model.EndDate = _lockEnd.Value;
+		request.EndDate = _lockEnd.Value;
 
-		await SubmitRequest(() => LockAccountService.Execute(Model));
-		if (WasSuccessful)
+		var result = await lockAccountService.Execute(request);
+
+		if (result.Status is OperationStatus.Success)
 		{
-			NavManager.NavigateTo(DashboardUrls.Users.Index);
+			navManager.NavigateTo(DashboardUrls.Users.Index);
 		}
 	}
 
