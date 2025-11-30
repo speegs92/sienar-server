@@ -8,60 +8,106 @@ using Sienar.Pages;
 // ReSharper disable once CheckNamespace
 namespace Sienar.Ui;
 
+/// <summary>
+/// The base form class
+/// </summary>
+/// <typeparam name="TModel">The type of the form's data model</typeparam>
 public class BaseForm<TModel> : FormPage<TModel>
 	where TModel : new()
 {
-	[Parameter]
-	public string? FormErrorMessage { get; set; }
-
+	/// <summary>
+	/// The color of the form
+	/// </summary>
 	[Parameter]
 	public Color ThemeColor { get; set; } = Color.Primary;
 
+	/// <summary>
+	/// A callback to call when the form should be reset
+	/// </summary>
 	[Parameter]
 	public EventCallback<MouseEventArgs> OnReset { get; set; }
 
+	/// <summary>
+	/// Additional actions to add to the card's actions
+	/// </summary>
 	[Parameter]
 	public RenderFragment? MoreActions { get; set; }
 
+	/// <summary>
+	/// Information the user needs to complete the form
+	/// </summary>
 	[Parameter]
 	public RenderFragment? Information { get; set; }
 
+	/// <summary>
+	/// The display title for the form
+	/// </summary>
 	[Parameter]
 	public string? Title { get; set; }
 
+	/// <summary>
+	/// The HTML tag with which to render the title
+	/// </summary>
 	[Parameter]
 	public string? TitleTag { get; set; }
 
-	[Parameter]
-	public required string FormName { get; set; }
-
+	/// <summary>
+	/// The text to show in the submit button
+	/// </summary>
 	[Parameter]
 	public string? SubmitText { get; set; }
 
+	/// <summary>
+	/// The text to show in the reset button. Defaults to <b>Reset</b>
+	/// </summary>
 	[Parameter]
 	public string? ResetText { get; set; } = "Reset";
 
+	/// <summary>
+	/// The icon to display in the upper-right corner of the form
+	/// </summary>
 	[Parameter]
 	public string? Icon { get; set; }
 
+	/// <summary>
+	/// The title of the icon to display in the upper-right corner of the form
+	/// </summary>
 	[Parameter]
 	public string? IconTitle { get; set; }
 
+	/// <summary>
+	/// Whether to show the reset button
+	/// </summary>
 	[Parameter]
 	public bool ShowReset { get; set; }
 
+	/// <summary>
+	/// Whether to hide the reset button
+	/// </summary>
 	[Parameter]
 	public bool HideSubmit { get; set; }
 
+	/// <summary>
+	/// Whether the form should be rendered with square corners
+	/// </summary>
 	[Parameter]
 	public bool Square { get; set; }
 
+	/// <summary>
+	/// A function to execute on submit
+	/// </summary>
 	[Parameter]
 	public Func<Task>? OnSubmit { get; set; }
 
+	/// <summary>
+	/// The form fields to render
+	/// </summary>
 	[Parameter]
 	public required RenderFragment<TModel> Fields { get; set; }
 
+	/// <summary>
+	/// Handles form submissiosn
+	/// </summary>
 	protected Task HandleSubmit()
 		=> SubmitRequest(() => OnSubmit!.Invoke());
 }
