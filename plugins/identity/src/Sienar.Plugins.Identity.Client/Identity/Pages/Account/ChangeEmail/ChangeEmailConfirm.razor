@@ -1,4 +1,4 @@
-@inherits ActionPage<PerformEmailChangeRequest>
+@inherits ActionPage
 @attribute [Route(DashboardUrls.Account.EmailChange.Confirm)]
 @inject IStatusService<PerformEmailChangeRequest> EmailChangeService
 
@@ -34,12 +34,18 @@
 	/// <inheritdoc />
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (!firstRender) return;
+		if (!firstRender)
+		{
+			return;
+		}
 
-		Model.UserId = UserId;
-		Model.VerificationCode = Code;
+		var request = new PerformEmailChangeRequest
+		{
+			UserId = UserId,
+			VerificationCode = Code
+		};
 
-		await SubmitRequest(() => EmailChangeService.Execute(Model));
+		await SubmitRequest(() => EmailChangeService.Execute(request));
 		if (WasSuccessful)
 		{
 			NavManager.NavigateTo(DashboardUrls.Account.EmailChange.Successful);

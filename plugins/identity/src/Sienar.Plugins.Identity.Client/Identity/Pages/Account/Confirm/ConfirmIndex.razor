@@ -1,4 +1,4 @@
-﻿@inherits ActionPage<ConfirmAccountRequest>
+﻿@inherits ActionPage
 @attribute [AllowAnonymous]
 @attribute [Route(DashboardUrls.Account.Confirm.Index)]
 @inject IStatusService<ConfirmAccountRequest> Service
@@ -40,11 +40,18 @@
 	/// <inheritdoc />
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (!firstRender) return;
+		if (!firstRender)
+		{
+			return;
+		}
 
-		Model.UserId = UserId;
-		Model.VerificationCode = Code;
-		await SubmitRequest(() => Service.Execute(Model));
+		var model = new ConfirmAccountRequest
+		{
+			UserId = UserId,
+			VerificationCode = Code
+		};
+
+		await SubmitRequest(() => Service.Execute(model));
 
 		if (WasSuccessful)
 		{

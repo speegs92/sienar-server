@@ -9,9 +9,14 @@ namespace Sienar.Pages;
 /// A component that provides time tracking and form resetting
 /// </summary>
 /// <typeparam name="TModel">The type of the form model</typeparam>
-public class FormPage<TModel> : ActionPage<TModel>
+public class FormPage<TModel> : ActionPage
 	where TModel : new()
 {
+	/// <summary>
+	/// The model used in requests sent from the page
+	/// </summary>
+	protected TModel Model = new();
+
 	/// <summary>
 	/// The time when the form was started. Used for bot tracking purposes
 	/// </summary>
