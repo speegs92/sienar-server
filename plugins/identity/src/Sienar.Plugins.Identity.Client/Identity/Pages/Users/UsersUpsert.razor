@@ -1,76 +1,77 @@
-﻿@inherits UpsertPage<SienarUser>
-@attribute [Authorize(Roles = Roles.Admin)]
+﻿@attribute [Authorize(Roles = Roles.Admin)]
 @attribute [Route(DashboardUrls.Users.Add)]
-@attribute [Route($"{DashboardUrls.Users.Index}/{{id:guid}}")]
+@attribute [Route($"{DashboardUrls.Users.Index}/{{id:int}}")]
 
 <DocTitle Title="@Title"/>
 
-<NarrowContainer>
-	<StandardForm
-		Model="Model"
-		OnSubmit="@OnSubmit"
-		Title="@Title"
-		SubmitText="@SubmitText"
-		Icon="@Icon"
-		IconTitle="@($"{Model.Username}'s email is confirmed")">
-		<Fields>
-			<Textbox
-				@bind-Value="Model.Username"
-				For="() => Model.Username"
-				Label="Username"/>
-			<Textbox
-				@bind-Value="Model.Email"
-				For="() => Model.Email"
-				InputType="InputType.Email"
-				Label="Email address"/>
-			<Textbox
-				@bind-Value="Model.Password"
-				For="() => Model.Password"
-				InputType="InputType.Password"
-				Label="Password"/>
-			<Textbox
-				@bind-Value="Model.ConfirmPassword"
-				For="() => Model.ConfirmPassword"
-				InputType="InputType.Password"
-				Label="Confirm password"/>
-		</Fields>
+<UpsertForm
+	TViewDto="ViewUserDto"
+	TUpsertDto="UpsertUserDto"
+	EntityId="Id"
+	For="u => u.Username"
+	Icon="@Icon"
+	IconTitle="@($"{_user?.Username}'s email is confirmed")"
+	OnUpdateSuccess="@OnSuccess"
+	OnLoaded="@OnLoaded">
+	<Fields>
+		<Textbox
+			@bind-Value="@context.Username"
+			For="() => context.Username"
+			Label="Username"/>
+		<Textbox
+			@bind-Value="@context.Email"
+			For="() => context.Email"
+			InputType="InputType.Email"
+			Label="Email address"/>
+		<Textbox
+			@bind-Value="@context.Password"
+			For="() => context.Password"
+			InputType="InputType.Password"
+			Label="Password"/>
+		<Textbox
+			@bind-Value="@context.ConfirmPassword"
+			For="() => context.ConfirmPassword"
+			InputType="InputType.Password"
+			Label="Confirm password"/>
+	</Fields>
 
-		<MoreActions>
-			<MudButton
-				Color="Color.Secondary"
-				Variant="Variant.Outlined"
-				Href="@DashboardUrls.Users.Index">
-				Back to users listing
-			</MudButton>
-		</MoreActions>
-	</StandardForm>
-</NarrowContainer>
+	<MoreActions>
+		<MudButton
+			Color="Color.Secondary"
+			Variant="Variant.Outlined"
+			Href="@DashboardUrls.Users.Index">
+			Back to users listing
+		</MudButton>
+	</MoreActions>
+</UpsertForm>
 
 @code {
 
-	/// <inheritdoc />
-	protected override string GetName() => Model.Username;
+	private ViewUserDto? _user = new();
 
-	private string? Icon => Model.EmailConfirmed
+	private string? Icon => _user?.EmailConfirmed ?? false
 		? Icons.Material.Filled.CheckCircle
 		: null;
 
-	/// <inheritdoc />
-	protected override Task OnSuccess()
+	private string Title => _user is not null
+		? $"Update {_user.Username}'s account"
+		: "Add new user";
+
+	/// <summary>
+	/// The ID of the user to edit, if editing
+	/// </summary>
+	[Parameter]
+    public int? Id { get; set; }
+
+	private void OnLoaded(ViewUserDto user)
 	{
-		NavManager.NavigateTo(DashboardUrls.Users.Index);
-		return Task.CompletedTask;
+		_user = user;
+		StateHasChanged();
 	}
 
-	/// <inheritdoc />
-	protected override async Task OnInitializedAsync()
+	private static void OnSuccess(NavigationManager navManager)
 	{
-		await base.OnInitializedAsync();
-		if (!IsEditing)
-		{
-			Model.Password = string.Empty;
-			Model.ConfirmPassword = string.Empty;
-		}
+		navManager.NavigateTo(DashboardUrls.Users.Index);
 	}
 
 }

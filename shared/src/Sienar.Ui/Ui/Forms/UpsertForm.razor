@@ -1,0 +1,45 @@
+﻿@* ReSharper disable once CheckNamespace *@
+@namespace Sienar.Ui
+
+@typeparam TViewDto where TViewDto : class, new()
+@typeparam TUpsertDto where TUpsertDto : class, new()
+@inherits BaseForm<TUpsertDto>
+
+@if (EntityId.HasValue)
+{
+	<UpdateForm
+		TViewDto="TViewDto"
+		TEditDto="TUpsertDto"
+		EntityId="EntityId.Value"
+		For="@For"
+		Fields="@Fields"
+		MoreActions="@MoreActions"
+		Information="@Information"
+		OnLoaded="@OnLoaded"
+		OnSuccess="@OnUpdateSuccess"
+		ThemeColor="ThemeColor"
+		OnReset="@OnReset"
+		TitleTag="@TitleTag"
+		ResetText="@ResetText"
+		HideSubmit="HideSubmit"
+		Square="Square"
+		ShowReset="ShowReset"/>
+	
+}
+else
+{
+	<AddForm
+		TAddDto="TUpsertDto"
+		OnSuccess="@OnAddSuccess"
+		MoreActions="@MoreActions"
+		Information="@Information"
+		Fields="@Fields"
+		ThemeColor="ThemeColor"
+		OnReset="@OnReset"
+		TitleTag="@TitleTag"
+		ResetText="@ResetText"
+		HideSubmit="HideSubmit"
+		Square="Square"
+		ShowReset="ShowReset"/>
+	
+}
