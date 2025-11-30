@@ -3,11 +3,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
+using Sienar.Pages;
 
 // ReSharper disable once CheckNamespace
 namespace Sienar.Ui;
 
-public class BaseForm : ComponentBase
+public class BaseForm<TModel> : FormPage<TModel>
+	where TModel : new()
 {
 	[Parameter]
 	public string? FormErrorMessage { get; set; }
@@ -63,18 +65,6 @@ public class BaseForm : ComponentBase
 	[Parameter]
 	public bool IsLoading { get; set; }
 
-	protected bool Loading;
-
-	protected async Task HandleSubmit()
-	{
-		Loading = true;
-		await OnSubmit!.Invoke();
-		Loading = false;
-	}
-}
-
-public class BaseForm<TModel> : BaseForm
-{
-	[Parameter]
-	public TModel? Model { get; set; }
+	protected Task HandleSubmit()
+		=> SubmitRequest(() => OnSubmit!.Invoke());
 }
