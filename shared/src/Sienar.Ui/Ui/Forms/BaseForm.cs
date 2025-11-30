@@ -60,10 +60,7 @@ public class BaseForm<TModel> : FormPage<TModel>
 	public Func<Task>? OnSubmit { get; set; }
 
 	[Parameter]
-	public RenderFragment? Fields { get; set; }
-
-	[Parameter]
-	public bool IsLoading { get; set; }
+	public required RenderFragment<TModel> Fields { get; set; }
 
 	protected Task HandleSubmit()
 		=> SubmitRequest(() => OnSubmit!.Invoke());
