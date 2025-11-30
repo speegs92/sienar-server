@@ -75,7 +75,7 @@ public class IdentityServerPlugin<TContext> : IPlugin
 
 		// CRUD
 		services
-			.AddEfEntity<SienarUser, SienarUserFilterProcessor, TContext>()
+			.AddEfEntity<ViewUserDto, ViewUserMapper, UpsertUserDto, UpsertUserMapper, UpsertUserDto, UpsertUserMapper, SienarUser, SienarUserFilterProcessor, TContext>()
 			.AddAccessValidator<UserIsAdminAccessValidator<SienarUser>, SienarUser>()
 			.AddBeforeActionHook<FetchNotUpdatedUserPropertiesHook<TContext>, SienarUser>()
 			.AddBeforeActionHook<UserMapNormalizedFieldsHook, SienarUser>()
