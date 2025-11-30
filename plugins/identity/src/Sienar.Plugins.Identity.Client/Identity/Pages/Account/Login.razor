@@ -1,35 +1,32 @@
-﻿@inherits FormPage<LoginRequest>
-@attribute [AllowAnonymous]
+﻿@attribute [AllowAnonymous]
 @attribute [Route(DashboardUrls.Account.Login)]
-@inject IService<LoginRequest, LoginResult> Service
 
 <DocTitle Title="Log in"/>
 
 <NarrowContainer>
 	<StandardForm
-		Model="@Model"
+		TFormModel="LoginRequest"
 		OnSubmit="@OnSubmit"
 		SubmitText="Log in"
-		Title="Log in"
-		FormName="login">
+		Title="Log in">
 		<Fields>
 			<Textbox
-				@bind-Value="Model.AccountName"
-				For="() => Model.AccountName"
+				@bind-Value="@context.AccountName"
+				For="() => context.AccountName"
 				Label="Username or email address"/>
 			<Textbox
-				@bind-Value="Model.Password"
-				For="() => Model.Password"
+				@bind-Value="@context.Password"
+				For="() => context.Password"
 				InputType="InputType.Password"
 				Label="Password"/>
 			<Checkbox
 				Class="mt-4"
 				Color="Color.Primary"
 				UncheckedColor="Color.Default"
-				@bind-Checked="Model.RememberMe"
-				For="() => Model.RememberMe"
+				@bind-Value="@context.RememberMe"
+				For="() => context.RememberMe"
 				Label="Remember me"/>
-			<Honeypot @bind-Value="Model.SecretKeyField"/>
+			<Honeypot @bind-Value="@context.SecretKeyField"/>
 		</Fields>
 
 		<MoreActions>
@@ -52,21 +49,26 @@
 	[SupplyParameterFromQuery]
 	public string? ReturnUrl { get; set; }
 
-	/// <summary>
-	/// Submits a request to log in the specified user account
-	/// </summary>
-	protected async Task OnSubmit()
+	private async Task OnSubmit(
+		IService<LoginRequest, LoginResult> loginService,
+		NavigationManager navManager,
+		LoginRequest request)
 	{
-		var result = await SubmitRequest(() => Service.Execute(Model));
-		if (WasSuccessful)
+		var result = await loginService.Execute(request);
+		if (result.Status is OperationStatus.Success)
 		{
 			var destination = ReturnUrl ?? DashboardUrls.Index;
-			NavManager.NavigateTo(destination);
+			navManager.NavigateTo(destination);
 		}
 		else
 		{
-			if (result is null) return;
-			NavManager.NavigateTo($"{DashboardUrls.Account.Locked}?userId={result.UserId}&verificationCode={result.VerificationCode}");
+			var loginResult = result.Result;
+			if (loginResult is null)
+			{
+				return;
+			}
+
+			navManager.NavigateTo($"{DashboardUrls.Account.Locked}?userId={loginResult.UserId}&verificationCode={loginResult.VerificationCode}");
 		}
 	}
 
