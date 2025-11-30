@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
+using Sienar.Infrastructure;
 using Sienar.Pages;
 
 // ReSharper disable once CheckNamespace
@@ -96,8 +97,11 @@ public class BaseForm<TModel> : FormPage<TModel>
 	/// <summary>
 	/// A function to execute on submit
 	/// </summary>
+	/// <remarks>
+	/// The arguments of the provided delegate will be resolved from the DI container. The only exception to this is the <c>TModel</c> from the underlying form, which can be provided at any position (but is not required).
+	/// </remarks>
 	[Parameter]
-	public Func<Task>? OnSubmit { get; set; }
+	public Delegate? OnSubmit { get; set; }
 
 	/// <summary>
 	/// The form fields to render
@@ -106,8 +110,18 @@ public class BaseForm<TModel> : FormPage<TModel>
 	public required RenderFragment<TModel> Fields { get; set; }
 
 	/// <summary>
-	/// Handles form submissiosn
+	/// The <see cref="IDelegateHandler"/>
+	/// </summary>
+	[Inject]
+	protected IDelegateHandler DelegateHandler { get; set; } = null!;
+
+	/// <summary>
+	/// Handles form submissions
 	/// </summary>
 	protected Task HandleSubmit()
-		=> SubmitRequest(() => OnSubmit!.Invoke());
+		=> SubmitRequest(() =>
+		{
+			DelegateHandler.Handle(OnSubmit, Model);
+			return Task.CompletedTask;
+		});
 }
