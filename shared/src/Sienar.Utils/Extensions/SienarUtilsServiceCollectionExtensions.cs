@@ -36,6 +36,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		self.TryAddScoped(typeof(IAfterActionRunner<>), typeof(DefaultAfterActionRunner<>));
 		self.TryAddScoped<IMenuGenerator, DefaultMenuGenerator>();
 		self.TryAddScoped<IBotDetector, DefaultBotDetector>();
+		self.TryAddScoped(typeof(IMapper<,>), typeof(DefaultMapper<,>));
 
 		return self;
 	}
