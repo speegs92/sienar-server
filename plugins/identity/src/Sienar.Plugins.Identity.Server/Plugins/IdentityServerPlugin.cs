@@ -80,7 +80,6 @@ public class IdentityServerPlugin<TContext> : IPlugin
 			.AddBeforeActionHook<RemoveUserRelatedEntitiesHook<TContext>, SienarUser>()
 			.AddStateValidator<EnsureAccountInfoUniqueValidator<TContext>, SienarUser>()
 			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor, TContext>()
-			.AddBeforeActionHook<LockoutReasonMapNormalizedFieldsHook, LockoutReason>()
 			.AddEfEntity<SienarRole, SienarRoleFilterProcessor, TContext>()
 
 		// Security
