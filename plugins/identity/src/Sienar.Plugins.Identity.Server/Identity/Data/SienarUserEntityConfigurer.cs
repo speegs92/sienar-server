@@ -41,9 +41,5 @@ internal class SienarUserEntityConfigurer : IEntityTypeConfiguration<SienarUser>
 		builder
 			.Property(u => u.PasswordHash)
 			.HasMaxLength(100);
-
-		builder
-			.Ignore(u => u.Password)
-			.Ignore(u => u.ConfirmPassword);
 	}
 }

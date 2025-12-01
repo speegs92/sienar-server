@@ -77,9 +77,6 @@ public class IdentityServerPlugin<TContext> : IPlugin
 		services
 			.AddEfEntity<ViewUserDto, ViewUserMapper, UpsertUserDto, UpsertUserMapper, UpsertUserDto, UpsertUserMapper, SienarUser, SienarUserFilterProcessor, TContext>()
 			.AddAccessValidator<UserIsAdminAccessValidator<SienarUser>, SienarUser>()
-			.AddBeforeActionHook<FetchNotUpdatedUserPropertiesHook<TContext>, SienarUser>()
-			.AddBeforeActionHook<UserMapNormalizedFieldsHook, SienarUser>()
-			.AddBeforeActionHook<UserPasswordUpdateHook, SienarUser>()
 			.AddBeforeActionHook<RemoveUserRelatedEntitiesHook<TContext>, SienarUser>()
 			.AddStateValidator<EnsureAccountInfoUniqueValidator<TContext>, SienarUser>()
 			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor, TContext>()
