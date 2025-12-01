@@ -1,0 +1,24 @@
+﻿@* ReSharper disable once CheckNamespace *@
+@namespace Sienar.Ui
+
+@typeparam TViewDto where TViewDto : class
+@typeparam TEditDto where TEditDto : class, new()
+@inherits BaseForm<TEditDto>
+
+<StandardForm
+	T="TEditDto"
+	Title="@($"Update {For(Model)}")"
+	TitleTag="@TitleTag"
+	ThemeColor="ThemeColor"
+	Square="Square"
+	Icon="@Icon"
+	IconTitle="@IconTitle"
+	SubmitText="@($"Update {For(Model)}")"
+	HideSubmit="HideSubmit"
+	ResetText="@ResetText"
+	ShowReset="ShowReset"
+	OnSubmit="@HandleUpdate"
+	OnReset="@OnReset"
+	Information="@Information"
+	Fields="@Fields"
+	MoreActions="@MoreActions"/>
