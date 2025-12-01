@@ -81,9 +81,6 @@ public static class SienarEfServiceCollectionExtensions
 		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity, TContext>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
-		self.TryAddScoped<IEntityReader<TEntity>, EfEntityReader<TEntity, TContext>>();
-		self.TryAddScoped<IEntityWriter<TEntity>, EfEntityWriter<TEntity, TContext>>();
-		self.TryAddScoped<IEntityDeleter<TEntity>, EfEntityDeleter<TEntity, TContext>>();
 
 		return self;
 	}
@@ -159,9 +156,20 @@ public static class SienarEfServiceCollectionExtensions
 		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity, TContext>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
-		self.TryAddScoped<IEntityReader<TEntity>, EfEntityReader<TEntity, TContext>>();
-		self.TryAddScoped<IEntityWriter<TEntity>, EfEntityWriter<TEntity, TContext>>();
-		self.TryAddScoped<IEntityDeleter<TEntity>, EfEntityDeleter<TEntity, TContext>>();
+
+		return self;
+	}
+
+	/// <summary>
+	/// Adds the core services necessary for Sienar to work with Entity Framework
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddEntityFramework(this IServiceCollection self)
+	{
+		self.TryAddScoped(typeof(IEntityReader<>), typeof(EfEntityReader<>));
+		self.TryAddScoped(typeof(IEntityWriter<>), typeof(EfEntityWriter<>));
+		self.TryAddScoped(typeof(IEntityDeleter<>), typeof(EfEntityDeleter<>));
 
 		return self;
 	}
