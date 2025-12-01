@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Sienar.Configuration;
+using Sienar.Extensions;
 using Sienar.Infrastructure;
 
 namespace Sienar.Plugins;
@@ -10,8 +11,22 @@ namespace Sienar.Plugins;
 [AppConfigurer(typeof(SienarAppConfigurer))]
 public class CoreServerPlugin : IPlugin
 {
+	private readonly IApplicationAdapter _adapter;
+
+	/// <summary>
+	/// Creates a new instance of <c>CoreServerPlugin</c>
+	/// </summary>
+	/// <param name="adapter">The application adapter</param>
+	public CoreServerPlugin(IApplicationAdapter adapter)
+	{
+		_adapter = adapter;
+	}
+
 	/// <inheritdoc />
-	public void Configure() {}
+	public void Configure()
+	{
+		_adapter.AddServices(sp => sp.AddEntityFramework());
+	}
 
 	private class SienarAppConfigurer : IConfigurer<SienarAppBuilder>
 	{

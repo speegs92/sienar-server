@@ -1,10 +1,8 @@
-﻿@inherits FormPage<DeleteAccountRequest>
-@attribute [Route(DashboardUrls.Account.Delete)]
-@inject IStatusService<DeleteAccountRequest> DeleteAccountService
+﻿@attribute [Route(DashboardUrls.Account.Delete)]
 
 <NarrowContainer>
 	<StandardForm
-		Model="@Model"
+		T="DeleteAccountRequest"
 		OnSubmit="@OnSubmit"
 		SubmitText="Delete account forever!"
 		Title="Delete account"
@@ -17,8 +15,8 @@
 
 		<Fields>
 			<Textbox
-				@bind-Value="Model.Password"
-				For="() => Model.Password"
+				@bind-Value="@context.Password"
+				For="() => context.Password"
 				Label="Password"
 				InputType="InputType.Password"/>
 		</Fields>
@@ -27,15 +25,16 @@
 
 @code {
 
-	/// <summary>
-	/// Submits a request to delete the current user's account
-	/// </summary>
-	protected async Task OnSubmit()
+	private static async Task OnSubmit(
+		IStatusService<DeleteAccountRequest> deleteAccountService,
+		DeleteAccountRequest request,
+		NavigationManager navManager)
 	{
-		await SubmitRequest(() => DeleteAccountService.Execute(Model));
-		if (WasSuccessful)
+		var result = await deleteAccountService.Execute(request);
+
+		if (result.Status is OperationStatus.Success)
 		{
-			NavManager.NavigateTo(DashboardUrls.Account.Deleted);
+			navManager.NavigateTo(DashboardUrls.Account.Deleted);
 		}
 	}
 

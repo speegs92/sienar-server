@@ -19,11 +19,11 @@ namespace TestProject.Data.Migrations
 
             modelBuilder.Entity("LockoutReasonSienarUser", b =>
                 {
-                    b.Property<Guid>("LockoutReasonsId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("LockoutReasonsId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UsersId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("LockoutReasonsId", "UsersId");
 
@@ -34,9 +34,9 @@ namespace TestProject.Data.Migrations
 
             modelBuilder.Entity("Sienar.Identity.LockoutReason", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("ConcurrencyStamp")
                         .HasColumnType("TEXT");
@@ -61,9 +61,9 @@ namespace TestProject.Data.Migrations
 
             modelBuilder.Entity("Sienar.Identity.SienarRole", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("ConcurrencyStamp")
                         .HasColumnType("TEXT");
@@ -83,9 +83,9 @@ namespace TestProject.Data.Migrations
 
             modelBuilder.Entity("Sienar.Identity.SienarUser", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("ConcurrencyStamp")
                         .HasColumnType("TEXT");
@@ -145,9 +145,9 @@ namespace TestProject.Data.Migrations
 
             modelBuilder.Entity("Sienar.Identity.VerificationCode", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<Guid>("Code")
                         .HasColumnType("TEXT");
@@ -158,8 +158,8 @@ namespace TestProject.Data.Migrations
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("SienarUserId")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("SienarUserId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -175,11 +175,11 @@ namespace TestProject.Data.Migrations
 
             modelBuilder.Entity("SienarRoleSienarUser", b =>
                 {
-                    b.Property<Guid>("RolesId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("RolesId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("UsersId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UsersId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("RolesId", "UsersId");
 

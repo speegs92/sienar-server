@@ -1,12 +1,12 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable CA1822 // Member can be marked as static
 
-using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sienar.Data;
 using Sienar.Infrastructure;
-using Sienar.Services;
 
 namespace Sienar.Identity;
 
@@ -14,39 +14,41 @@ namespace Sienar.Identity;
 [ApiController]
 [Route("/api/lockout-reasons")]
 [Authorize(Roles = Roles.Admin)]
-public class LockoutReasonController : SienarController
+public class LockoutReasonController
 {
-	public LockoutReasonController(IOperationResultMapper mapper)
-		: base(mapper) {}
-
 	[HttpGet]
+	[UsedImplicitly]
 	public Task<IActionResult> Read(
 		[FromQuery] Filter? filter,
-		[FromServices] IEntityReader<LockoutReason> service)
-		=> Execute(() => service.Read(filter));
+		[FromServices] IReadAllActionOrchestrator<LockoutReasonDto, LockoutReason> orchestrator)
+		=> orchestrator.Execute(filter);
 
 	[HttpGet("{id:int}")]
+	[UsedImplicitly]
 	public Task<IActionResult> Read(
 		int id,
 		[FromQuery] Filter? filter,
-		[FromServices] IEntityReader<LockoutReason> service)
-		=> Execute(() => service.Read(id, filter));
+		[FromServices] IReadActionOrchestrator<LockoutReasonDto, LockoutReason> orchestrator)
+		=> orchestrator.Execute(id, filter);
 
 	[HttpPost]
+	[UsedImplicitly]
 	public Task<IActionResult> Create(
-		LockoutReason entity,
-		[FromServices] IEntityWriter<LockoutReason> service)
-		=> Execute(() => service.Create(entity));
+		LockoutReasonDto lockoutReason,
+		[FromServices] ICreateActionOrchestrator<LockoutReasonDto, LockoutReason> orchestrator)
+		=> orchestrator.Execute(lockoutReason);
 
 	[HttpPut]
+	[UsedImplicitly]
 	public Task<IActionResult> Update(
-		LockoutReason entity,
-		[FromServices] IEntityWriter<LockoutReason> service)
-		=> Execute(() => service.Update(entity));
+		LockoutReasonDto lockoutReason,
+		[FromServices] IUpdateActionOrchestrator<LockoutReasonDto, LockoutReason> orchestrator)
+		=> orchestrator.Execute(lockoutReason);
 
 	[HttpDelete("{id:int}")]
+	[UsedImplicitly]
 	public Task<IActionResult> Delete(
 		int id,
-		[FromServices] IEntityDeleter<LockoutReason> service)
-		=> Execute(() => service.Delete(id));
+		[FromServices] IDeleteActionOrchestrator<LockoutReason> orchestrator)
+		=> orchestrator.Execute(id);
 }

@@ -3,10 +3,11 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Email;
 using Sienar.Errors;
+using Sienar.Extensions;
 using Sienar.Identity.Requests;
-using Sienar.Identity.Data;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 using Sienar.Security;
@@ -17,20 +18,20 @@ namespace Sienar.Identity.Processors;
 public class PerformEmailChangeProcessor
 	: IStatusProcessor<PerformEmailChangeRequest>
 {
-	private readonly IUserRepository _userRepository;
+	private readonly ISienarDbContext _context;
 	private readonly IUserAccessor _userAccessor;
 	private readonly IVerificationCodeManager _vcManager;
 	private readonly IAccountEmailManager _emailManager;
 	private readonly SienarOptions _sienarOptions;
 
 	public PerformEmailChangeProcessor(
-		IUserRepository userRepository,
+		ISienarDbContext context,
 		IUserAccessor userAccessor,
 		IVerificationCodeManager vcManager,
 		IAccountEmailManager emailManager,
 		IOptions<SienarOptions> sienarOptions)
 	{
-		_userRepository = userRepository;
+		_context = context;
 		_userAccessor = userAccessor;
 		_vcManager = vcManager;
 		_emailManager = emailManager;
@@ -47,7 +48,7 @@ public class PerformEmailChangeProcessor
 				message: CoreErrors.Account.LoginRequired);
 		}
 
-		var user = await _userRepository.Read(userId.Value);
+		var user = await _context.Users.FindAsync(userId.Value);
 		if (user is null)
 		{
 			return new(
@@ -99,17 +100,16 @@ public class PerformEmailChangeProcessor
 
 		// Code was valid
 		user.Email = user.PendingEmail;
-		user.NormalizedEmail = user.NormalizedPendingEmail!.ToUpperInvariant();
+		user.NormalizedEmail = user.NormalizedPendingEmail!.ToNormalized();
 		user.PendingEmail = null;
 		user.NormalizedPendingEmail = null;
 
-		return await _userRepository.Update(user)
-			? new(
-				OperationStatus.Success,
-				true,
-				"Email changed successfully")
-			: new(
-				OperationStatus.Unknown,
-				message: StatusMessages.Database.QueryFailed);
+		_context.Users.Update(user);
+		await _context.SaveChangesAsync();
+
+		return new(
+			OperationStatus.Success,
+			true,
+			"Email changed successfully");
 	}
 }

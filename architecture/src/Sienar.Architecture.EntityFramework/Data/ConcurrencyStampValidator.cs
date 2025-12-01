@@ -1,7 +1,9 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Sienar.Hooks;
 using Sienar.Infrastructure;
 
@@ -11,14 +13,14 @@ namespace Sienar.Data;
 public class ConcurrencyStampValidator<TEntity> : IStateValidator<TEntity>
 	where TEntity : EntityBase
 {
-	private readonly IRepository<TEntity> _repository;
+	private readonly IDbContext _context;
 	private readonly INotifier _notifier;
 
 	public ConcurrencyStampValidator(
-		IRepository<TEntity> repository,
+		IDbContext context,
 		INotifier notifier)
 	{
-		_repository = repository;
+		_context = context;
 		_notifier = notifier;
 	}
 
@@ -27,7 +29,11 @@ public class ConcurrencyStampValidator<TEntity> : IStateValidator<TEntity>
 		// Only run on update
 		if (action is not ActionType.Update) return OperationStatus.Success;
 
-		var concurrencyStamp = await _repository.ReadConcurrencyStamp(request.Id);
+		var concurrencyStamp = await _context
+			.Set<TEntity>()
+			.Where(e => e.Id == request.Id)
+			.Select(e => e.ConcurrencyStamp)
+			.FirstOrDefaultAsync();
 
 		if (concurrencyStamp == Guid.Empty
 			|| concurrencyStamp != request.ConcurrencyStamp)

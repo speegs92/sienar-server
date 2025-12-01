@@ -1,9 +1,9 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
-using Sienar.Identity.Data;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 using Sienar.Security;
@@ -13,16 +13,16 @@ namespace Sienar.Identity.Processors;
 /// <exclude />
 public class ChangePasswordProcessor : IStatusProcessor<ChangePasswordRequest>
 {
-	private readonly IUserRepository _userRepository;
+	private readonly ISienarDbContext _context;
 	private readonly IUserAccessor _userAccessor;
 	private readonly IPasswordManager _passwordManager;
 
 	public ChangePasswordProcessor(
-		IUserRepository userRepository,
+		ISienarDbContext context,
 		IUserAccessor userAccessor,
 		IPasswordManager passwordManager)
 	{
-		_userRepository = userRepository;
+		_context = context;
 		_userAccessor = userAccessor;
 		_passwordManager = passwordManager;
 	}
@@ -37,7 +37,7 @@ public class ChangePasswordProcessor : IStatusProcessor<ChangePasswordRequest>
 				message: CoreErrors.Account.LoginRequired);
 		}
 
-		var user = await _userRepository.Read(userId.Value);
+		var user = await _context.Users.FindAsync(userId.Value);
 		if (user is null)
 		{
 			return new(

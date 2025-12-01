@@ -3,7 +3,7 @@ using Sienar.Identity;
 
 namespace Sienar.Data;
 
-public interface ISienarDbContext
+public interface ISienarDbContext : IDbContext
 {
 	DbSet<SienarUser> Users { get; set; }
 	DbSet<SienarRole> Roles { get; set; }

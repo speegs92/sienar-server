@@ -1,13 +1,14 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Email;
 using Sienar.Errors;
 using Sienar.Extensions;
 using Sienar.Identity.Requests;
-using Sienar.Identity.Data;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 
@@ -16,27 +17,33 @@ namespace Sienar.Identity.Processors;
 /// <exclude />
 public class ForgotPasswordProcessor : IStatusProcessor<ForgotPasswordRequest>
 {
-	private readonly IUserRepository _userRepository;
+	private readonly ISienarDbContext _context;
 	private readonly IAccountEmailManager _emailManager;
 	private readonly SienarOptions _options;
 
 	public ForgotPasswordProcessor(
-		IUserRepository userRepository,
+		ISienarDbContext context,
 		IAccountEmailManager emailManager,
 		IOptions<SienarOptions> options)
 	{
-		_userRepository = userRepository;
+		_context = context;
 		_emailManager = emailManager;
 		_options = options.Value;
 	}
 
 	public async Task<OperationResult<bool>> Process(ForgotPasswordRequest request)
 	{
-		var user = await _userRepository.ReadUserByNameOrEmail(request.AccountName);
+		var normalizedAccountName = request.AccountName.ToNormalized();
+		var user = await _context.Users.FirstOrDefaultAsync(
+				u => u.NormalizedEmail == normalizedAccountName ||
+				u.NormalizedUsername == normalizedAccountName);
 
 		// If the user doesn't exist, they don't need to know
 		// Just return success
-		if (user is null) return new(OperationStatus.Success, true);
+		if (user is null)
+		{
+			return new(OperationStatus.Success, true);
+		}
 
 		if (user.IsLockedOut())
 		{

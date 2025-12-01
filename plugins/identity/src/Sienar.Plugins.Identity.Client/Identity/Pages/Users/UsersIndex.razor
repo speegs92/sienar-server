@@ -1,4 +1,4 @@
-@inherits TablePage<SienarUser>
+@inherits TablePage<ViewUserDto>
 @attribute [Authorize(Roles = Roles.Admin)]
 @attribute [Route(DashboardUrls.Users.Index)]
 @inject IStatusService<UnlockUserAccountRequest> UnlockService
@@ -102,7 +102,7 @@
 	/// <summary>
 	/// Creates a prompt to unlock the specified user's account
 	/// </summary>
-	protected Task UnlockUser(SienarUser user)
+	protected Task UnlockUser(ViewUserDto user)
 		=> ConfirmAction(
 			$"Unlock {user.Username}'s account",
 			$"Are you sure you want to unlock {user.Username}'s account? This will take effect immediately",
@@ -111,7 +111,7 @@
 	/// <summary>
 	/// Creates a prompt to confirm the specified user's account
 	/// </summary>
-	protected Task ConfirmUser(SienarUser user)
+	protected Task ConfirmUser(ViewUserDto user)
 		=> ConfirmAction(
 			$"Confirm {user.Username}'s account",
 			$"Are you sure you want to confirm {user.Username}'s account? This will take effect immediately",
@@ -120,7 +120,7 @@
 	/// <summary>
 	/// Creates a prompt to delete the specified user's account
 	/// </summary>
-	protected Task DeleteUser(SienarUser user)
+	protected Task DeleteUser(ViewUserDto user)
 		=> DeleteEntity(
 			user.Id,
 			$"Delete {user.Username}'s account",

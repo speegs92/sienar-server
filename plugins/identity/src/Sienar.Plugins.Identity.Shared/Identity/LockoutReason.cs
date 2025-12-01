@@ -1,18 +1,27 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using Sienar.Data;
 
 namespace Sienar.Identity;
 
+/// <summary>
+/// A reason why a user might be locked out
+/// </summary>
 [EntityName(Singular = "lockout reason", Plural = "lockout reasons")]
 public class LockoutReason : EntityBase
 {
+	/// <summary>
+	/// The reason why a user might be locked out
+	/// </summary>
 	public string Reason { get; set; } = string.Empty;
 
-	[JsonIgnore]
+	/// <summary>
+	/// The normalized reason why a user might be locked out
+	/// </summary>
 	public string NormalizedReason { get; set; } = string.Empty;
 
-	[JsonIgnore]
+	/// <summary>
+	/// The users who are locked out for this reason
+	/// </summary>
 	public List<SienarUser> Users { get; set; } = [];
 
 	/// <inheritdoc />

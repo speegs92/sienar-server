@@ -44,7 +44,12 @@ public class CoreMvcPlugin : IPlugin
 			.AddScoped<IReadableNotifier, RestNotifier>()
 			.AddScoped<INotifier>(
 				sp => sp.GetRequiredService<IReadableNotifier>())
-			.AddScoped<IOperationResultMapper, DefaultOperationResultMapper>();
+			.AddScoped<IOperationResultMapper, DefaultOperationResultMapper>()
+			.AddScoped(typeof(IReadActionOrchestrator<,>), typeof(DefaultReadActionOrchestrator<,>))
+			.AddScoped(typeof(IReadAllActionOrchestrator<,>), typeof(DefaultReadAllActionOrchestrator<,>))
+			.AddScoped(typeof(ICreateActionOrchestrator<,>), typeof(DefaultCreateActionOrchestrator<,>))
+			.AddScoped(typeof(IUpdateActionOrchestrator<,>), typeof(DefaultUpdateActionOrchestrator<,>))
+			.AddScoped(typeof(IDeleteActionOrchestrator<>), typeof(DefaultDeleteActionOrchestrator<>));
 
 		// Add and configure MVC
 		var mvcbuilder = _builder.Services.AddMvc(

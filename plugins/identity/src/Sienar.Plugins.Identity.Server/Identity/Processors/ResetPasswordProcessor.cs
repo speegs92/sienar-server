@@ -3,10 +3,10 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Email;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
-using Sienar.Identity.Data;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 
@@ -15,20 +15,20 @@ namespace Sienar.Identity.Processors;
 /// <exclude />
 public class ResetPasswordProcessor : IStatusProcessor<ResetPasswordRequest>
 {
-	private readonly IUserRepository _userRepository;
+	private readonly ISienarDbContext _context;
 	private readonly IPasswordManager _passwordManager;
 	private readonly IVerificationCodeManager _vcManager;
 	private readonly IAccountEmailManager _emailManager;
 	private readonly SienarOptions _options;
 
 	public ResetPasswordProcessor(
-		IUserRepository userRepository,
+		ISienarDbContext context,
 		IPasswordManager passwordManager,
 		IVerificationCodeManager vcManager,
 		IAccountEmailManager emailManager,
 		IOptions<SienarOptions> options)
 	{
-		_userRepository = userRepository;
+		_context = context;
 		_passwordManager = passwordManager;
 		_vcManager = vcManager;
 		_emailManager = emailManager;
@@ -37,7 +37,7 @@ public class ResetPasswordProcessor : IStatusProcessor<ResetPasswordRequest>
 
 	public async Task<OperationResult<bool>> Process(ResetPasswordRequest request)
 	{
-		var user = await _userRepository.Read(request.UserId);
+		var user = await _context.Users.FindAsync(request.UserId);
 		if (user == null)
 		{
 			return new(

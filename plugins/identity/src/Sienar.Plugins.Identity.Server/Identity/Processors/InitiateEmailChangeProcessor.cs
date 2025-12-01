@@ -3,11 +3,11 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Email;
 using Sienar.Errors;
 using Sienar.Extensions;
 using Sienar.Identity.Requests;
-using Sienar.Identity.Data;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 using Sienar.Security;
@@ -17,7 +17,7 @@ namespace Sienar.Identity.Processors;
 /// <exclude />
 public class InitiateEmailChangeProcessor : IStatusProcessor<InitiateEmailChangeRequest>
 {
-	private readonly IUserRepository _userRepository;
+	private readonly ISienarDbContext _context;
 	private readonly IPasswordManager _passwordManager;
 	private readonly IAccountEmailManager _emailManager;
 	private readonly IUserAccessor _userAccessor;
@@ -25,14 +25,14 @@ public class InitiateEmailChangeProcessor : IStatusProcessor<InitiateEmailChange
 	private readonly LoginOptions _loginOptions;
 
 	public InitiateEmailChangeProcessor(
-		IUserRepository userRepository,
+		ISienarDbContext context,
 		IPasswordManager passwordManager,
 		IAccountEmailManager emailManager,
 		IUserAccessor userAccessor,
 		IOptions<SienarOptions> sienarOptions,
 		IOptions<LoginOptions> loginOptions)
 	{
-		_userRepository = userRepository;
+		_context = context;
 		_passwordManager = passwordManager;
 		_emailManager = emailManager;
 		_userAccessor = userAccessor;
@@ -50,7 +50,7 @@ public class InitiateEmailChangeProcessor : IStatusProcessor<InitiateEmailChange
 				message: CoreErrors.Account.LoginRequired);
 		}
 
-		var user = await _userRepository.Read(userId.Value);
+		var user = await _context.Users.FindAsync(userId.Value);
 		if (user is null)
 		{
 			return new(
@@ -72,19 +72,15 @@ public class InitiateEmailChangeProcessor : IStatusProcessor<InitiateEmailChange
 		if (shouldSendConfirmationEmail)
 		{
 			user.PendingEmail = request.Email;
-			user.NormalizedPendingEmail = request.Email.ToUpperInvariant();
+			user.NormalizedPendingEmail = request.Email.ToNormalized();
 		}
 		else
 		{
 			user.Email = request.Email;
 		}
 
-		if (!await _userRepository.Update(user))
-		{
-			return new(
-				OperationStatus.Unknown,
-				message: StatusMessages.Database.QueryFailed);
-		}
+		_context.Users.Update(user);
+		await _context.SaveChangesAsync();
 
 		if (shouldSendConfirmationEmail)
 		{

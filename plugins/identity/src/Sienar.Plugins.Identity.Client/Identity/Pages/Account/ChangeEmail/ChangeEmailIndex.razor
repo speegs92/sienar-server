@@ -1,29 +1,27 @@
-@inherits FormPage<InitiateEmailChangeRequest>
 @attribute [Route(DashboardUrls.Account.EmailChange.Index)]
-@inject IStatusService<InitiateEmailChangeRequest> EmailChangeService
 
 <DocTitle Title="Change your email"/>
 
 <NarrowContainer>
 	<StandardForm
-		Model="@Model"
+		T="InitiateEmailChangeRequest"
 		OnSubmit="@OnSubmit"
 		SubmitText="Update email"
 		Title="Change email">
 		<Fields>
 			<Textbox
-				@bind-Value="Model.Email"
-				For="() => Model.Email"
+				@bind-Value="@context.Email"
+				For="() => context.Email"
 				InputType="InputType.Email"
 				Label="Enter your new email address"/>
 			<Textbox
-				@bind-Value="Model.ConfirmEmail"
-				For="() => Model.ConfirmEmail"
+				@bind-Value="@context.ConfirmEmail"
+				For="() => context.ConfirmEmail"
 				InputType="InputType.Email"
 				Label="Confirm your new email address"/>
 			<Textbox
-				@bind-Value="Model.ConfirmPassword"
-				For="() => Model.ConfirmPassword"
+				@bind-Value="@context.ConfirmPassword"
+				For="() => context.ConfirmPassword"
 				InputType="InputType.Password"
 				Label="Confirm your password"/>
 		</Fields>
@@ -32,15 +30,16 @@
 
 @code {
 
-	/// <summary>
-	/// Submits a request to change the user's email address
-	/// </summary>
-	protected async Task OnSubmit()
+	private static async Task OnSubmit(
+		IStatusService<InitiateEmailChangeRequest> emailChangeService,
+		InitiateEmailChangeRequest request,
+		NavigationManager navManager)
 	{
-		await SubmitRequest(() => EmailChangeService.Execute(Model));
-		if (WasSuccessful)
+		var result = await emailChangeService.Execute(request);
+
+		if (result.Status is OperationStatus.Success)
 		{
-			NavManager.NavigateTo(DashboardUrls.Account.EmailChange.Requested);
+			navManager.NavigateTo(DashboardUrls.Account.EmailChange.Requested);
 		}
 	}
 

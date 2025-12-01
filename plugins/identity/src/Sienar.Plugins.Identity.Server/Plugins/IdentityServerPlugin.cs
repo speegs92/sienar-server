@@ -3,7 +3,6 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Sienar.Configuration;
@@ -22,8 +21,7 @@ namespace Sienar.Plugins;
 
 /// <exclude />
 [AppConfigurer(typeof(IdentityServerAppConfigurer))]
-public class IdentityServerPlugin<TContext> : IPlugin
-	where TContext : DbContext
+public class IdentityServerPlugin : IPlugin
 {
 	private readonly WebApplicationBuilder _builder;
 	private readonly PluginDataProvider _pluginDataProvider;
@@ -59,8 +57,7 @@ public class IdentityServerPlugin<TContext> : IPlugin
 		services.TryAddScoped<IPasswordManager, PasswordManager>();
 		services.TryAddScoped<IUserClaimsFactory, UserClaimsFactory>();
 		services.TryAddScoped<IUserClaimsPrincipalFactory<SienarUser>, UserClaimsPrincipalFactory>();
-		services.TryAddScoped<IVerificationCodeManager, VerificationCodeManager<TContext>>();
-		services.TryAddScoped<IUserRepository, UserRepository<TContext>>();
+		services.TryAddScoped<IVerificationCodeManager, VerificationCodeManager>();
 
 		services.TryAddScoped<IEmailSender, DefaultEmailSender>();
 
@@ -76,15 +73,12 @@ public class IdentityServerPlugin<TContext> : IPlugin
 
 		// CRUD
 		services
-			.AddEntityFrameworkEntity<SienarUser, SienarUserFilterProcessor, IUserRepository, UserRepository<TContext>>()
+			.AddEfEntity<ViewUserDto, ViewUserMapper, UpsertUserDto, UpsertUserMapper, UpsertUserDto, UpsertUserMapper, SienarUser, SienarUserFilterProcessor>()
 			.AddAccessValidator<UserIsAdminAccessValidator<SienarUser>, SienarUser>()
-			.AddBeforeActionHook<FetchNotUpdatedUserPropertiesHook<TContext>, SienarUser>()
-			.AddBeforeActionHook<UserMapNormalizedFieldsHook, SienarUser>()
-			.AddBeforeActionHook<UserPasswordUpdateHook, SienarUser>()
 			.AddBeforeActionHook<RemoveUserRelatedEntitiesHook, SienarUser>()
 			.AddStateValidator<EnsureAccountInfoUniqueValidator, SienarUser>()
-			.AddEntityFrameworkEntity<LockoutReason, LockoutReasonFilterProcessor, ILockoutReasonRepository, LockoutReasonRepository<TContext>>()
-			.AddBeforeActionHook<LockoutReasonMapNormalizedFieldsHook, LockoutReason>().AddEntityFrameworkEntityWithDefaultRepository<SienarRole, SienarRoleFilterProcessor, TContext>()
+			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor>()
+			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor>()
 
 		// Security
 			.AddProcessor<LoginProcessor, LoginRequest, LoginResult>()

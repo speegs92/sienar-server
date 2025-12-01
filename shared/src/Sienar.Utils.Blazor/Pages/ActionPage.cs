@@ -72,16 +72,3 @@ public abstract class ActionPage : ComponentBase
 		StateHasChanged();
 	}
 }
-
-/// <summary>
-/// A component that provides tracking of the success state and loading state of form requests
-/// </summary>
-/// <typeparam name="TModel">The type of the form model</typeparam>
-public abstract class ActionPage<TModel> : ActionPage
-	where TModel : new()
-{
-	/// <summary>
-	/// The model used in requests sent from the page
-	/// </summary>
-	protected TModel Model = new();
-}

@@ -1,11 +1,10 @@
 ﻿@namespace Sienar.Ui
-@typeparam TFormModel
-@inherits BaseForm<TFormModel>
+@typeparam T where T : new()
+@inherits BaseForm<T>
 
 <EditForm
-	Model="Model"
-	OnValidSubmit="@HandleSubmit"
-	FormName="@FormName">
+	Model="Value"
+	OnValidSubmit="@HandleSubmit">
 	<DataAnnotationsValidator/>
 
 	<Card
@@ -18,7 +17,7 @@
 		<CardContent>
 			@Information
 
-			@Fields
+			@Fields(Value)
 		</CardContent>
 
 		<CardActions>
@@ -26,7 +25,7 @@
 			{
 				<LoadingButton
 					Color="ThemeColor"
-					IsLoading="@(Loading || IsLoading)"
+					IsLoading="IsLoading"
 					Class="mr-4">
 					@SubmitText
 				</LoadingButton>

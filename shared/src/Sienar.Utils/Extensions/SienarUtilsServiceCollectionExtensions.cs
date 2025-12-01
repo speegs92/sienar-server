@@ -27,9 +27,6 @@ public static class SienarUtilsServiceCollectionExtensions
 	[ExcludeFromCodeCoverage]
 	public static IServiceCollection AddSienarCoreUtilities(this IServiceCollection self)
 	{
-		self.TryAddScoped(typeof(IEntityReader<>), typeof(DefaultEntityReader<>));
-		self.TryAddScoped(typeof(IEntityWriter<>), typeof(DefaultEntityWriter<>));
-		self.TryAddScoped(typeof(IEntityDeleter<>), typeof(DefaultEntityDeleter<>));
 		self.TryAddScoped(typeof(IStatusService<>), typeof(DefaultStatusService<>));
 		self.TryAddScoped(typeof(IService<,>), typeof(DefaultService<,>));
 		self.TryAddScoped(typeof(IResultService<>), typeof(DefaultResultService<>));
@@ -39,6 +36,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		self.TryAddScoped(typeof(IAfterActionRunner<>), typeof(DefaultAfterActionRunner<>));
 		self.TryAddScoped<IMenuGenerator, DefaultMenuGenerator>();
 		self.TryAddScoped<IBotDetector, DefaultBotDetector>();
+		self.TryAddScoped(typeof(IMapper<,>), typeof(DefaultMapper<,>));
 
 		return self;
 	}

@@ -1,10 +1,10 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
-using Sienar.Data;
-using Sienar.Identity.Data;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 
@@ -13,18 +13,18 @@ namespace Sienar.Identity.Processors;
 /// <exclude />
 public class UnlockUserAccountProcessor : IStatusProcessor<UnlockUserAccountRequest>
 {
-	private readonly IUserRepository _userRepository;
+	private readonly ISienarDbContext _context;
 
-	public UnlockUserAccountProcessor(IUserRepository userRepository)
+	public UnlockUserAccountProcessor(ISienarDbContext context)
 	{
-		_userRepository = userRepository;
+		_context = context;
 	}
 
 	public async Task<OperationResult<bool>> Process(UnlockUserAccountRequest request)
 	{
-		var user = await _userRepository.Read(
-			request.UserId,
-			Filter.WithIncludes(nameof(SienarUser.LockoutReasons)));
+		var user = await _context.Users
+			.Include(u => u.LockoutReasons)
+			.FirstOrDefaultAsync(u => u.Id == request.UserId);
 		if (user is null)
 		{
 			return new(
@@ -35,13 +35,12 @@ public class UnlockUserAccountProcessor : IStatusProcessor<UnlockUserAccountRequ
 		user.LockoutEnd = null;
 		user.LockoutReasons.Clear();
 
-		return await _userRepository.Update(user)
-			? new(
-				OperationStatus.Success,
-				true,
-				$"User {user.Username}'s account was unlocked successfully")
-			: new(
-				OperationStatus.Unknown,
-				message: StatusMessages.Database.QueryFailed);
+		_context.Users.Update(user);
+		await _context.SaveChangesAsync();
+
+		return new(
+			OperationStatus.Success,
+			true,
+			$"User {user.Username}'s account was unlocked successfully");
 	}
 }

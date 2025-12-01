@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Email;
 using Sienar.Extensions;
 using Sienar.Identity.Requests;
-using Sienar.Identity.Data;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 
@@ -17,20 +17,20 @@ namespace Sienar.Identity.Processors;
 /// <exclude />
 public class RegisterProcessor : IStatusProcessor<RegisterRequest>
 {
-	private readonly IUserRepository _userRepository;
+	private readonly ISienarDbContext _context;
 	private readonly IAccountEmailManager _emailManager;
 	private readonly IPasswordHasher<SienarUser> _passwordHasher;
 	private readonly LoginOptions _loginOptions;
 	private readonly SienarOptions _appOptions;
 
 	public RegisterProcessor(
-		IUserRepository userRepository,
+		ISienarDbContext context,
 		IAccountEmailManager emailManager,
 		IPasswordHasher<SienarUser> passwordHasher,
 		IOptions<LoginOptions> loginOptions,
 		IOptions<SienarOptions> appOptions)
 	{
-		_userRepository = userRepository;
+		_context = context;
 		_emailManager = emailManager;
 		_passwordHasher = passwordHasher;
 		_loginOptions = loginOptions.Value;
@@ -43,9 +43,9 @@ public class RegisterProcessor : IStatusProcessor<RegisterRequest>
 		var user = new SienarUser
 		{
 			Username = request.Username,
-			NormalizedUsername = request.Username.ToUpperInvariant(),
+			NormalizedUsername = request.Username.ToNormalized(),
 			Email = request.Email,
-			NormalizedEmail = request.Email.ToUpperInvariant(),
+			NormalizedEmail = request.Email.ToNormalized(),
 			ConcurrencyStamp = Guid.NewGuid()
 		};
 
@@ -62,14 +62,13 @@ public class RegisterProcessor : IStatusProcessor<RegisterRequest>
 		}
 
 		// Try to create that user with the given password
-		if (!await _userRepository.Update(user))
-		{
-			return new(
-				OperationStatus.Unknown,
-				message: StatusMessages.Database.QueryFailed);
-		}
+		await _context.Users.AddAsync(user);
+		await _context.SaveChangesAsync();
 
-		if (shouldSendRegistrationEmail) await _emailManager.SendWelcomeEmail(user);
+		if (shouldSendRegistrationEmail)
+		{
+			await _emailManager.SendWelcomeEmail(user);
+		}
 
 		return new(
 			OperationStatus.Success,

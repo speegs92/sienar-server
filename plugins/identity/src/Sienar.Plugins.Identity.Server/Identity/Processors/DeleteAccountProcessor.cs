@@ -1,9 +1,9 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
-using Sienar.Identity.Data;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 using Sienar.Security;
@@ -14,18 +14,18 @@ namespace Sienar.Identity.Processors;
 public class DeleteAccountProcessor : IStatusProcessor<DeleteAccountRequest>
 {
 	private readonly IUserAccessor _userAccessor;
-	private readonly IUserRepository _userRepository;
+	private readonly ISienarDbContext _context;
 	private readonly IPasswordManager _passwordManager;
 	private readonly ISignInManager _signInManager;
 
 	public DeleteAccountProcessor(
 		IUserAccessor userAccessor,
-		IUserRepository userRepository,
+		ISienarDbContext context,
 		IPasswordManager passwordManager,
 		ISignInManager signInManager)
 	{
 		_userAccessor = userAccessor;
-		_userRepository = userRepository;
+		_context = context;
 		_passwordManager = passwordManager;
 		_signInManager = signInManager;
 	}
@@ -40,7 +40,7 @@ public class DeleteAccountProcessor : IStatusProcessor<DeleteAccountRequest>
 				message: CoreErrors.Account.LoginRequired);
 		}
 
-		var user = await _userRepository.Read(userId.Value);
+		var user = await _context.Users.FindAsync(userId.Value);
 		if (user is null)
 		{
 			return new(
@@ -55,19 +55,13 @@ public class DeleteAccountProcessor : IStatusProcessor<DeleteAccountRequest>
 				message: CoreErrors.Account.LoginFailedInvalid);
 		}
 
-		var deleted = await _userRepository.Delete(user.Id);
-		if (deleted)
-		{
-			await _signInManager.SignOut();
-			return new(
-				OperationStatus.Success,
-				true,
-				"Account deleted successfully");
-		}
+		_context.Users.Remove(user);
+		await _context.SaveChangesAsync();
+		await _signInManager.SignOut();
 
 		return new(
-			OperationStatus.Unknown,
-			false,
-			StatusMessages.Database.QueryFailed);
+			OperationStatus.Success,
+			true,
+			"Account deleted successfully");
 	}
 }

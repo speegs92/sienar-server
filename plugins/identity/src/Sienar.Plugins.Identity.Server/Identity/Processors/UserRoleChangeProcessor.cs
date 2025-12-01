@@ -1,12 +1,11 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
-using Sienar.Data;
-using Sienar.Identity.Data;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 
@@ -17,15 +16,11 @@ public class UserRoleChangeProcessor
 	: IStatusProcessor<AddUserToRoleRequest>,
 		IStatusProcessor<RemoveUserFromRoleRequest>
 {
-	private readonly IUserRepository _userRepository;
-	private readonly IRepository<SienarRole> _roleRepository;
+	private readonly ISienarDbContext _context;
 
-	public UserRoleChangeProcessor(
-		IUserRepository userRepository,
-		IRepository<SienarRole> roleRepository)
+	public UserRoleChangeProcessor(ISienarDbContext context)
 	{
-		_userRepository = userRepository;
-		_roleRepository = roleRepository;
+		_context = context;
 	}
 
 	async Task<OperationResult<bool>> IStatusProcessor<AddUserToRoleRequest>.Process(AddUserToRoleRequest request)
@@ -41,16 +36,16 @@ public class UserRoleChangeProcessor
 			return new(OperationStatus.Unprocessable, message: CoreErrors.Account.AccountAlreadyInRole);
 		}
 
-		var role = await _roleRepository.Read(request.RoleId);
+		var role = await _context.Roles.FindAsync(request.RoleId);
 		if (role is null)
 		{
 			return new(OperationStatus.NotFound, message: CoreErrors.Roles.NotFound);
 		}
 
 		user.Roles.Add(role);
-		return await _userRepository.Update(user)
-			? new(OperationStatus.Success, true, $"User {user.Username} added to role {role.Name}")
-			: new(OperationStatus.Unknown, false, StatusMessages.Database.QueryFailed);
+		_context.Users.Update(user);
+		await _context.SaveChangesAsync();
+		return new(OperationStatus.Success, true, $"User {user.Username} added to role {role.Name}");
 	}
 
 	async Task<OperationResult<bool>> IStatusProcessor<RemoveUserFromRoleRequest>.Process(RemoveUserFromRoleRequest request)
@@ -68,11 +63,14 @@ public class UserRoleChangeProcessor
 		}
 
 		user.Roles.Remove(role);
-		await _userRepository.Update(user);
+		_context.Users.Update(user);
+		await _context.SaveChangesAsync();
 
 		return new(OperationStatus.Success, true, $"User {user.Username} removed from role {role.Name}");
 	}
 
 	private Task<SienarUser?> GetSienarUserWithRoles(int id)
-		=> _userRepository.Read(id, SienarUserFilterFactory.WithRoles());
+		=> _context.Users
+			.Include(u => u.Roles)
+			.FirstOrDefaultAsync(u => u.Id == id);
 }

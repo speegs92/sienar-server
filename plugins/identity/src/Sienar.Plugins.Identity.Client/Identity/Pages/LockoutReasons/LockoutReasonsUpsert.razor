@@ -1,20 +1,21 @@
-﻿@inherits UpsertPage<LockoutReason>
-@attribute [Authorize(Roles = Roles.Admin)]
+﻿@attribute [Authorize(Roles = Roles.Admin)]
 @attribute [Route(DashboardUrls.LockoutReasons.Add)]
-@attribute [Route($"{DashboardUrls.LockoutReasons.Index}/{{id:guid}}")]
+@attribute [Route($"{DashboardUrls.LockoutReasons.Index}/{{id:int}}")]
 
 <DocTitle Title="@Title"/>
 
 <NarrowContainer>
-	<StandardForm
-		Model="Model"
-		OnSubmit="@OnSubmit"
-		Title="@Title"
-		SubmitText="@SubmitText">
+	<UpsertForm
+		TViewDto="LockoutReasonDto"
+		TUpsertDto="LockoutReasonDto"
+		EntityId="Id"
+		For="@(_ => "reason")"
+		OnUpdateSuccess="OnSuccess"
+		OnLoaded="OnLoaded">
 		<Fields>
 			<MudTextField
-				@bind-Value="Model.Reason"
-				For="() => Model.Reason"
+				@bind-Value="@context.Reason"
+				For="() => context.Reason"
 				Label="Lockout reason"
 				MaxLines="3"
 				Counter="250"
@@ -31,19 +32,32 @@
 				Back to reasons listing
 			</MudButton>
 		</MoreActions>
-	</StandardForm>
+	</UpsertForm>
 </NarrowContainer>
 
 @code {
 
-	/// <inheritdoc />
-	protected override string GetName() => "reason";
+	private LockoutReasonDto? _reason;
 
-	/// <inheritdoc />
-	protected override Task OnSuccess()
+	private string Title => _reason is null
+		? "Add new lockout reason"
+		: "Update lockout reason";
+
+	/// <summary>
+	/// The ID of the lockout reason to update, if updating
+	/// </summary>
+	[Parameter]
+	public int? Id { get; set; }
+
+	private void OnLoaded(LockoutReasonDto reason)
 	{
-		NavManager.NavigateTo(DashboardUrls.LockoutReasons.Index);
-		return Task.CompletedTask;
+		_reason = reason;
+		StateHasChanged();
+	}
+
+	private void OnSuccess(NavigationManager navManager)
+	{
+		navManager.NavigateTo(DashboardUrls.LockoutReasons.Index);
 	}
 
 }

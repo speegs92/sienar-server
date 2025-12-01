@@ -4,17 +4,18 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Sienar.Data;
+using Sienar.Extensions;
 using Sienar.Processors;
 
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class LockoutReasonFilterProcessor : IEntityFrameworkFilterProcessor<LockoutReason>
+public class LockoutReasonFilterProcessor : IEfFilterProcessor<LockoutReason>
 {
 	public IQueryable<LockoutReason> Search(IQueryable<LockoutReason> dataset, Filter filter)
 		=> string.IsNullOrEmpty(filter.SearchTerm)
 			? dataset
-			: dataset.Where(r => r.NormalizedReason.Contains(filter.SearchTerm.ToUpperInvariant()));
+			: dataset.Where(r => r.NormalizedReason.Contains(filter.SearchTerm.ToNormalized()));
 
 	public Expression<Func<LockoutReason, object>> GetSortPredicate(string? sortName) => r => r.Reason;
 }

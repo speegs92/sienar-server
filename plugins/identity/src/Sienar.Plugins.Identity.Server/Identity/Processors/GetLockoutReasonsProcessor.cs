@@ -2,9 +2,9 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Sienar.Data;
 using Sienar.Errors;
-using Sienar.Identity.Data;
 using Sienar.Identity.Requests;
 using Sienar.Identity.Results;
 using Sienar.Infrastructure;
@@ -16,23 +16,25 @@ namespace Sienar.Identity.Processors;
 public class GetLockoutReasonsProcessor
 	: IProcessor<AccountLockoutRequest, AccountLockoutResult>
 {
-	private readonly IUserRepository _userRepo;
+	private readonly ISienarDbContext _context;
 	private readonly IVerificationCodeManager _vcManager;
 
 	public GetLockoutReasonsProcessor(
-		IUserRepository userRepo,
+		ISienarDbContext context,
 		IVerificationCodeManager vcManager)
 	{
-		_userRepo = userRepo;
+		_context = context;
 		_vcManager = vcManager;
 	}
 
 	public async Task<OperationResult<AccountLockoutResult?>> Process(
 		AccountLockoutRequest request)
 	{
-		var user = await _userRepo.Read(
-			request.UserId,
-			Filter.WithIncludes("VerificationCodes", "LockoutReasons"));
+		var user = await _context.Users
+			.Include(u => u.VerificationCodes)
+			.Include(u => u.LockoutReasons)
+			.FirstOrDefaultAsync(u => u.Id == request.UserId);
+
 		if (user is null)
 		{
 			return new(

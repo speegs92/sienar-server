@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Sienar.Infrastructure;
@@ -20,7 +21,7 @@ public class DefaultDelegateHandler : IDelegateHandler
 	}
 
 	/// <inheritdoc />
-	public void Handle<TArgs>(Delegate? handler, TArgs e)
+	public async Task Handle<TArgs>(Delegate? handler, TArgs e)
 	{
 		if (handler is null)
 		{
@@ -44,6 +45,10 @@ public class DefaultDelegateHandler : IDelegateHandler
 			}
 		}
 
-		handler.DynamicInvoke(args);
+		var result = handler.DynamicInvoke(args);
+		if (result is Task task)
+		{
+			await task;
+		}
 	}
 }

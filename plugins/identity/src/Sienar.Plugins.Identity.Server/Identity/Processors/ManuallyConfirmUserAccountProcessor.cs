@@ -1,9 +1,9 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
-using Sienar.Identity.Data;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 
@@ -13,17 +13,17 @@ namespace Sienar.Identity.Processors;
 public class ManuallyConfirmUserAccountProcessor
 	: IStatusProcessor<ManuallyConfirmUserAccountRequest>
 {
-	private readonly IUserRepository _userRepository;
+	private readonly ISienarDbContext _context;
 
 	public ManuallyConfirmUserAccountProcessor(
-		IUserRepository userRepository)
+		ISienarDbContext context)
 	{
-		_userRepository = userRepository;
+		_context = context;
 	}
 
 	public async Task<OperationResult<bool>> Process(ManuallyConfirmUserAccountRequest request)
 	{
-		var user = await _userRepository.Read(request.UserId);
+		var user = await _context.Users.FindAsync(request.UserId);
 		if (user is null)
 		{
 			return new(
@@ -40,13 +40,12 @@ public class ManuallyConfirmUserAccountProcessor
 
 		user.EmailConfirmed = true;
 
-		return await _userRepository.Update(user)
-			? new(
-				OperationStatus.Success,
-				true,
-				$"Confirmed {user.Username}'s account")
-			: new(
-				OperationStatus.Unknown,
-				message: StatusMessages.Database.QueryFailed);
+		_context.Users.Update(user);
+		await _context.SaveChangesAsync();
+
+		return new(
+			OperationStatus.Success,
+			true,
+			$"Confirmed {user.Username}'s account");
 	}
 }

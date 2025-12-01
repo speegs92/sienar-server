@@ -22,33 +22,33 @@ public class UsersController : SienarController
 	[HttpGet]
 	public Task<IActionResult> Read(
 		[FromQuery] Filter? filter,
-		[FromServices] IEntityReader<SienarUser> service)
-		=> Execute(() => service.Read(filter));
+		[FromServices] IReadAllActionOrchestrator<ViewUserDto, SienarUser> orchestrator)
+		=> orchestrator.Execute(filter);
 
 	[HttpGet("{id:int}")]
 	public Task<IActionResult> Read(
 		int id,
 		[FromQuery] Filter? filter,
-		[FromServices] IEntityReader<SienarUser> service)
-		=> Execute(() => service.Read(id, filter));
+		[FromServices] IReadActionOrchestrator<ViewUserDto, SienarUser> orchestrator)
+		=> orchestrator.Execute(id, filter);
 
 	[HttpPost]
 	public Task<IActionResult> Create(
-		SienarUser entity,
-		[FromServices] IEntityWriter<SienarUser> service)
-		=> Execute(() => service.Create(entity));
+		UpsertUserDto user,
+		[FromServices] ICreateActionOrchestrator<UpsertUserDto, SienarUser> orchestrator)
+		=> orchestrator.Execute(user);
 
 	[HttpPut]
 	public Task<IActionResult> Update(
-		SienarUser entity,
-		[FromServices] IEntityWriter<SienarUser> service)
-		=> Execute(() => service.Update(entity));
+		UpsertUserDto user,
+		[FromServices] IUpdateActionOrchestrator<UpsertUserDto, SienarUser> orchestrator)
+		=> orchestrator.Execute(user);
 
 	[HttpDelete("{id:int}")]
 	public Task<IActionResult> Delete(
 		int id,
-		[FromServices] IEntityDeleter<SienarUser> service)
-		=> Execute(() => service.Delete(id));
+		[FromServices] IDeleteActionOrchestrator<SienarUser> orchestrator)
+		=> orchestrator.Execute(id);
 
 	[HttpPost("roles")]
 	public Task<IActionResult> AddToRole(

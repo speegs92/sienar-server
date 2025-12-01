@@ -1,49 +1,47 @@
-﻿@inherits FormPage<Sienar.Identity.Requests.RegisterRequest>
-@attribute [AllowAnonymous]
+﻿@attribute [AllowAnonymous]
 @attribute [Route(DashboardUrls.Account.Register.Index)]
-@inject IStatusService<RegisterRequest> Service
 
 <DocTitle Title="Register"/>
 
 <NarrowContainer>
 	<StandardForm
-		Model="Model"
+		T="RegisterRequest"
 		OnSubmit="@OnSubmit"
 		Title="Register"
 		SubmitText="Register"
 		ShowReset>
     	<Fields>
 		    <Textbox
-			    @bind-Value="Model.Username"
-			    For="() => Model.Username"
+			    @bind-Value="@context.Username"
+			    For="() => context.Username"
 			    Label="Username"
 			    HelperText="Your username should be between 6 and 32 characters long. It should only contain letters, numbers, underscores, and periods."/>
 
 		    <Textbox
-			    @bind-Value="Model.Email"
-			    For="() => Model.Email"
+			    @bind-Value="@context.Email"
+			    For="() => context.Email"
 			    InputType="InputType.Email"
 			    Label="Email address"
 			    HelperText="You need an email address to verify your account."/>
 
 		    <Textbox
-			    @bind-Value="Model.Password"
-			    For="() => Model.Password"
+			    @bind-Value="@context.Password"
+			    For="() => context.Password"
 			    InputType="InputType.Password"
 			    Label="Password"
 			    HelperText="Your password should be between 8 and 64 characters long. It should contain a mix of uppercase and lowercase letters, numbers, and special characters."/>
 
 		    <Textbox
-			    @bind-Value="Model.ConfirmPassword"
-			    For="() => Model.ConfirmPassword"
+			    @bind-Value="@context.ConfirmPassword"
+			    For="() => context.ConfirmPassword"
 			    InputType="InputType.Password"
 			    Label="Confirm password"/>
 
-    		<Honeypot @bind-Value="Model.SecretKeyField"/>
-    
+    		<Honeypot @bind-Value="@context.SecretKeyField"/>
+
 		    <Checkbox
-			    @bind-Value="Model.AcceptTos"
-			    For="() => Model.AcceptTos">
+			    @bind-Value="@context.AcceptTos"
+			    For="() => context.AcceptTos">
     			I accept the Terms of Service and Privacy Policy
     		</Checkbox>
     	</Fields>
@@ -53,15 +51,16 @@
 
 @code {
 
-	/// <summary>
-	/// Submits a request to register a new user
-	/// </summary>
-	protected async Task OnSubmit()
+	private static async Task OnSubmit(
+		IStatusService<RegisterRequest> registerService,
+		NavigationManager navManager,
+		RegisterRequest request)
 	{
-		await SubmitRequest(() => Service.Execute(Model));
-		if (WasSuccessful)
+		var result = await registerService.Execute(request);
+
+		if (result.Status is OperationStatus.Success)
 		{
-			NavManager.NavigateTo($"{DashboardUrls.Account.Register.Successful}?username={Model.Username}&email={Model.Email}");
+			navManager.NavigateTo($"{DashboardUrls.Account.Register.Successful}?username={request.Username}&email={request.Email}");
 		}
 	}
 

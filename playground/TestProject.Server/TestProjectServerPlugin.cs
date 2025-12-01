@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Sienar.Configuration;
+using Sienar.Extensions;
 using Sienar.Infrastructure;
 using Sienar.Plugins;
 using TestProject.Data;
@@ -19,14 +19,14 @@ public class TestProjectServerPlugin : IPlugin
 
 	public void Configure()
 	{
-		_builder.Services.AddDbContext<AppDbContext>(o => o.UseSienarDb());
+		_builder.Services.AddDbContextForSienar<AppDbContext>(o => o.UseSienarDb());
 	}
 
 	private class SienarAppConfigurer : IConfigurer<SienarAppBuilder>
 	{
 		public void Configure(SienarAppBuilder builder)
 		{
-			builder.AddPlugin<IdentityServerPlugin<AppDbContext>>();
+			builder.AddPlugin<IdentityServerPlugin>();
 		}
 	}
 }
