@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
 using Sienar.Email;
@@ -13,14 +14,13 @@ using Sienar.Processors;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class LockUserAccountProcessor<TContext> : IStatusProcessor<LockUserAccountRequest>
-	where TContext : DbContext
+public class LockUserAccountProcessor : IStatusProcessor<LockUserAccountRequest>
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly IAccountEmailManager _emailManager;
 
 	public LockUserAccountProcessor(
-		TContext context,
+		ISienarDbContext context,
 		IAccountEmailManager emailManager)
 	{
 		_context = context;
@@ -29,8 +29,7 @@ public class LockUserAccountProcessor<TContext> : IStatusProcessor<LockUserAccou
 
 	public async Task<OperationResult<bool>> Process(LockUserAccountRequest request)
 	{
-		var userSet = _context.Set<SienarUser>();
-		var user = await userSet
+		var user = await _context.Users
 			.Include(u => u.LockoutReasons)
 			.FirstOrDefaultAsync(u => u.Id == request.UserId);
 
@@ -41,8 +40,7 @@ public class LockUserAccountProcessor<TContext> : IStatusProcessor<LockUserAccou
 				message: CoreErrors.Account.NotFound);
 		}
 
-		var reasons = await _context
-			.Set<LockoutReason>()
+		var reasons = await _context.LockoutReasons
 			.Where(l => request.Reasons.Contains(l.Id))
 			.ToListAsync();
 		if (reasons.Count != request.Reasons.Count)
@@ -55,7 +53,7 @@ public class LockUserAccountProcessor<TContext> : IStatusProcessor<LockUserAccou
 		user.LockoutReasons.AddRange(reasons);
 		user.LockoutEnd = request.EndDate ?? DateTime.MaxValue;
 
-		userSet.Update(user);
+		_context.Users.Update(user);
 		await _context.SaveChangesAsync();
 
 		if (!await _emailManager.SendAccountLockedEmail(user))
