@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
@@ -11,17 +11,16 @@ using Sienar.Security;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class DeleteAccountProcessor<TContext> : IStatusProcessor<DeleteAccountRequest>
-	where TContext : DbContext
+public class DeleteAccountProcessor : IStatusProcessor<DeleteAccountRequest>
 {
 	private readonly IUserAccessor _userAccessor;
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly IPasswordManager _passwordManager;
 	private readonly ISignInManager _signInManager;
 
 	public DeleteAccountProcessor(
 		IUserAccessor userAccessor,
-		TContext context,
+		ISienarDbContext context,
 		IPasswordManager passwordManager,
 		ISignInManager signInManager)
 	{
@@ -41,8 +40,7 @@ public class DeleteAccountProcessor<TContext> : IStatusProcessor<DeleteAccountRe
 				message: CoreErrors.Account.LoginRequired);
 		}
 
-		var userSet = _context.Set<SienarUser>();
-		var user = await userSet.FindAsync(userId.Value);
+		var user = await _context.Users.FindAsync(userId.Value);
 		if (user is null)
 		{
 			return new(
@@ -57,7 +55,7 @@ public class DeleteAccountProcessor<TContext> : IStatusProcessor<DeleteAccountRe
 				message: CoreErrors.Account.LoginFailedInvalid);
 		}
 
-		userSet.Remove(user);
+		_context.Users.Remove(user);
 		await _context.SaveChangesAsync();
 		await _signInManager.SignOut();
 

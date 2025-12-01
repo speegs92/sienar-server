@@ -115,7 +115,7 @@ public class IdentityServerPlugin<TContext> : IPlugin
 
 		// Personal data
 			.AddBeforeActionHook<RemoveUserRelatedEntitiesHook, DeleteAccountRequest>()
-			.AddStatusProcessor<DeleteAccountProcessor<TContext>, DeleteAccountRequest>();
+			.AddStatusProcessor<DeleteAccountProcessor, DeleteAccountRequest>();
 
 
 		/********
