@@ -7,6 +7,17 @@ namespace Sienar.Identity.Data;
 /// </summary>
 public class ViewUserMapper : IMapper<SienarUser, ViewUserDto>
 {
+	private readonly IMapper<SienarRole, RoleDto> _roleMapper;
+
+	/// <summary>
+	/// Creates a new instance of <c>ViewUserMapper</c>
+	/// </summary>
+	/// <param name="roleMapper">The role mapper</param>
+	public ViewUserMapper(IMapper<SienarRole, RoleDto> roleMapper)
+	{
+		_roleMapper = roleMapper;
+	}
+
 	/// <inheritdoc />
 	public void Map(SienarUser source, ViewUserDto target)
 	{
@@ -16,6 +27,12 @@ public class ViewUserMapper : IMapper<SienarUser, ViewUserDto>
 		target.Email = source.Email;
 		target.EmailConfirmed = source.EmailConfirmed;
 		target.LockoutEnd = source.LockoutEnd;
-		target.Roles = source.Roles;
+
+		foreach (var role in source.Roles)
+		{
+			var roleDto = new RoleDto();
+			_roleMapper.Map(role, roleDto);
+			target.Roles.Add(roleDto);
+		}
 	}
 }

@@ -80,7 +80,7 @@ public class IdentityServerPlugin<TContext> : IPlugin
 			.AddBeforeActionHook<RemoveUserRelatedEntitiesHook<TContext>, SienarUser>()
 			.AddStateValidator<EnsureAccountInfoUniqueValidator<TContext>, SienarUser>()
 			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor, TContext>()
-			.AddEfEntity<SienarRole, SienarRoleFilterProcessor, TContext>()
+			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor, TContext>()
 
 		// Security
 			.AddProcessor<LoginProcessor<TContext>, LoginRequest, LoginResult>()

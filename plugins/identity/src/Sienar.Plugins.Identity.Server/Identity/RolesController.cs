@@ -1,6 +1,8 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable CA1822 // Member can be marked as static
 
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sienar.Data;
@@ -13,13 +15,11 @@ namespace Sienar.Identity;
 [ApiController]
 [Route("/api/roles")]
 [Authorize(Roles = Roles.Admin)]
-public class RolesController : SienarController
+public class RolesController
 {
-	public RolesController(IOperationResultMapper mapper)
-		: base(mapper) {}
-
 	[HttpGet]
+	[UsedImplicitly]
 	public Task<IActionResult> Read(
-		[FromServices] IEntityReader<SienarRole> service)
-		=> Execute(() => service.Read(Filter.GetAll()));
+		[FromServices] IReadAllActionOrchestrator<RoleDto, SienarRole> orchestrator)
+		=> orchestrator.Execute(Filter.GetAll());
 }
