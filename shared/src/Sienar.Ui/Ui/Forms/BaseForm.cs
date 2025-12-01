@@ -119,9 +119,5 @@ public class BaseForm<T> : FormPage<T>
 	/// Handles form submissions
 	/// </summary>
 	protected Task HandleSubmit()
-		=> SubmitRequest(() =>
-		{
-			DelegateHandler.Handle(OnSubmit, Model);
-			return Task.CompletedTask;
-		});
+		=> SubmitRequest(() => DelegateHandler.Handle(OnSubmit, Model));
 }
