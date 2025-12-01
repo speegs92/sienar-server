@@ -3,7 +3,7 @@
 @inherits BaseForm<T>
 
 <EditForm
-	Model="Model"
+	Model="Value"
 	OnValidSubmit="@HandleSubmit">
 	<DataAnnotationsValidator/>
 
@@ -17,7 +17,7 @@
 		<CardContent>
 			@Information
 
-			@Fields(Model)
+			@Fields(Value)
 		</CardContent>
 
 		<CardActions>

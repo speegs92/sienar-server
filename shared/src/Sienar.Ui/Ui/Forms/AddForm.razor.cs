@@ -33,7 +33,7 @@ public partial class AddForm<T>
 	{
 		return SubmitRequest(async () =>
 		{
-			var result = await writer.Create(Model);
+			var result = await writer.Create(Value);
 
 			if (result.Status is OperationStatus.Success)
 			{

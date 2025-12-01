@@ -60,14 +60,14 @@ public partial class UpdateForm<TViewDto, TEditDto>
 			}
 
 			OnLoaded?.Invoke(result.Result);
-			Mapper.Map(result.Result, Model);
+			Mapper.Map(result.Result, Value);
 		});
 
 	private Task HandleUpdate(IEntityWriter<TEditDto> writer)
 	{
 		return SubmitRequest(async () =>
 		{
-			var result = await writer.Update(Model);
+			var result = await writer.Update(Value);
 
 			if (result.Status is OperationStatus.Success)
 			{

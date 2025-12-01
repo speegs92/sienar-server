@@ -13,9 +13,23 @@ namespace Sienar.Ui;
 /// The base form class
 /// </summary>
 /// <typeparam name="T">The type of the form's data model</typeparam>
-public class BaseForm<T> : FormPage<T>
+public class BaseForm<T> : ActionPage
 	where T : new()
 {
+	private DateTime _formStartedTime = DateTime.Now;
+
+	/// <summary>
+	/// The model used in requests
+	/// </summary>
+	[Parameter]
+	public T Value { get; set; } = new();
+
+	/// <summary>
+	/// The callback invoked when the model changes
+	/// </summary>
+	[Parameter]
+	public EventCallback<T> ValueChanged { get; set; }
+
 	/// <summary>
 	/// The color of the form
 	/// </summary>
@@ -119,5 +133,26 @@ public class BaseForm<T> : FormPage<T>
 	/// Handles form submissions
 	/// </summary>
 	protected Task HandleSubmit()
-		=> SubmitRequest(() => DelegateHandler.Handle(OnSubmit, Model));
+		=> SubmitRequest(() =>
+		{
+			if (Value is Sienar.Security.Honeypot honeypot)
+			{
+				honeypot.TimeToComplete = DateTime.Now - _formStartedTime;
+			}
+
+			return DelegateHandler.Handle(OnSubmit, Value);
+		});
+
+	/// <summary>
+	/// Handles form reset events
+	/// </summary>
+	/// <param name="sender">The event sender</param>
+	/// <param name="args">The mouse event</param>
+	protected async Task HandleReset(object? sender, MouseEventArgs args)
+	{
+		Value = new T();
+		_formStartedTime = DateTime.Now;
+
+		await OnReset.InvokeAsync(args);
+	}
 }
