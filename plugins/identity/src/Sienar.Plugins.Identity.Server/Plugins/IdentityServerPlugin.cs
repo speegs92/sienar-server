@@ -3,7 +3,6 @@
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Sienar.Configuration;
@@ -22,8 +21,7 @@ namespace Sienar.Plugins;
 
 /// <exclude />
 [AppConfigurer(typeof(IdentityServerAppConfigurer))]
-public class IdentityServerPlugin<TContext> : IPlugin
-	where TContext : DbContext
+public class IdentityServerPlugin : IPlugin
 {
 	private readonly WebApplicationBuilder _builder;
 	private readonly PluginDataProvider _pluginDataProvider;
@@ -75,12 +73,12 @@ public class IdentityServerPlugin<TContext> : IPlugin
 
 		// CRUD
 		services
-			.AddEfEntity<ViewUserDto, ViewUserMapper, UpsertUserDto, UpsertUserMapper, UpsertUserDto, UpsertUserMapper, SienarUser, SienarUserFilterProcessor, TContext>()
+			.AddEfEntity<ViewUserDto, ViewUserMapper, UpsertUserDto, UpsertUserMapper, UpsertUserDto, UpsertUserMapper, SienarUser, SienarUserFilterProcessor>()
 			.AddAccessValidator<UserIsAdminAccessValidator<SienarUser>, SienarUser>()
 			.AddBeforeActionHook<RemoveUserRelatedEntitiesHook, SienarUser>()
 			.AddStateValidator<EnsureAccountInfoUniqueValidator, SienarUser>()
-			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor, TContext>()
-			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor, TContext>()
+			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor>()
+			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor>()
 
 		// Security
 			.AddProcessor<LoginProcessor, LoginRequest, LoginResult>()

@@ -70,13 +70,11 @@ public static class SienarEfServiceCollectionExtensions
 	/// <param name="self">The service collection</param>
 	/// <typeparam name="TEntity">The type of the entity</typeparam>
 	/// <typeparam name="TFilterProcessor">The type of the filter processor</typeparam>
-	/// <typeparam name="TContext">The type of the filter processor</typeparam>
 	/// <returns>The service collection</returns>
-	public static IServiceCollection AddEfEntity<TEntity, TFilterProcessor, TContext>(
+	public static IServiceCollection AddEfEntity<TEntity, TFilterProcessor>(
 		this IServiceCollection self)
 		where TEntity : EntityBase
 		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
-		where TContext : DbContext
 	{
 		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
@@ -94,22 +92,19 @@ public static class SienarEfServiceCollectionExtensions
 	/// <typeparam name="TEntityToDtoMapper">The type of the entity-to-DTO mapper</typeparam>
 	/// <typeparam name="TEntity">The type of the entity</typeparam>
 	/// <typeparam name="TFilterProcessor">The type of the filter processor</typeparam>
-	/// <typeparam name="TContext">The type of the <see cref="DbContext"/></typeparam>
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddEfEntity<
 		TDto,
 		TDtoToEntityMapper,
 		TEntityToDtoMapper,
 		TEntity,
-		TFilterProcessor,
-		TContext>(this IServiceCollection self)
+		TFilterProcessor>(this IServiceCollection self)
 		where TDto : class, new()
 		where TDtoToEntityMapper : class, IMapper<TDto, TEntity>
 		where TEntityToDtoMapper : class, IMapper<TEntity, TDto>
 		where TEntity : EntityBase, new()
 		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
-		where TContext : DbContext
-		=> AddEfEntity<TDto, TEntityToDtoMapper, TDto, TDtoToEntityMapper, TDto, TDtoToEntityMapper, TEntity, TFilterProcessor, TContext>(self);
+		=> AddEfEntity<TDto, TEntityToDtoMapper, TDto, TDtoToEntityMapper, TDto, TDtoToEntityMapper, TEntity, TFilterProcessor>(self);
 
 	/// <summary>
 	/// Adds the necessary services to use an entity via Entity Framework
@@ -123,7 +118,6 @@ public static class SienarEfServiceCollectionExtensions
 	/// <typeparam name="TEditDtoToEntityMapper">The type of the edit-DTO-to-entity mapper</typeparam>
 	/// <typeparam name="TEntity">The type of the entity</typeparam>
 	/// <typeparam name="TFilterProcessor">The type of the filter processor</typeparam>
-	/// <typeparam name="TContext">The type of the <see cref="DbContext"/></typeparam>
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddEfEntity<
 		TViewDto,
@@ -133,8 +127,7 @@ public static class SienarEfServiceCollectionExtensions
 		TEditDto,
 		TEditDtoToEntityMapper,
 		TEntity,
-		TFilterProcessor,
-		TContext>(this IServiceCollection self)
+		TFilterProcessor>(this IServiceCollection self)
 		where TViewDto : class, new()
 		where TEntityToViewDtoMapper : class, IMapper<TEntity, TViewDto>
 		where TAddDto : class, new()
@@ -143,7 +136,6 @@ public static class SienarEfServiceCollectionExtensions
 		where TEditDtoToEntityMapper : class, IMapper<TEditDto, TEntity>
 		where TEntity : EntityBase, new()
 		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
-		where TContext : DbContext
 	{
 		self.TryAddScoped<IMapper<TEntity, TViewDto>, TEntityToViewDtoMapper>();
 		self.TryAddScoped<IMapper<TAddDto, TEntity>, TAddDtoToEntityMapper>();
