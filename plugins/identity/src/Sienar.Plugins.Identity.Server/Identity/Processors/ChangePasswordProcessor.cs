@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
@@ -11,15 +11,14 @@ using Sienar.Security;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class ChangePasswordProcessor<TContext> : IStatusProcessor<ChangePasswordRequest>
-	where TContext : DbContext
+public class ChangePasswordProcessor : IStatusProcessor<ChangePasswordRequest>
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly IUserAccessor _userAccessor;
 	private readonly IPasswordManager _passwordManager;
 
 	public ChangePasswordProcessor(
-		TContext context,
+		ISienarDbContext context,
 		IUserAccessor userAccessor,
 		IPasswordManager passwordManager)
 	{
@@ -38,9 +37,7 @@ public class ChangePasswordProcessor<TContext> : IStatusProcessor<ChangePassword
 				message: CoreErrors.Account.LoginRequired);
 		}
 
-		var user = await _context
-			.Set<SienarUser>()
-			.FindAsync(userId.Value);
+		var user = await _context.Users.FindAsync(userId.Value);
 		if (user is null)
 		{
 			return new(
