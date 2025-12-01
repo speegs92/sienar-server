@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
@@ -10,20 +11,18 @@ using Sienar.Processors;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class UnlockUserAccountProcessor<TContext> : IStatusProcessor<UnlockUserAccountRequest>
-	where TContext : DbContext
+public class UnlockUserAccountProcessor : IStatusProcessor<UnlockUserAccountRequest>
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 
-	public UnlockUserAccountProcessor(TContext context)
+	public UnlockUserAccountProcessor(ISienarDbContext context)
 	{
 		_context = context;
 	}
 
 	public async Task<OperationResult<bool>> Process(UnlockUserAccountRequest request)
 	{
-		var userSet = _context.Set<SienarUser>();
-		var user = await userSet
+		var user = await _context.Users
 			.Include(u => u.LockoutReasons)
 			.FirstOrDefaultAsync(u => u.Id == request.UserId);
 		if (user is null)
@@ -36,12 +35,12 @@ public class UnlockUserAccountProcessor<TContext> : IStatusProcessor<UnlockUserA
 		user.LockoutEnd = null;
 		user.LockoutReasons.Clear();
 
-		userSet.Update(user);
+		_context.Users.Update(user);
 		await _context.SaveChangesAsync();
 
-	return new(
-		OperationStatus.Success,
-		true,
-		$"User {user.Username}'s account was unlocked successfully");
+		return new(
+			OperationStatus.Success,
+			true,
+			$"User {user.Username}'s account was unlocked successfully");
 	}
 }
