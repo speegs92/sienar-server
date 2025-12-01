@@ -11,6 +11,7 @@ public class ViewUserMapper : IMapper<SienarUser, ViewUserDto>
 	public void Map(SienarUser source, ViewUserDto target)
 	{
 		target.Id = source.Id;
+		target.ConcurrencyStamp = source.ConcurrencyStamp;
 		target.Username = source.Username;
 		target.Email = source.Email;
 		target.EmailConfirmed = source.EmailConfirmed;
