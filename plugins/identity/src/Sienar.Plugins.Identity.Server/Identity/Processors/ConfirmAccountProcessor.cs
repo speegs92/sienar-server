@@ -1,9 +1,9 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Email;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
@@ -13,16 +13,15 @@ using Sienar.Processors;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class ConfirmAccountProcessor<TContext> : IStatusProcessor<ConfirmAccountRequest>
-	where TContext : DbContext
+public class ConfirmAccountProcessor : IStatusProcessor<ConfirmAccountRequest>
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly IVerificationCodeManager _vcManager;
 	private readonly IAccountEmailManager _emailManager;
 	private readonly SienarOptions _options;
 
 	public ConfirmAccountProcessor(
-		TContext context,
+		ISienarDbContext context,
 		IVerificationCodeManager vcManager,
 		IAccountEmailManager emailManager,
 		IOptions<SienarOptions> options)
@@ -35,9 +34,7 @@ public class ConfirmAccountProcessor<TContext> : IStatusProcessor<ConfirmAccount
 
 	public async Task<OperationResult<bool>> Process(ConfirmAccountRequest request)
 	{
-		var user = await _context
-			.Set<SienarUser>()
-			.FindAsync(request.UserId);
+		var user = await _context.Users.FindAsync(request.UserId);
 		if (user is null)
 		{
 			return new(
@@ -78,7 +75,7 @@ public class ConfirmAccountProcessor<TContext> : IStatusProcessor<ConfirmAccount
 
 		// Code was valid
 		user.EmailConfirmed = true;
-		_context.Update(user);
+		_context.Users.Update(user);
 		await _context.SaveChangesAsync();
 		return new(
 			OperationStatus.Success,
