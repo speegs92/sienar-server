@@ -1,9 +1,9 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Email;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
@@ -13,17 +13,16 @@ using Sienar.Processors;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class ResetPasswordProcessor<TContext> : IStatusProcessor<ResetPasswordRequest>
-	where TContext : DbContext
+public class ResetPasswordProcessor : IStatusProcessor<ResetPasswordRequest>
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly IPasswordManager _passwordManager;
 	private readonly IVerificationCodeManager _vcManager;
 	private readonly IAccountEmailManager _emailManager;
 	private readonly SienarOptions _options;
 
 	public ResetPasswordProcessor(
-		TContext context,
+		ISienarDbContext context,
 		IPasswordManager passwordManager,
 		IVerificationCodeManager vcManager,
 		IAccountEmailManager emailManager,
@@ -38,9 +37,7 @@ public class ResetPasswordProcessor<TContext> : IStatusProcessor<ResetPasswordRe
 
 	public async Task<OperationResult<bool>> Process(ResetPasswordRequest request)
 	{
-		var user = await _context
-			.Set<SienarUser>()
-			.FindAsync(request.UserId);
+		var user = await _context.Users.FindAsync(request.UserId);
 		if (user == null)
 		{
 			return new(
