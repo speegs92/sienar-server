@@ -22,7 +22,7 @@ public class EfEntityReader<TEntity, TContext> : ServiceBase, IEntityReader<TEnt
 	where TContext : DbContext
 {
 	private readonly TContext _context;
-	private readonly IEntityFrameworkFilterProcessor<TEntity> _filterProcessor;
+	private readonly IEfFilterProcessor<TEntity> _filterProcessor;
 	private readonly ILogger<EfEntityReader<TEntity, TContext>> _logger;
 	private readonly IAccessValidationRunner<TEntity> _accessValidationRunner;
 	private readonly IAfterActionRunner<TEntity> _afterActionRunner;
@@ -30,7 +30,7 @@ public class EfEntityReader<TEntity, TContext> : ServiceBase, IEntityReader<TEnt
 	public EfEntityReader(
 		INotifier notifier,
 		TContext context,
-		IEntityFrameworkFilterProcessor<TEntity> filterProcessor,
+		IEfFilterProcessor<TEntity> filterProcessor,
 		ILogger<EfEntityReader<TEntity, TContext>> logger,
 		IAccessValidationRunner<TEntity> accessValidationRunner,
 		IAfterActionRunner<TEntity> afterActionRunner)

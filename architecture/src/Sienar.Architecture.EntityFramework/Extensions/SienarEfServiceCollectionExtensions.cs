@@ -75,12 +75,12 @@ public static class SienarEfServiceCollectionExtensions
 	public static IServiceCollection AddEfEntity<TEntity, TFilterProcessor, TContext>(
 		this IServiceCollection self)
 		where TEntity : EntityBase
-		where TFilterProcessor : class, IEntityFrameworkFilterProcessor<TEntity>
+		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 		where TContext : DbContext
 	{
 		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity, TContext>>();
-		self.TryAddScoped<IEntityFrameworkFilterProcessor<TEntity>, TFilterProcessor>();
+		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 		self.TryAddScoped<IEntityReader<TEntity>, EfEntityReader<TEntity, TContext>>();
 		self.TryAddScoped<IEntityWriter<TEntity>, EfEntityWriter<TEntity, TContext>>();
 		self.TryAddScoped<IEntityDeleter<TEntity>, EfEntityDeleter<TEntity, TContext>>();
@@ -110,7 +110,7 @@ public static class SienarEfServiceCollectionExtensions
 		where TDtoToEntityMapper : class, IMapper<TDto, TEntity>
 		where TEntityToDtoMapper : class, IMapper<TEntity, TDto>
 		where TEntity : EntityBase, new()
-		where TFilterProcessor : class, IEntityFrameworkFilterProcessor<TEntity>
+		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 		where TContext : DbContext
 		=> AddEfEntity<TDto, TEntityToDtoMapper, TDto, TDtoToEntityMapper, TDto, TDtoToEntityMapper, TEntity, TFilterProcessor, TContext>(self);
 
@@ -145,7 +145,7 @@ public static class SienarEfServiceCollectionExtensions
 		where TEditDto : class, new()
 		where TEditDtoToEntityMapper : class, IMapper<TEditDto, TEntity>
 		where TEntity : EntityBase, new()
-		where TFilterProcessor : class, IEntityFrameworkFilterProcessor<TEntity>
+		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 		where TContext : DbContext
 	{
 		self.TryAddScoped<IMapper<TEntity, TViewDto>, TEntityToViewDtoMapper>();
@@ -158,7 +158,7 @@ public static class SienarEfServiceCollectionExtensions
 
 		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity, TContext>>();
-		self.TryAddScoped<IEntityFrameworkFilterProcessor<TEntity>, TFilterProcessor>();
+		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 		self.TryAddScoped<IEntityReader<TEntity>, EfEntityReader<TEntity, TContext>>();
 		self.TryAddScoped<IEntityWriter<TEntity>, EfEntityWriter<TEntity, TContext>>();
 		self.TryAddScoped<IEntityDeleter<TEntity>, EfEntityDeleter<TEntity, TContext>>();
