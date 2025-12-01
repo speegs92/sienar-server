@@ -75,15 +75,12 @@ public static class SienarEfServiceCollectionExtensions
 	public static IServiceCollection AddEfEntity<TEntity, TFilterProcessor, TContext>(
 		this IServiceCollection self)
 		where TEntity : EntityBase
-		where TFilterProcessor : class, IEntityFrameworkFilterProcessor<TEntity>
+		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 		where TContext : DbContext
 	{
 		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
-		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity, TContext>>();
-		self.TryAddScoped<IEntityFrameworkFilterProcessor<TEntity>, TFilterProcessor>();
-		self.TryAddScoped<IEntityReader<TEntity>, EfEntityReader<TEntity, TContext>>();
-		self.TryAddScoped<IEntityWriter<TEntity>, EfEntityWriter<TEntity, TContext>>();
-		self.TryAddScoped<IEntityDeleter<TEntity>, EfEntityDeleter<TEntity, TContext>>();
+		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
+		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 
 		return self;
 	}
@@ -110,7 +107,7 @@ public static class SienarEfServiceCollectionExtensions
 		where TDtoToEntityMapper : class, IMapper<TDto, TEntity>
 		where TEntityToDtoMapper : class, IMapper<TEntity, TDto>
 		where TEntity : EntityBase, new()
-		where TFilterProcessor : class, IEntityFrameworkFilterProcessor<TEntity>
+		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 		where TContext : DbContext
 		=> AddEfEntity<TDto, TEntityToDtoMapper, TDto, TDtoToEntityMapper, TDto, TDtoToEntityMapper, TEntity, TFilterProcessor, TContext>(self);
 
@@ -145,7 +142,7 @@ public static class SienarEfServiceCollectionExtensions
 		where TEditDto : class, new()
 		where TEditDtoToEntityMapper : class, IMapper<TEditDto, TEntity>
 		where TEntity : EntityBase, new()
-		where TFilterProcessor : class, IEntityFrameworkFilterProcessor<TEntity>
+		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 		where TContext : DbContext
 	{
 		self.TryAddScoped<IMapper<TEntity, TViewDto>, TEntityToViewDtoMapper>();
@@ -157,11 +154,22 @@ public static class SienarEfServiceCollectionExtensions
 		}
 
 		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
-		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity, TContext>>();
-		self.TryAddScoped<IEntityFrameworkFilterProcessor<TEntity>, TFilterProcessor>();
-		self.TryAddScoped<IEntityReader<TEntity>, EfEntityReader<TEntity, TContext>>();
-		self.TryAddScoped<IEntityWriter<TEntity>, EfEntityWriter<TEntity, TContext>>();
-		self.TryAddScoped<IEntityDeleter<TEntity>, EfEntityDeleter<TEntity, TContext>>();
+		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
+		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
+
+		return self;
+	}
+
+	/// <summary>
+	/// Adds the core services necessary for Sienar to work with Entity Framework
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddEntityFramework(this IServiceCollection self)
+	{
+		self.TryAddScoped(typeof(IEntityReader<>), typeof(EfEntityReader<>));
+		self.TryAddScoped(typeof(IEntityWriter<>), typeof(EfEntityWriter<>));
+		self.TryAddScoped(typeof(IEntityDeleter<>), typeof(EfEntityDeleter<>));
 
 		return self;
 	}

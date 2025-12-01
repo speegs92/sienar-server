@@ -1,9 +1,9 @@
 ﻿@namespace Sienar.Ui
-@typeparam TFormModel where TFormModel : new()
-@inherits BaseForm<TFormModel>
+@typeparam T where T : new()
+@inherits BaseForm<T>
 
 <EditForm
-	Model="Model"
+	Model="Value"
 	OnValidSubmit="@HandleSubmit">
 	<DataAnnotationsValidator/>
 
@@ -17,7 +17,7 @@
 		<CardContent>
 			@Information
 
-			@Fields(Model)
+			@Fields(Value)
 		</CardContent>
 
 		<CardActions>

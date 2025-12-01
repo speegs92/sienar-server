@@ -12,34 +12,36 @@
 		TEditDto="TUpsertDto"
 		EntityId="EntityId.Value"
 		For="@For"
-		Fields="@Fields"
-		MoreActions="@MoreActions"
-		Information="@Information"
 		OnLoaded="@OnLoaded"
 		OnSuccess="@OnUpdateSuccess"
 		ThemeColor="ThemeColor"
 		OnReset="@OnReset"
+		MoreActions="@MoreActions"
+		Information="@Information"
 		TitleTag="@TitleTag"
 		ResetText="@ResetText"
+		Icon="@Icon"
+		IconTitle="@IconTitle"
+		ShowReset="ShowReset"
 		HideSubmit="HideSubmit"
 		Square="Square"
-		ShowReset="ShowReset"/>
-	
+		Fields="@Fields"/>
 }
 else
 {
 	<AddForm
-		TAddDto="TUpsertDto"
+		T="TUpsertDto"
 		OnSuccess="@OnAddSuccess"
-		MoreActions="@MoreActions"
-		Information="@Information"
-		Fields="@Fields"
 		ThemeColor="ThemeColor"
 		OnReset="@OnReset"
+		MoreActions="@MoreActions"
+		Information="@Information"
 		TitleTag="@TitleTag"
 		ResetText="@ResetText"
+		Icon="@Icon"
+		IconTitle="@IconTitle"
+		ShowReset="ShowReset"
 		HideSubmit="HideSubmit"
 		Square="Square"
-		ShowReset="ShowReset"/>
-	
+		Fields="@Fields"/>
 }

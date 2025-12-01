@@ -8,9 +8,16 @@ using Sienar.Infrastructure;
 // ReSharper disable once CheckNamespace
 namespace Sienar.Ui;
 
-public partial class AddForm<TAddDto>
+/// <summary>
+/// Automates adding a new entity
+/// </summary>
+/// <remarks>
+/// The <see cref="BaseForm{T}.OnSubmit"/> parameter has no effect on <c>AddForm</c> because <c>AddForm</c> has its own submit logic.
+/// </remarks>
+/// <typeparam name="T">The type of the add DTO</typeparam>
+public partial class AddForm<T>
 {
-	private static string EntityName => typeof(TAddDto)
+	private static string EntityName => typeof(T)
 		.GetEntityName();
 
 	/// <summary>
@@ -22,18 +29,15 @@ public partial class AddForm<TAddDto>
 	[Parameter]
 	public Delegate? OnSuccess { get; set; }
 
-	[Inject]
-	private IEntityWriter<TAddDto> Writer { get; set; } = null!;
-
-	private Task Submit()
+	private Task HandleAdd(IEntityWriter<T> writer)
 	{
 		return SubmitRequest(async () =>
 		{
-			var result = await Writer.Create(Model);
+			var result = await writer.Create(Value);
 
 			if (result.Status is OperationStatus.Success)
 			{
-				DelegateHandler.Handle(OnSuccess, result);
+				await DelegateHandler.Handle(OnSuccess, result);
 			}
 		});
 	}

@@ -13,14 +13,12 @@ namespace Sienar.Data;
 /// An implementation of <see cref="IEntityDeleter{TEntity}"/> which deletes entities from an EntityFramework <see cref="DbContext"/>
 /// </summary>
 /// <typeparam name="TEntity">The type of the entity to delete</typeparam>
-/// <typeparam name="TContext">The type of the app's <see cref="DbContext"/></typeparam>
-public class EfEntityDeleter<TEntity, TContext>
+public class EfEntityDeleter<TEntity>
 	: ServiceBase, IEntityDeleter<TEntity>
 	where TEntity : EntityBase
-	where TContext : DbContext
 {
-	private readonly TContext _context;
-	private readonly ILogger<EfEntityDeleter<TEntity, TContext>> _logger;
+	private readonly IDbContext _context;
+	private readonly ILogger<EfEntityDeleter<TEntity>> _logger;
 	private readonly IAccessValidationRunner<TEntity> _accessValidationRunner;
 	private readonly IStateValidationRunner<TEntity> _stateValidationRunner;
 	private readonly IBeforeActionRunner<TEntity> _beforeActionRunner;
@@ -38,8 +36,8 @@ public class EfEntityDeleter<TEntity, TContext>
 	/// <param name="afterActionRunner">The after-hook action runner</param>
 	public EfEntityDeleter(
 		INotifier notifier,
-		TContext context,
-		ILogger<EfEntityDeleter<TEntity, TContext>> logger,
+		IDbContext context,
+		ILogger<EfEntityDeleter<TEntity>> logger,
 		IAccessValidationRunner<TEntity> accessValidationRunner,
 		IStateValidationRunner<TEntity> stateValidationRunner,
 		IBeforeActionRunner<TEntity> beforeActionRunner,

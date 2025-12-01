@@ -12,10 +12,24 @@ namespace Sienar.Ui;
 /// <summary>
 /// The base form class
 /// </summary>
-/// <typeparam name="TModel">The type of the form's data model</typeparam>
-public class BaseForm<TModel> : FormPage<TModel>
-	where TModel : new()
+/// <typeparam name="T">The type of the form's data model</typeparam>
+public class BaseForm<T> : ActionPage
+	where T : new()
 {
+	private DateTime _formStartedTime = DateTime.Now;
+
+	/// <summary>
+	/// The model used in requests
+	/// </summary>
+	[Parameter]
+	public T Value { get; set; } = new();
+
+	/// <summary>
+	/// The callback invoked when the model changes
+	/// </summary>
+	[Parameter]
+	public EventCallback<T> ValueChanged { get; set; }
+
 	/// <summary>
 	/// The color of the form
 	/// </summary>
@@ -107,7 +121,7 @@ public class BaseForm<TModel> : FormPage<TModel>
 	/// The form fields to render
 	/// </summary>
 	[Parameter]
-	public required RenderFragment<TModel> Fields { get; set; }
+	public required RenderFragment<T> Fields { get; set; }
 
 	/// <summary>
 	/// The <see cref="IDelegateHandler"/>
@@ -121,7 +135,24 @@ public class BaseForm<TModel> : FormPage<TModel>
 	protected Task HandleSubmit()
 		=> SubmitRequest(() =>
 		{
-			DelegateHandler.Handle(OnSubmit, Model);
-			return Task.CompletedTask;
+			if (Value is Sienar.Security.Honeypot honeypot)
+			{
+				honeypot.TimeToComplete = DateTime.Now - _formStartedTime;
+			}
+
+			return DelegateHandler.Handle(OnSubmit, Value);
 		});
+
+	/// <summary>
+	/// Handles form reset events
+	/// </summary>
+	/// <param name="sender">The event sender</param>
+	/// <param name="args">The mouse event</param>
+	protected async Task HandleReset(object? sender, MouseEventArgs args)
+	{
+		Value = new T();
+		_formStartedTime = DateTime.Now;
+
+		await OnReset.InvokeAsync(args);
+	}
 }

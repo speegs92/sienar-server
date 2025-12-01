@@ -1,10 +1,14 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
 // ReSharper disable once CheckNamespace
 namespace Sienar.Ui;
 
+/// <summary>
+/// Automates upserting an entity
+/// </summary>
+/// <typeparam name="TViewDto">The type of the view DTO</typeparam>
+/// <typeparam name="TUpsertDto">The type of the upsert DTO</typeparam>
 public partial class UpsertForm<TViewDto, TUpsertDto>
 {
 	/// <summary>
@@ -23,7 +27,7 @@ public partial class UpsertForm<TViewDto, TUpsertDto>
 	/// A function to call when the view-DTO is loaded
 	/// </summary>
 	[Parameter]
-	public EventCallback<TViewDto> OnLoaded { get; set; }
+	public Action<TViewDto>? OnLoaded { get; set; }
 
 	/// <summary>
 	/// A function to execute if the add form is submitted successfully

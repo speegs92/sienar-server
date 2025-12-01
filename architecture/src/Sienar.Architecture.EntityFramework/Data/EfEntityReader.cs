@@ -16,22 +16,20 @@ namespace Sienar.Data;
 /// An implementation of <see cref="IEntityReader{TEntity}"/> which reads entities from an EntityFramework <see cref="DbContext"/>
 /// </summary>
 /// <typeparam name="TEntity">The type of the entity to read</typeparam>
-/// <typeparam name="TContext">The type of the app's <see cref="DbContext"/></typeparam>
-public class EfEntityReader<TEntity, TContext> : ServiceBase, IEntityReader<TEntity>
+public class EfEntityReader<TEntity> : ServiceBase, IEntityReader<TEntity>
 	where TEntity : EntityBase
-	where TContext : DbContext
 {
-	private readonly TContext _context;
-	private readonly IEntityFrameworkFilterProcessor<TEntity> _filterProcessor;
-	private readonly ILogger<EfEntityReader<TEntity, TContext>> _logger;
+	private readonly IDbContext _context;
+	private readonly IEfFilterProcessor<TEntity> _filterProcessor;
+	private readonly ILogger<EfEntityReader<TEntity>> _logger;
 	private readonly IAccessValidationRunner<TEntity> _accessValidationRunner;
 	private readonly IAfterActionRunner<TEntity> _afterActionRunner;
 
 	public EfEntityReader(
 		INotifier notifier,
-		TContext context,
-		IEntityFrameworkFilterProcessor<TEntity> filterProcessor,
-		ILogger<EfEntityReader<TEntity, TContext>> logger,
+		IDbContext context,
+		IEfFilterProcessor<TEntity> filterProcessor,
+		ILogger<EfEntityReader<TEntity>> logger,
 		IAccessValidationRunner<TEntity> accessValidationRunner,
 		IAfterActionRunner<TEntity> afterActionRunner)
 		: base(notifier)

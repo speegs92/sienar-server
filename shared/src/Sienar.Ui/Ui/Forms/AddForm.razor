@@ -1,50 +1,23 @@
 ﻿@* ReSharper disable once CheckNamespace *@
 @namespace Sienar.Ui
 
-@typeparam TAddDto where TAddDto : new()
-@inherits BaseForm<TAddDto>
+@typeparam T where T : new()
+@inherits BaseForm<T>
 
-<EditForm
-	Model="Model"
-	OnValidSubmit="@Submit">
-	<DataAnnotationsValidator/>
-
-	<Card
-		Title="@($"Add new {EntityName}")"
-		TitleTag="@TitleTag"
-		ThemeColor="ThemeColor"
-		Square="Square"
-		Icon="@Icon"
-		IconTitle="@IconTitle">
-		<CardContent>
-			@Information
-
-			@Fields(Model)
-		</CardContent>
-
-		<CardActions>
-			@if (!HideSubmit)
-			{
-				<LoadingButton
-					Color="ThemeColor"
-					IsLoading="IsLoading"
-					Class="mr-4">
-					Add @EntityName
-				</LoadingButton>
-			}
-
-			@if (ShowReset)
-			{
-				<MudButton
-					Color="Color.Secondary"
-					Variant="Variant.Outlined"
-					ButtonType="ButtonType.Reset"
-					OnClick="@OnReset"
-					Class="mr-3">
-					@ResetText
-				</MudButton>
-			}
-			@MoreActions
-		</CardActions>
-	</Card>
-</EditForm>
+<StandardForm
+	@bind-Value="Value"
+	Title="@($"Add new {EntityName}")"
+	TitleTag="@TitleTag"
+	ThemeColor="ThemeColor"
+	Square="Square"
+	Icon="@Icon"
+	IconTitle="@IconTitle"
+	SubmitText="@($"Add {EntityName}")"
+	HideSubmit="HideSubmit"
+	ResetText="@ResetText"
+	ShowReset="ShowReset"
+	OnSubmit="@HandleAdd"
+	OnReset="@OnReset"
+	Information="@Information"
+	Fields="@Fields"
+	MoreActions="@MoreActions"/>

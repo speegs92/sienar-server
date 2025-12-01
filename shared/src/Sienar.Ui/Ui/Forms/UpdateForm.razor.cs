@@ -7,6 +7,11 @@ using Sienar.Infrastructure;
 // ReSharper disable once CheckNamespace
 namespace Sienar.Ui;
 
+/// <summary>
+/// Automates updating an existing entity
+/// </summary>
+/// <typeparam name="TViewDto">The type of the view DTO</typeparam>
+/// <typeparam name="TEditDto">The type of the edit DTO</typeparam>
 public partial class UpdateForm<TViewDto, TEditDto>
 {
 	/// <summary>
@@ -25,7 +30,7 @@ public partial class UpdateForm<TViewDto, TEditDto>
 	/// A function to call when the view-DTO is loaded
 	/// </summary>
 	[Parameter]
-	public EventCallback<TViewDto> OnLoaded { get; set; }
+	public Action<TViewDto>? OnLoaded { get; set; }
 
 	/// <summary>
 	/// A function to execute if the form is submitted successfully
@@ -38,9 +43,6 @@ public partial class UpdateForm<TViewDto, TEditDto>
 
 	[Inject]
 	private IEntityReader<TViewDto> Reader { get; set; } = null!;
-
-	[Inject]
-	private IEntityWriter<TEditDto> Writer { get; set; } = null!;
 
 	[Inject]
 	private IMapper<TViewDto, TEditDto> Mapper { get; set; } = null!;
@@ -57,19 +59,19 @@ public partial class UpdateForm<TViewDto, TEditDto>
 				return;
 			}
 
-			await OnLoaded.InvokeAsync(result.Result);
-			Mapper.Map(result.Result, Model);
+			OnLoaded?.Invoke(result.Result);
+			Mapper.Map(result.Result, Value);
 		});
 
-	private Task Submit()
+	private Task HandleUpdate(IEntityWriter<TEditDto> writer)
 	{
 		return SubmitRequest(async () =>
 		{
-			var result = await Writer.Update(Model);
+			var result = await writer.Update(Value);
 
 			if (result.Status is OperationStatus.Success)
 			{
-				DelegateHandler.Handle(OnSuccess, result);
+				await DelegateHandler.Handle(OnSuccess, result);
 			}
 		});
 	}

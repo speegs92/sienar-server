@@ -5,47 +5,20 @@
 @typeparam TEditDto where TEditDto : class, new()
 @inherits BaseForm<TEditDto>
 
-<EditForm
-	Model="Model"
-	OnValidSubmit="@Submit">
-	<DataAnnotationsValidator/>
-
-	<Card
-		Title="@($"Update {For(Model)}")"
-		TitleTag="@TitleTag"
-		ThemeColor="ThemeColor"
-		Square="Square"
-		Icon="@Icon"
-		IconTitle="@IconTitle">
-		<CardContent>
-			@Information
-
-			@Fields(Model)
-		</CardContent>
-
-		<CardActions>
-			@if (!HideSubmit)
-			{
-				<LoadingButton
-					Color="ThemeColor"
-					IsLoading="IsLoading"
-					Class="mr-4">
-					Update @For(Model)
-				</LoadingButton>
-			}
-
-			@if (ShowReset)
-			{
-				<MudButton
-					Color="Color.Secondary"
-					Variant="Variant.Outlined"
-					ButtonType="ButtonType.Reset"
-					OnClick="@OnReset"
-					Class="mr-3">
-					@ResetText
-				</MudButton>
-			}
-			@MoreActions
-		</CardActions>
-	</Card>
-</EditForm>
+<StandardForm
+	@bind-Value="Value"
+	Title="@($"Update {For(Value)}")"
+	TitleTag="@TitleTag"
+	ThemeColor="ThemeColor"
+	Square="Square"
+	Icon="@Icon"
+	IconTitle="@IconTitle"
+	SubmitText="@($"Update {For(Value)}")"
+	HideSubmit="HideSubmit"
+	ResetText="@ResetText"
+	ShowReset="ShowReset"
+	OnSubmit="@HandleUpdate"
+	OnReset="@OnReset"
+	Information="@Information"
+	Fields="@Fields"
+	MoreActions="@MoreActions"/>

@@ -10,15 +10,14 @@ using Sienar.Infrastructure;
 namespace Sienar.Data;
 
 /// <exclude />
-public class ConcurrencyStampValidator<TEntity, TContext> : IStateValidator<TEntity>
+public class ConcurrencyStampValidator<TEntity> : IStateValidator<TEntity>
 	where TEntity : EntityBase
-	where TContext : DbContext
 {
-	private readonly TContext _context;
+	private readonly IDbContext _context;
 	private readonly INotifier _notifier;
 
 	public ConcurrencyStampValidator(
-		TContext context,
+		IDbContext context,
 		INotifier notifier)
 	{
 		_context = context;

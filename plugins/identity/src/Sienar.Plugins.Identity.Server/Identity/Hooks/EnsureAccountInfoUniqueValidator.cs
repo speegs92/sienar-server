@@ -8,20 +8,18 @@ using Sienar.Data;
 using Sienar.Extensions;
 using Sienar.Infrastructure;
 using Sienar.Hooks;
-using Sienar.Identity.Data;
 
 namespace Sienar.Identity.Hooks;
 
 /// <exclude />
-public class EnsureAccountInfoUniqueValidator<TContext>
+public class EnsureAccountInfoUniqueValidator
 	: IStateValidator<SienarUser>, IStateValidator<RegisterRequest>
-	where TContext : DbContext
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly INotifier _notifier;
 
 	public EnsureAccountInfoUniqueValidator(
-		TContext context,
+		ISienarDbContext context,
 		INotifier notifier)
 	{
 		_context = context;
@@ -48,10 +46,8 @@ public class EnsureAccountInfoUniqueValidator<TContext>
 		string? pendingEmail = null,
 		int id = 0)
 	{
-		var userSet = _context.Set<SienarUser>();
-
 		username = username.ToNormalized();
-		var usernameTaken = await userSet
+		var usernameTaken = await _context.Users
 			.AnyAsync(u => u.Id != id &&
 				u.NormalizedUsername == username);
 		if (usernameTaken)
@@ -61,7 +57,7 @@ public class EnsureAccountInfoUniqueValidator<TContext>
 		}
 
 		email = email.ToNormalized();
-		var emailTaken = await userSet
+		var emailTaken = await _context.Users
 			.AnyAsync(u => u.Id != id &&
 				(u.NormalizedEmail == email || u.NormalizedPendingEmail == email));
 		if (emailTaken)

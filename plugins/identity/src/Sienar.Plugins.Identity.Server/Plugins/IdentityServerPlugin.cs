@@ -77,14 +77,10 @@ public class IdentityServerPlugin<TContext> : IPlugin
 		services
 			.AddEfEntity<ViewUserDto, ViewUserMapper, UpsertUserDto, UpsertUserMapper, UpsertUserDto, UpsertUserMapper, SienarUser, SienarUserFilterProcessor, TContext>()
 			.AddAccessValidator<UserIsAdminAccessValidator<SienarUser>, SienarUser>()
-			.AddBeforeActionHook<FetchNotUpdatedUserPropertiesHook<TContext>, SienarUser>()
-			.AddBeforeActionHook<UserMapNormalizedFieldsHook, SienarUser>()
-			.AddBeforeActionHook<UserPasswordUpdateHook, SienarUser>()
 			.AddBeforeActionHook<RemoveUserRelatedEntitiesHook<TContext>, SienarUser>()
-			.AddStateValidator<EnsureAccountInfoUniqueValidator<TContext>, SienarUser>()
+			.AddStateValidator<EnsureAccountInfoUniqueValidator, SienarUser>()
 			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor, TContext>()
-			.AddBeforeActionHook<LockoutReasonMapNormalizedFieldsHook, LockoutReason>()
-			.AddEfEntity<SienarRole, SienarRoleFilterProcessor, TContext>()
+			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor, TContext>()
 
 		// Security
 			.AddProcessor<LoginProcessor<TContext>, LoginRequest, LoginResult>()
@@ -109,7 +105,7 @@ public class IdentityServerPlugin<TContext> : IPlugin
 		// Registration
 			.AddStateValidator<RegistrationOpenValidator, RegisterRequest>()
 			.AddStateValidator<AcceptTosValidator, RegisterRequest>()
-			.AddStateValidator<EnsureAccountInfoUniqueValidator<TContext>, RegisterRequest>()
+			.AddStateValidator<EnsureAccountInfoUniqueValidator, RegisterRequest>()
 			.AddStatusProcessor<RegisterProcessor<TContext>, RegisterRequest>()
 
 		// Email

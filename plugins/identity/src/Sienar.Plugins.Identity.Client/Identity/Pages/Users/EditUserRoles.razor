@@ -1,8 +1,8 @@
 @inherits ActionPage
 @attribute [Authorize(Roles = Roles.Admin)]
-@attribute [Route($"{DashboardUrls.Users.Index}/{{userId:guid}}/roles")]
-@inject IEntityReader<SienarUser> UserReader
-@inject IEntityReader<SienarRole> RoleReader
+@attribute [Route($"{DashboardUrls.Users.Index}/{{userId:int}}/roles")]
+@inject IEntityReader<ViewUserDto> UserReader
+@inject IEntityReader<RoleDto> RoleReader
 @inject IStatusService<AddUserToRoleRequest> AddRoleService
 @inject IStatusService<RemoveUserFromRoleRequest> RemoveRoleService
 
@@ -32,6 +32,9 @@
 
 @code {
 
+	/// <summary>
+	/// The ID of the user whose roles to modify
+	/// </summary>
 	[Parameter]
 	public int UserId { get; set; }
 
@@ -39,8 +42,8 @@
 	private ILogger<EditUserRoles> Logger { get; set; } = null!;
 
 	private readonly Dictionary<int, bool> _roleMap = new();
-	private SienarUser? _user;
-	private IEnumerable<SienarRole> _roles = Array.Empty<SienarRole>();
+	private ViewUserDto? _user;
+	private IEnumerable<RoleDto> _roles = [];
 
 	/// <inheritdoc />
 	protected override async Task OnInitializedAsync()

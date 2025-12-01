@@ -34,5 +34,5 @@ public class ViewUserDto : EntityBase
 	/// <summary>
 	/// The user's roles
 	/// </summary>
-	public List<SienarRole> Roles { get; set; } = [];
+	public List<RoleDto> Roles { get; set; } = [];
 }

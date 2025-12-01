@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Sienar.Infrastructure;
 
@@ -16,5 +17,5 @@ public interface IDelegateHandler
 	/// <param name="handler">The event delegate</param>
 	/// <param name="e">The event args supplied by Blazor in response to an event</param>
 	/// <typeparam name="TArgs">The type of the event</typeparam>
-	void Handle<TArgs>(Delegate? handler, TArgs e);
+	Task Handle<TArgs>(Delegate? handler, TArgs e);
 }
