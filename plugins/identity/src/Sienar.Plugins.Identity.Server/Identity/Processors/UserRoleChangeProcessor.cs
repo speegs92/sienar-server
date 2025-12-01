@@ -3,6 +3,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
@@ -11,14 +12,13 @@ using Sienar.Processors;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class UserRoleChangeProcessor<TContext>
+public class UserRoleChangeProcessor
 	: IStatusProcessor<AddUserToRoleRequest>,
 		IStatusProcessor<RemoveUserFromRoleRequest>
-	where TContext : DbContext
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 
-	public UserRoleChangeProcessor(TContext context)
+	public UserRoleChangeProcessor(ISienarDbContext context)
 	{
 		_context = context;
 	}
@@ -36,18 +36,14 @@ public class UserRoleChangeProcessor<TContext>
 			return new(OperationStatus.Unprocessable, message: CoreErrors.Account.AccountAlreadyInRole);
 		}
 
-		var role = await _context
-			.Set<SienarRole>()
-			.FindAsync(request.RoleId);
+		var role = await _context.Roles.FindAsync(request.RoleId);
 		if (role is null)
 		{
 			return new(OperationStatus.NotFound, message: CoreErrors.Roles.NotFound);
 		}
 
 		user.Roles.Add(role);
-		_context
-			.Set<SienarUser>()
-			.Update(user);
+		_context.Users.Update(user);
 		await _context.SaveChangesAsync();
 		return new(OperationStatus.Success, true, $"User {user.Username} added to role {role.Name}");
 	}
@@ -67,17 +63,14 @@ public class UserRoleChangeProcessor<TContext>
 		}
 
 		user.Roles.Remove(role);
-		_context
-			.Set<SienarUser>()
-			.Update(user);
+		_context.Users.Update(user);
 		await _context.SaveChangesAsync();
 
 		return new(OperationStatus.Success, true, $"User {user.Username} removed from role {role.Name}");
 	}
 
 	private Task<SienarUser?> GetSienarUserWithRoles(int id)
-		=> _context
-			.Set<SienarUser>()
+		=> _context.Users
 			.Include(u => u.Roles)
 			.FirstOrDefaultAsync(u => u.Id == id);
 }
