@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using Sienar.Data;
 
 namespace Sienar.Identity;
 
-public class VerificationCodeManager<TContext> : IVerificationCodeManager
-	where TContext : DbContext
+public class VerificationCodeManager : IVerificationCodeManager
 {
-	private readonly TContext _context;
-	private DbSet<SienarUser> UserSet => _context.Set<SienarUser>();
+	private readonly ISienarDbContext _context;
 
-	public VerificationCodeManager(TContext context)
+	public VerificationCodeManager(ISienarDbContext context)
 	{
 		_context = context;
 	}
@@ -21,7 +19,7 @@ public class VerificationCodeManager<TContext> : IVerificationCodeManager
 		SienarUser user,
 		string type)
 	{
-		await UserSet
+		await _context.Users
 			.Entry(user)
 			.Collection(u => u.VerificationCodes)
 			.LoadAsync();
@@ -36,7 +34,7 @@ public class VerificationCodeManager<TContext> : IVerificationCodeManager
 		};
 
 		user.VerificationCodes.Add(code);
-		UserSet.Update(user);
+		_context.Users.Update(user);
 		await _context.SaveChangesAsync();
 
 		return code;
@@ -53,7 +51,7 @@ public class VerificationCodeManager<TContext> : IVerificationCodeManager
 		string type,
 		bool saveChanges)
 	{
-		await UserSet
+		await _context.Users
 			.Entry(user)
 			.Collection(u => u.VerificationCodes)
 			.LoadAsync();
@@ -78,7 +76,7 @@ public class VerificationCodeManager<TContext> : IVerificationCodeManager
 		SienarUser user,
 		string type)
 	{
-		await UserSet
+		await _context.Users
 			.Entry(user)
 			.Collection(u => u.VerificationCodes)
 			.LoadAsync();

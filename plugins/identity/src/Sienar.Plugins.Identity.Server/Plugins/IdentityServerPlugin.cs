@@ -59,7 +59,7 @@ public class IdentityServerPlugin<TContext> : IPlugin
 		services.TryAddScoped<IPasswordManager, PasswordManager>();
 		services.TryAddScoped<IUserClaimsFactory, UserClaimsFactory>();
 		services.TryAddScoped<IUserClaimsPrincipalFactory<SienarUser>, UserClaimsPrincipalFactory>();
-		services.TryAddScoped<IVerificationCodeManager, VerificationCodeManager<TContext>>();
+		services.TryAddScoped<IVerificationCodeManager, VerificationCodeManager>();
 
 		services.TryAddScoped<IEmailSender, DefaultEmailSender>();
 
