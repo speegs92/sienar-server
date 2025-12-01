@@ -83,7 +83,7 @@ public class IdentityServerPlugin<TContext> : IPlugin
 			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor, TContext>()
 
 		// Security
-			.AddProcessor<LoginProcessor<TContext>, LoginRequest, LoginResult>()
+			.AddProcessor<LoginProcessor, LoginRequest, LoginResult>()
 			.AddStatusProcessor<LogoutProcessor, LogoutRequest>()
 			.AddResultProcessor<PersonalDataProcessor<TContext>, PersonalDataResult>()
 			.AddStatusProcessor<UserRoleChangeProcessor<TContext>, AddUserToRoleRequest>()

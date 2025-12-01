@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Email;
 using Sienar.Errors;
 using Sienar.Extensions;
@@ -16,10 +17,9 @@ using Sienar.Processors;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class LoginProcessor<TContext> : IProcessor<LoginRequest, LoginResult>
-	where TContext : DbContext
+public class LoginProcessor : IProcessor<LoginRequest, LoginResult>
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly IPasswordManager _passwordManager;
 	private readonly ISignInManager _signInManager;
 	private readonly IAccountEmailManager _emailManager;
@@ -28,7 +28,7 @@ public class LoginProcessor<TContext> : IProcessor<LoginRequest, LoginResult>
 	private readonly SienarOptions _appOptions;
 
 	public LoginProcessor(
-		TContext context,
+		ISienarDbContext context,
 		IPasswordManager passwordManager,
 		ISignInManager signInManager,
 		IAccountEmailManager emailManager,
@@ -48,8 +48,7 @@ public class LoginProcessor<TContext> : IProcessor<LoginRequest, LoginResult>
 	public async Task<OperationResult<LoginResult?>> Process(LoginRequest request)
 	{
 		var normalizedAccountName = request.AccountName.ToNormalized();
-		var user = await _context
-			.Set<SienarUser>()
+		var user = await _context.Users
 			.Include(u => u.Roles)
 			.FirstOrDefaultAsync(
 				u => u.NormalizedUsername == normalizedAccountName ||
@@ -83,7 +82,7 @@ public class LoginProcessor<TContext> : IProcessor<LoginRequest, LoginResult>
 				user.LockoutEnd = DateTime.UtcNow + _loginOptions.LockoutTimespan;
 				var code = await _vcManager.CreateCode(user, VerificationCodeTypes.ViewLockoutReasons);
 
-				_context.Update(user);
+				_context.Users.Update(user);
 				await _context.SaveChangesAsync();
 				await _emailManager.SendAccountLockedEmail(user);
 				return new(
@@ -96,7 +95,7 @@ public class LoginProcessor<TContext> : IProcessor<LoginRequest, LoginResult>
 					message: CoreErrors.Account.LoginFailedLocked);
 			}
 
-			_context.Update(user);
+			_context.Users.Update(user);
 			await _context.SaveChangesAsync();
 
 			return new(
@@ -125,7 +124,7 @@ public class LoginProcessor<TContext> : IProcessor<LoginRequest, LoginResult>
 		// User is authenticated and able to log in
 		user.LoginFailedCount = 0;
 		user.LockoutEnd = null;
-		_context.Update(user);
+		_context.Users.Update(user);
 		await _context.SaveChangesAsync();
 
 		// Save the token to the token cache
