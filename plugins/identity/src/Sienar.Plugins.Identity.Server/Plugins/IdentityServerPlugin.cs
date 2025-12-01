@@ -77,7 +77,7 @@ public class IdentityServerPlugin<TContext> : IPlugin
 		services
 			.AddEfEntity<ViewUserDto, ViewUserMapper, UpsertUserDto, UpsertUserMapper, UpsertUserDto, UpsertUserMapper, SienarUser, SienarUserFilterProcessor, TContext>()
 			.AddAccessValidator<UserIsAdminAccessValidator<SienarUser>, SienarUser>()
-			.AddBeforeActionHook<RemoveUserRelatedEntitiesHook<TContext>, SienarUser>()
+			.AddBeforeActionHook<RemoveUserRelatedEntitiesHook, SienarUser>()
 			.AddStateValidator<EnsureAccountInfoUniqueValidator, SienarUser>()
 			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor, TContext>()
 			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor, TContext>()
@@ -114,7 +114,7 @@ public class IdentityServerPlugin<TContext> : IPlugin
 			.AddStatusProcessor<PerformEmailChangeProcessor<TContext>, PerformEmailChangeRequest>()
 
 		// Personal data
-			.AddBeforeActionHook<RemoveUserRelatedEntitiesHook<TContext>, DeleteAccountRequest>()
+			.AddBeforeActionHook<RemoveUserRelatedEntitiesHook, DeleteAccountRequest>()
 			.AddStatusProcessor<DeleteAccountProcessor<TContext>, DeleteAccountRequest>();
 
 

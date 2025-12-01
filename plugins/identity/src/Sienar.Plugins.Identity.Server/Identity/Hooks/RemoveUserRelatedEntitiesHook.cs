@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using Sienar.Data;
 using Sienar.Identity.Requests;
 using Sienar.Hooks;
 using Sienar.Security;
@@ -9,15 +9,14 @@ using Sienar.Security;
 namespace Sienar.Identity.Hooks;
 
 /// <exclude />
-public class RemoveUserRelatedEntitiesHook<TContext>
+public class RemoveUserRelatedEntitiesHook
 	: IBeforeAction<SienarUser>, IBeforeAction<DeleteAccountRequest>
-	where TContext : DbContext
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly IUserAccessor _userAccessor;
 
 	public RemoveUserRelatedEntitiesHook(
-		TContext context,
+		ISienarDbContext context,
 		IUserAccessor userAccessor)
 	{
 		_context = context;
@@ -40,9 +39,7 @@ public class RemoveUserRelatedEntitiesHook<TContext>
 		if (action != ActionType.Status) return;
 
 		var userId = (await _userAccessor.GetUserId())!;
-		var user = (await _context
-			.Set<SienarUser>()
-			.FindAsync(userId.Value))!;
+		var user = (await _context.Users.FindAsync(userId.Value))!;
 		await HandleCore(user);
 	}
 
