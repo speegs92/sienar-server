@@ -1,9 +1,9 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Email;
 using Sienar.Errors;
 using Sienar.Extensions;
@@ -15,18 +15,17 @@ using Sienar.Security;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class PerformEmailChangeProcessor<TContext>
+public class PerformEmailChangeProcessor
 	: IStatusProcessor<PerformEmailChangeRequest>
-	where TContext : DbContext
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly IUserAccessor _userAccessor;
 	private readonly IVerificationCodeManager _vcManager;
 	private readonly IAccountEmailManager _emailManager;
 	private readonly SienarOptions _sienarOptions;
 
 	public PerformEmailChangeProcessor(
-		TContext context,
+		ISienarDbContext context,
 		IUserAccessor userAccessor,
 		IVerificationCodeManager vcManager,
 		IAccountEmailManager emailManager,
@@ -49,8 +48,7 @@ public class PerformEmailChangeProcessor<TContext>
 				message: CoreErrors.Account.LoginRequired);
 		}
 
-		var userSet = _context.Set<SienarUser>();
-		var user = await userSet.FindAsync(userId.Value);
+		var user = await _context.Users.FindAsync(userId.Value);
 		if (user is null)
 		{
 			return new(
@@ -106,7 +104,7 @@ public class PerformEmailChangeProcessor<TContext>
 		user.PendingEmail = null;
 		user.NormalizedPendingEmail = null;
 
-		userSet.Update(user);
+		_context.Users.Update(user);
 		await _context.SaveChangesAsync();
 
 		return new(
