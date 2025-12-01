@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Email;
 using Sienar.Errors;
 using Sienar.Extensions;
@@ -14,15 +15,14 @@ using Sienar.Processors;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class ForgotPasswordProcessor<TContext> : IStatusProcessor<ForgotPasswordRequest>
-	where TContext : DbContext
+public class ForgotPasswordProcessor : IStatusProcessor<ForgotPasswordRequest>
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly IAccountEmailManager _emailManager;
 	private readonly SienarOptions _options;
 
 	public ForgotPasswordProcessor(
-		TContext context,
+		ISienarDbContext context,
 		IAccountEmailManager emailManager,
 		IOptions<SienarOptions> options)
 	{
@@ -34,15 +34,16 @@ public class ForgotPasswordProcessor<TContext> : IStatusProcessor<ForgotPassword
 	public async Task<OperationResult<bool>> Process(ForgotPasswordRequest request)
 	{
 		var normalizedAccountName = request.AccountName.ToNormalized();
-		var user = await _context
-			.Set<SienarUser>()
-			.FirstOrDefaultAsync(
+		var user = await _context.Users.FirstOrDefaultAsync(
 				u => u.NormalizedEmail == normalizedAccountName ||
 				u.NormalizedUsername == normalizedAccountName);
 
 		// If the user doesn't exist, they don't need to know
 		// Just return success
-		if (user is null) return new(OperationStatus.Success, true);
+		if (user is null)
+		{
+			return new(OperationStatus.Success, true);
+		}
 
 		if (user.IsLockedOut())
 		{
