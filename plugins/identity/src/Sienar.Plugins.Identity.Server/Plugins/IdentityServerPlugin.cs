@@ -94,7 +94,7 @@ public class IdentityServerPlugin<TContext> : IPlugin
 			.AddAccessValidator<UserIsAdminAccessValidator<LockUserAccountRequest>, LockUserAccountRequest>()
 			.AddStatusProcessor<UnlockUserAccountProcessor<TContext>, UnlockUserAccountRequest>()
 			.AddAccessValidator<UserIsAdminAccessValidator<UnlockUserAccountRequest>, UnlockUserAccountRequest>()
-			.AddStatusProcessor<ManuallyConfirmUserAccountProcessor<TContext>, ManuallyConfirmUserAccountRequest>()
+			.AddStatusProcessor<ManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>()
 			.AddAccessValidator<UserIsAdminAccessValidator<ManuallyConfirmUserAccountRequest>, ManuallyConfirmUserAccountRequest>()
 			.AddStatusProcessor<ChangePasswordProcessor, ChangePasswordRequest>()
 			.AddStatusProcessor<ForgotPasswordProcessor, ForgotPasswordRequest>()

@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
@@ -10,22 +10,20 @@ using Sienar.Processors;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class ManuallyConfirmUserAccountProcessor<TContext>
+public class ManuallyConfirmUserAccountProcessor
 	: IStatusProcessor<ManuallyConfirmUserAccountRequest>
-	where TContext : DbContext
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 
 	public ManuallyConfirmUserAccountProcessor(
-		TContext context)
+		ISienarDbContext context)
 	{
 		_context = context;
 	}
 
 	public async Task<OperationResult<bool>> Process(ManuallyConfirmUserAccountRequest request)
 	{
-		var userSet = _context.Set<SienarUser>();
-		var user = await userSet.FindAsync(request.UserId);
+		var user = await _context.Users.FindAsync(request.UserId);
 		if (user is null)
 		{
 			return new(
@@ -42,8 +40,9 @@ public class ManuallyConfirmUserAccountProcessor<TContext>
 
 		user.EmailConfirmed = true;
 
-		userSet.Update(user);
+		_context.Users.Update(user);
 		await _context.SaveChangesAsync();
+
 		return new(
 			OperationStatus.Success,
 			true,
