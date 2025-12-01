@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
 using Sienar.Identity.Results;
@@ -12,15 +13,14 @@ using Sienar.Processors;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class GetLockoutReasonsProcessor<TContext>
+public class GetLockoutReasonsProcessor
 	: IProcessor<AccountLockoutRequest, AccountLockoutResult>
-	where TContext : DbContext
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly IVerificationCodeManager _vcManager;
 
 	public GetLockoutReasonsProcessor(
-		TContext context,
+		ISienarDbContext context,
 		IVerificationCodeManager vcManager)
 	{
 		_context = context;
@@ -30,8 +30,7 @@ public class GetLockoutReasonsProcessor<TContext>
 	public async Task<OperationResult<AccountLockoutResult?>> Process(
 		AccountLockoutRequest request)
 	{
-		var user = await _context
-			.Set<SienarUser>()
+		var user = await _context.Users
 			.Include(u => u.VerificationCodes)
 			.Include(u => u.LockoutReasons)
 			.FirstOrDefaultAsync(u => u.Id == request.UserId);
