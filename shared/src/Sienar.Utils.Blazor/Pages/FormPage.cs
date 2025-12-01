@@ -8,14 +8,14 @@ namespace Sienar.Pages;
 /// <summary>
 /// A component that provides time tracking and form resetting
 /// </summary>
-/// <typeparam name="TModel">The type of the form model</typeparam>
-public class FormPage<TModel> : ActionPage
-	where TModel : new()
+/// <typeparam name="T">The type of the form model</typeparam>
+public class FormPage<T> : ActionPage
+	where T : new()
 {
 	/// <summary>
 	/// The model used in requests sent from the page
 	/// </summary>
-	protected TModel Model = new();
+	protected T Model = new();
 
 	/// <summary>
 	/// The time when the form was started. Used for bot tracking purposes
@@ -27,7 +27,7 @@ public class FormPage<TModel> : ActionPage
 	/// </summary>
 	protected void Reset()
 	{
-		Model = new TModel();
+		Model = new T();
 		FormStartedTime = DateTime.Now;
 	}
 

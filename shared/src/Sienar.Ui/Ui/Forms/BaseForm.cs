@@ -12,9 +12,9 @@ namespace Sienar.Ui;
 /// <summary>
 /// The base form class
 /// </summary>
-/// <typeparam name="TModel">The type of the form's data model</typeparam>
-public class BaseForm<TModel> : FormPage<TModel>
-	where TModel : new()
+/// <typeparam name="T">The type of the form's data model</typeparam>
+public class BaseForm<T> : FormPage<T>
+	where T : new()
 {
 	/// <summary>
 	/// The color of the form
@@ -107,7 +107,7 @@ public class BaseForm<TModel> : FormPage<TModel>
 	/// The form fields to render
 	/// </summary>
 	[Parameter]
-	public required RenderFragment<TModel> Fields { get; set; }
+	public required RenderFragment<T> Fields { get; set; }
 
 	/// <summary>
 	/// The <see cref="IDelegateHandler"/>
