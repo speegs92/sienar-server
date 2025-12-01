@@ -110,7 +110,7 @@ public class IdentityServerPlugin<TContext> : IPlugin
 
 		// Email
 			.AddStatusProcessor<ConfirmAccountProcessor, ConfirmAccountRequest>()
-			.AddStatusProcessor<InitiateEmailChangeProcessor<TContext>, InitiateEmailChangeRequest>()
+			.AddStatusProcessor<InitiateEmailChangeProcessor, InitiateEmailChangeRequest>()
 			.AddStatusProcessor<PerformEmailChangeProcessor<TContext>, PerformEmailChangeRequest>()
 
 		// Personal data

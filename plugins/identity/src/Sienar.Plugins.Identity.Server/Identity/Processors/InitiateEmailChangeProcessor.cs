@@ -1,9 +1,9 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Email;
 using Sienar.Errors;
 using Sienar.Extensions;
@@ -15,10 +15,9 @@ using Sienar.Security;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class InitiateEmailChangeProcessor<TContext> : IStatusProcessor<InitiateEmailChangeRequest>
-	where TContext : DbContext
+public class InitiateEmailChangeProcessor : IStatusProcessor<InitiateEmailChangeRequest>
 {
-	private readonly TContext _context;
+	private readonly ISienarDbContext _context;
 	private readonly IPasswordManager _passwordManager;
 	private readonly IAccountEmailManager _emailManager;
 	private readonly IUserAccessor _userAccessor;
@@ -26,7 +25,7 @@ public class InitiateEmailChangeProcessor<TContext> : IStatusProcessor<InitiateE
 	private readonly LoginOptions _loginOptions;
 
 	public InitiateEmailChangeProcessor(
-		TContext context,
+		ISienarDbContext context,
 		IPasswordManager passwordManager,
 		IAccountEmailManager emailManager,
 		IUserAccessor userAccessor,
@@ -51,8 +50,7 @@ public class InitiateEmailChangeProcessor<TContext> : IStatusProcessor<InitiateE
 				message: CoreErrors.Account.LoginRequired);
 		}
 
-		var userSet = _context.Set<SienarUser>();
-		var user = await userSet.FindAsync(userId.Value);
+		var user = await _context.Users.FindAsync(userId.Value);
 		if (user is null)
 		{
 			return new(
@@ -81,7 +79,7 @@ public class InitiateEmailChangeProcessor<TContext> : IStatusProcessor<InitiateE
 			user.Email = request.Email;
 		}
 
-		userSet.Update(user);
+		_context.Users.Update(user);
 		await _context.SaveChangesAsync();
 
 		if (shouldSendConfirmationEmail)
