@@ -79,7 +79,7 @@ public static class SienarEfServiceCollectionExtensions
 		where TContext : DbContext
 	{
 		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
-		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity, TContext>>();
+		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 
 		return self;
@@ -154,7 +154,7 @@ public static class SienarEfServiceCollectionExtensions
 		}
 
 		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
-		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity, TContext>>();
+		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 
 		return self;
