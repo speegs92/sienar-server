@@ -20,7 +20,6 @@ public class CookieRestClient : IRestClient
 	private readonly HttpClient _client;
 	private readonly IEnumerable<IBeforeTask<RestClientRequest<CookieRestClient>>> _beforeActionHooks;
 	private readonly IEnumerable<IAfterTask<RestClientResponse<CookieRestClient>>> _afterActionHooks;
-	private readonly INotifier _notifier;
 	private readonly ILogger<CookieRestClient> _logger;
 	private readonly JsonSerializerOptions _jsonOptions;
 
@@ -29,13 +28,11 @@ public class CookieRestClient : IRestClient
 		HttpClient client,
 		IEnumerable<IBeforeTask<RestClientRequest<CookieRestClient>>> beforeActionHooks,
 		IEnumerable<IAfterTask<RestClientResponse<CookieRestClient>>> afterActionHooks,
-		INotifier notifier,
 		ILogger<CookieRestClient> logger)
 	{
 		_client = client;
 		_beforeActionHooks = beforeActionHooks;
 		_afterActionHooks = afterActionHooks;
-		_notifier = notifier;
 		_logger = logger;
 		_jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 	}
@@ -145,11 +142,6 @@ public class CookieRestClient : IRestClient
 					new WebResult<TResult?>(),
 					"Unable to read response from server");
 			}
-
-			foreach (var notification in parsedResponse.Notifications)
-            {
-            	_notifier.Notify(notification);
-            }
 
 			return CreateResult(result, parsedResponse);
 		}
