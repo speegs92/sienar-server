@@ -39,11 +39,26 @@ public class RestEntityDeleter<T> : ServiceBase, IEntityDeleter<T>
 	/// <inheritdoc />
 	public async Task<OperationResult<bool>> Delete(int id)
 	{
-		bool wasSuccessful;
+		OperationResult<bool> result;
 		try
 		{
 			var endpoint = _endpointGenerator.GenerateDeleteUrl(id);
-			wasSuccessful = (await _client.Delete<bool?>(endpoint)).Result ?? false;
+			var innerResult = await _client.Delete<bool>(endpoint);
+			var notifications = innerResult.Result?.Notifications;
+			var hasNotifications = notifications?.Length > 0;
+
+			if (hasNotifications)
+			{
+				foreach (var n in notifications!)
+				{
+					Notifier.Notify(n);
+				}
+			}
+
+			result = new OperationResult<bool>(
+				innerResult.Status,
+				innerResult.Result?.Result ?? false,
+				hasNotifications ? null : innerResult.Message);
 		}
 		catch (Exception e)
 		{
@@ -54,17 +69,6 @@ public class RestEntityDeleter<T> : ServiceBase, IEntityDeleter<T>
 				StatusMessages.Crud<T>.DeleteFailed()));
 		}
 
-		if (!wasSuccessful)
-		{
-			return NotifyOfResult(new OperationResult<bool>(
-				OperationStatus.Unknown,
-				false,
-				StatusMessages.Crud<T>.DeleteFailed()));
-		}
-
-		return NotifyOfResult(new OperationResult<bool>(
-			OperationStatus.Success,
-			true,
-			StatusMessages.Crud<T>.DeleteSuccessful()));
+		return NotifyOfResult(result);
 	}
 }
