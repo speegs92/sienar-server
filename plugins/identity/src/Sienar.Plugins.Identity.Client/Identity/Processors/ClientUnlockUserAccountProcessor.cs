@@ -1,7 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Sienar.Data;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
 using Sienar.Processors;
@@ -12,12 +11,17 @@ namespace Sienar.Identity.Processors;
 public class ClientUnlockUserAccountProcessor : IStatusProcessor<UnlockUserAccountRequest>
 {
 	private readonly IRestClient _client;
+	private readonly IOperationResultNotifier _notifier;
 
-	public ClientUnlockUserAccountProcessor(IRestClient client)
+	public ClientUnlockUserAccountProcessor(
+		IRestClient client,
+		IOperationResultNotifier notifier)
 	{
 		_client = client;
+		_notifier = notifier;
 	}
 
-	public Task<OperationResult<bool>> Process(UnlockUserAccountRequest request)
-		=> _client.Delete<bool>("users/lock", request);
+	public async Task<OperationResult<bool>> Process(UnlockUserAccountRequest request)
+		=> _notifier.HandleWebResult(
+			await _client.Delete<bool>("users/lock", request));
 }
