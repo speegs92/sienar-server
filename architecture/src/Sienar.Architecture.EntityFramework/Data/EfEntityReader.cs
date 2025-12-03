@@ -8,7 +8,6 @@ using Sienar.Hooks;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 using Sienar.Security;
-using Sienar.Services;
 
 namespace Sienar.Data;
 
@@ -16,7 +15,7 @@ namespace Sienar.Data;
 /// An implementation of <see cref="IEntityReader{TEntity}"/> which reads entities from an EntityFramework <see cref="DbContext"/>
 /// </summary>
 /// <typeparam name="TEntity">The type of the entity to read</typeparam>
-public class EfEntityReader<TEntity> : ServiceBase, IEntityReader<TEntity>
+public class EfEntityReader<TEntity> : IEntityReader<TEntity>
 	where TEntity : EntityBase
 {
 	private readonly IDbContext _context;
@@ -24,21 +23,22 @@ public class EfEntityReader<TEntity> : ServiceBase, IEntityReader<TEntity>
 	private readonly ILogger<EfEntityReader<TEntity>> _logger;
 	private readonly IAccessValidationRunner<TEntity> _accessValidationRunner;
 	private readonly IAfterActionRunner<TEntity> _afterActionRunner;
+	private readonly IOperationResultNotifier _notifier;
 
 	public EfEntityReader(
-		INotifier notifier,
 		IDbContext context,
 		IEfFilterProcessor<TEntity> filterProcessor,
 		ILogger<EfEntityReader<TEntity>> logger,
 		IAccessValidationRunner<TEntity> accessValidationRunner,
-		IAfterActionRunner<TEntity> afterActionRunner)
-		: base(notifier)
+		IAfterActionRunner<TEntity> afterActionRunner,
+		IOperationResultNotifier notifier)
 	{
 		_context = context;
 		_filterProcessor = filterProcessor;
 		_logger = logger;
 		_accessValidationRunner = accessValidationRunner;
 		_afterActionRunner = afterActionRunner;
+		_notifier = notifier;
 	}
 
 	/// <inheritdoc />
@@ -61,7 +61,7 @@ public class EfEntityReader<TEntity> : ServiceBase, IEntityReader<TEntity>
 		catch (Exception e)
 		{
 			_logger.LogError(e, StatusMessages.Database.QueryFailed);
-			return NotifyOfResult(new OperationResult<TEntity?>(
+			return _notifier.HandleOperationResult(new OperationResult<TEntity?>(
 				OperationStatus.Unknown,
 				null,
 				StatusMessages.Crud<TEntity>.ReadSingleFailed()));
@@ -69,7 +69,7 @@ public class EfEntityReader<TEntity> : ServiceBase, IEntityReader<TEntity>
 
 		if (entity is null)
 		{
-			return NotifyOfResult(new OperationResult<TEntity?>(
+			return _notifier.HandleOperationResult(new OperationResult<TEntity?>(
 				OperationStatus.NotFound,
 				null,
 				StatusMessages.Crud<TEntity>.NotFound(id)));
@@ -79,14 +79,14 @@ public class EfEntityReader<TEntity> : ServiceBase, IEntityReader<TEntity>
 		var accessValidationResult = await _accessValidationRunner.Validate(entity, ActionType.Read);
 		if (!accessValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<TEntity?>(
+			return _notifier.HandleOperationResult(new OperationResult<TEntity?>(
 				OperationStatus.Unauthorized,
 				null,
 				StatusMessages.Crud<TEntity>.NoPermission()));
 		}
 
 		await _afterActionRunner.Run(entity, ActionType.Read);
-		return NotifyOfResult(new OperationResult<TEntity?>(result: entity));
+		return _notifier.HandleOperationResult(new OperationResult<TEntity?>(result: entity));
 	}
 
 	/// <inheritdoc />
@@ -119,7 +119,7 @@ public class EfEntityReader<TEntity> : ServiceBase, IEntityReader<TEntity>
 		catch (Exception e)
 		{
 			_logger.LogError(e, StatusMessages.Database.QueryFailed);
-			return NotifyOfResult(new OperationResult<PagedQueryResult<TEntity>>(
+			return _notifier.HandleOperationResult(new OperationResult<PagedQueryResult<TEntity>>(
 				OperationStatus.Unknown,
 				new PagedQueryResult<TEntity>(),
 				StatusMessages.Crud<TEntity>.ReadMultipleFailed()));
@@ -130,7 +130,7 @@ public class EfEntityReader<TEntity> : ServiceBase, IEntityReader<TEntity>
 			await _afterActionRunner.Run(entity, ActionType.ReadAll);
 		}
 
-		return NotifyOfResult(new OperationResult<PagedQueryResult<TEntity>>(result: queryResult));
+		return _notifier.HandleOperationResult(new OperationResult<PagedQueryResult<TEntity>>(result: queryResult));
 	}
 
 	private IQueryable<TEntity> ProcessFilter(

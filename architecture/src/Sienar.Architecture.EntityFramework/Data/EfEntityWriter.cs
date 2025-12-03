@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Sienar.Hooks;
 using Sienar.Infrastructure;
 using Sienar.Security;
-using Sienar.Services;
 
 namespace Sienar.Data;
 
@@ -13,8 +12,7 @@ namespace Sienar.Data;
 /// An implementation of <see cref="IEntityWriter{TEntity}"/> which writes entities to an EntityFramework <see cref="DbContext"/>
 /// </summary>
 /// <typeparam name="TEntity">The type of the entity to write</typeparam>
-public class EfEntityWriter<TEntity>
-	: ServiceBase, IEntityWriter<TEntity>
+public class EfEntityWriter<TEntity> : IEntityWriter<TEntity>
 	where TEntity : EntityBase
 {
 	private readonly IDbContext _context;
@@ -23,26 +21,26 @@ public class EfEntityWriter<TEntity>
 	private readonly IStateValidationRunner<TEntity> _stateValidationRunner;
 	private readonly IBeforeActionRunner<TEntity> _beforeActionRunner;
 	private readonly IAfterActionRunner<TEntity> _afterActionRunner;
+	private readonly IOperationResultNotifier _notifier;
 
 	/// <summary>
 	/// Creates a new instance of <c>EfEntityWriter</c>
 	/// </summary>
-	/// <param name="notifier">The app notifier</param>
 	/// <param name="context">The database context</param>
 	/// <param name="logger">The logger</param>
 	/// <param name="accessValidationRunner">The access validation runner</param>
 	/// <param name="stateValidationRunner">The state validation runner</param>
 	/// <param name="beforeActionRunner">The before-hook action runner</param>
 	/// <param name="afterActionRunner">The after-hook action runner</param>
+	/// <param name="notifier">The operation result notifier</param>
 	public EfEntityWriter(
-		INotifier notifier,
 		IDbContext context,
 		ILogger<EfEntityWriter<TEntity>> logger,
 		IAccessValidationRunner<TEntity> accessValidationRunner,
 		IStateValidationRunner<TEntity> stateValidationRunner,
 		IBeforeActionRunner<TEntity> beforeActionRunner,
-		IAfterActionRunner<TEntity> afterActionRunner)
-		: base(notifier)
+		IAfterActionRunner<TEntity> afterActionRunner,
+		IOperationResultNotifier notifier)
 	{
 		_context = context;
 		_logger = logger;
@@ -50,6 +48,7 @@ public class EfEntityWriter<TEntity>
 		_stateValidationRunner = stateValidationRunner;
 		_beforeActionRunner = beforeActionRunner;
 		_afterActionRunner = afterActionRunner;
+		_notifier = notifier;
 	}
 
 	/// <inheritdoc />
@@ -61,7 +60,7 @@ public class EfEntityWriter<TEntity>
 			ActionType.Create);
 		if (!accessValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int?>(
 				OperationStatus.Unauthorized,
 				null,
 				StatusMessages.Crud<TEntity>.NoPermission()));
@@ -73,7 +72,7 @@ public class EfEntityWriter<TEntity>
 			ActionType.Create);
 		if (!stateValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int?>(
 				OperationStatus.Unprocessable,
 				null,
 				stateValidationResult.Message ?? StatusMessages.Crud<TEntity>.CreateFailed()));
@@ -83,7 +82,7 @@ public class EfEntityWriter<TEntity>
 		var beforeHooksResult = await _beforeActionRunner.Run(model, ActionType.Create);
 		if (!beforeHooksResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int?>(
 				OperationStatus.Unknown,
 				null,
 				beforeHooksResult.Message ?? StatusMessages.Crud<TEntity>.CreateFailed()));
@@ -99,7 +98,7 @@ public class EfEntityWriter<TEntity>
 		catch (Exception e)
 		{
 			_logger.LogError(e, StatusMessages.Database.QueryFailed);
-			return NotifyOfResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int?>(
 				OperationStatus.Unknown,
 				null,
 				StatusMessages.Crud<TEntity>.CreateFailed()));
@@ -108,7 +107,7 @@ public class EfEntityWriter<TEntity>
 		// Run after hooks
 		await _afterActionRunner.Run(model, ActionType.Create);
 
-		return NotifyOfResult(new OperationResult<int?>(
+		return _notifier.HandleOperationResult(new OperationResult<int?>(
 			OperationStatus.Success,
 			model.Id,
 			StatusMessages.Crud<TEntity>.CreateSuccessful()));
@@ -123,7 +122,7 @@ public class EfEntityWriter<TEntity>
 			ActionType.Update);
 		if (!accessValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<bool>(
+			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unauthorized,
 				false,
 				StatusMessages.Crud<TEntity>.NoPermission()));
@@ -135,7 +134,7 @@ public class EfEntityWriter<TEntity>
 			ActionType.Update);
 		if (!stateValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<bool>(
+			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unprocessable,
 				false,
 				stateValidationResult.Message ?? StatusMessages.Crud<TEntity>.UpdateFailed()));
@@ -145,7 +144,7 @@ public class EfEntityWriter<TEntity>
 		var beforeHooksResult = await _beforeActionRunner.Run(model, ActionType.Update);
 		if (!beforeHooksResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<bool>(
+			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unknown,
 				false,
 				beforeHooksResult.Message ?? StatusMessages.Crud<TEntity>.UpdateFailed()));
@@ -161,7 +160,7 @@ public class EfEntityWriter<TEntity>
 		catch (Exception e)
 		{
 			_logger.LogError(e, StatusMessages.Database.QueryFailed);
-			return NotifyOfResult(new OperationResult<bool>(
+			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unknown,
 				false,
 				StatusMessages.Crud<TEntity>.UpdateFailed()));
@@ -170,7 +169,7 @@ public class EfEntityWriter<TEntity>
 		// Run after hooks
 		await _afterActionRunner.Run(model, ActionType.Update);
 
-		return NotifyOfResult(new OperationResult<bool>(
+		return _notifier.HandleOperationResult(new OperationResult<bool>(
 			OperationStatus.Success,
 			true,
 			StatusMessages.Crud<TEntity>.UpdateSuccessful()));

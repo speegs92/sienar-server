@@ -12,7 +12,7 @@ using Sienar.Security;
 namespace Sienar.Services;
 
 /// <exclude />
-public class DefaultStatusService<TRequest> : ServiceBase, IStatusService<TRequest>
+public class DefaultStatusService<TRequest> : IStatusService<TRequest>
 	where TRequest : IRequest
 {
 	private readonly ILogger<DefaultStatusService<TRequest>> _logger;
@@ -22,6 +22,7 @@ public class DefaultStatusService<TRequest> : ServiceBase, IStatusService<TReque
 	private readonly IBeforeActionRunner<TRequest> _beforeHooks;
 	private readonly IAfterActionRunner<TRequest> _afterHooks;
 	private readonly IStatusProcessor<TRequest> _processor;
+	private readonly IOperationResultNotifier _notifier;
 
 	public DefaultStatusService(
 		ILogger<DefaultStatusService<TRequest>> logger,
@@ -31,8 +32,7 @@ public class DefaultStatusService<TRequest> : ServiceBase, IStatusService<TReque
 		IBeforeActionRunner<TRequest> beforeHooks,
 		IAfterActionRunner<TRequest> afterHooks,
 		IStatusProcessor<TRequest> processor,
-		INotifier notifier)
-		: base(notifier)
+		IOperationResultNotifier notifier)
 	{
 		_logger = logger;
 		_botDetector = botDetector;
@@ -41,6 +41,7 @@ public class DefaultStatusService<TRequest> : ServiceBase, IStatusService<TReque
 		_beforeHooks = beforeHooks;
 		_afterHooks = afterHooks;
 		_processor = processor;
+		_notifier = notifier;
 	}
 
 	/// <inheritdoc />
@@ -48,28 +49,28 @@ public class DefaultStatusService<TRequest> : ServiceBase, IStatusService<TReque
 	{
 		if (request is Honeypot honeypot && _botDetector.IsSpambot(honeypot))
 		{
-			return NotifyOfResult(new OperationResult<bool>(result: true));
+			return _notifier.HandleOperationResult(new OperationResult<bool>(result: true));
 		}
 
 		// Run access validation
 		var result = await _accessValidator.Validate(request, ActionType.Status);
 		if (!result.Result)
 		{
-			return NotifyOfResult(result);
+			return _notifier.HandleOperationResult(result);
 		}
 
 		// Run state validation
 		result = await _stateValidator.Validate(request, ActionType.Status);
 		if (!result.Result)
 		{
-			return NotifyOfResult(result);
+			return _notifier.HandleOperationResult(result);
 		}
 
 		// Run before hooks
 		result = await _beforeHooks.Run(request, ActionType.Status);
 		if (!result.Result)
 		{
-			return NotifyOfResult(result);
+			return _notifier.HandleOperationResult(result);
 		}
 
 		try
@@ -79,7 +80,7 @@ public class DefaultStatusService<TRequest> : ServiceBase, IStatusService<TReque
 		catch (Exception e)
 		{
 			_logger.LogError(e, "{type} failed to process", typeof(IStatusProcessor<TRequest>));
-			return NotifyOfResult(new OperationResult<bool>(OperationStatus.Unknown));
+			return _notifier.HandleOperationResult(new OperationResult<bool>(OperationStatus.Unknown));
 		}
 
 		if (result.Status is OperationStatus.Success)
@@ -87,6 +88,6 @@ public class DefaultStatusService<TRequest> : ServiceBase, IStatusService<TReque
 			await _afterHooks.Run(request, ActionType.Status);
 		}
 
-		return NotifyOfResult(result);
+		return _notifier.HandleOperationResult(result);
 	}
 }

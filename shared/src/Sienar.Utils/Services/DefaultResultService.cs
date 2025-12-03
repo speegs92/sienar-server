@@ -3,7 +3,6 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Sienar.Data;
 using Sienar.Hooks;
 using Sienar.Infrastructure;
 using Sienar.Processors;
@@ -13,26 +12,27 @@ namespace Sienar.Services;
 
 /// <exclude />
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
-public class DefaultResultService<TResult> : ServiceBase, IResultService<TResult>
+public class DefaultResultService<TResult> : IResultService<TResult>
 	where TResult : IResult
 {
 	private readonly ILogger<DefaultResultService<TResult>> _logger;
 	private readonly IAccessValidationRunner<TResult> _accessValidator;
 	private readonly IAfterActionRunner<TResult> _afterHooks;
 	private readonly IResultProcessor<TResult> _processor;
+	private readonly IOperationResultNotifier _notifier;
 
 	public DefaultResultService(
 		ILogger<DefaultResultService<TResult>> logger,
 		IAccessValidationRunner<TResult> accessValidator,
 		IAfterActionRunner<TResult> afterHooks,
 		IResultProcessor<TResult> processor,
-		INotifier notifier)
-		: base(notifier)
+		IOperationResultNotifier notifier)
 	{
 		_logger = logger;
 		_accessValidator = accessValidator;
 		_afterHooks = afterHooks;
 		_processor = processor;
+		_notifier = notifier;
 	}
 
 	public virtual async Task<OperationResult<TResult?>> Execute()
@@ -41,7 +41,7 @@ public class DefaultResultService<TResult> : ServiceBase, IResultService<TResult
 		var accessValidationResult = await _accessValidator.Validate(default, ActionType.Result);
 		if (!accessValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<TResult?>(
+			return _notifier.HandleOperationResult(new OperationResult<TResult?>(
 				accessValidationResult.Status,
 				default,
 				accessValidationResult.Message));
@@ -55,7 +55,7 @@ public class DefaultResultService<TResult> : ServiceBase, IResultService<TResult
 		catch (Exception e)
 		{
 			_logger.LogError(e, "{type} failed to process", typeof(IResultProcessor<TResult>));
-			return NotifyOfResult(new OperationResult<TResult?>(OperationStatus.Unknown));
+			return _notifier.HandleOperationResult(new OperationResult<TResult?>(OperationStatus.Unknown));
 		}
 
 		if (result.Status is OperationStatus.Success && result.Result is not null)
@@ -63,6 +63,6 @@ public class DefaultResultService<TResult> : ServiceBase, IResultService<TResult
 			await _afterHooks.Run(result.Result, ActionType.Result);
 		}
 
-		return NotifyOfResult(result);
+		return _notifier.HandleOperationResult(result);
 	}
 }

@@ -12,7 +12,7 @@ using Sienar.Security;
 namespace Sienar.Services;
 
 /// <exclude />
-public class DefaultService<TRequest, TResult> : ServiceBase, IService<TRequest, TResult>
+public class DefaultService<TRequest, TResult> : IService<TRequest, TResult>
 	where TRequest : IRequest
 	where TResult : IResult
 {
@@ -23,6 +23,7 @@ public class DefaultService<TRequest, TResult> : ServiceBase, IService<TRequest,
 	private readonly IBeforeActionRunner<TRequest> _beforeHooks;
 	private readonly IAfterActionRunner<TRequest> _afterHooks;
 	private readonly IProcessor<TRequest, TResult> _processor;
+	private readonly IOperationResultNotifier _notifier;
 
 	public DefaultService(
 		ILogger<DefaultService<TRequest, TResult>> logger,
@@ -32,8 +33,7 @@ public class DefaultService<TRequest, TResult> : ServiceBase, IService<TRequest,
 		IBeforeActionRunner<TRequest> beforeHooks,
 		IAfterActionRunner<TRequest> afterHooks,
 		IProcessor<TRequest, TResult> processor,
-		INotifier notifier)
-		: base(notifier)
+		IOperationResultNotifier notifier)
 	{
 		_logger = logger;
 		_botDetector = botDetector;
@@ -42,20 +42,21 @@ public class DefaultService<TRequest, TResult> : ServiceBase, IService<TRequest,
 		_beforeHooks = beforeHooks;
 		_afterHooks = afterHooks;
 		_processor = processor;
+		_notifier = notifier;
 	}
 
 	public virtual async Task<OperationResult<TResult?>> Execute(TRequest request)
 	{
 		if (request is Honeypot honeypot && _botDetector.IsSpambot(honeypot))
 		{
-			return NotifyOfResult(new OperationResult<TResult?>());
+			return _notifier.HandleOperationResult(new OperationResult<TResult?>());
 		}
 
 		// Run access validation
 		var accessValidationResult = await _accessValidator.Validate(request, ActionType.Action);
 		if (!accessValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<TResult?>(
+			return _notifier.HandleOperationResult(new OperationResult<TResult?>(
 				accessValidationResult.Status,
 				default,
 				accessValidationResult.Message));
@@ -65,7 +66,7 @@ public class DefaultService<TRequest, TResult> : ServiceBase, IService<TRequest,
 		var stateValidationResult = await _stateValidator.Validate(request, ActionType.Action);
 		if (!stateValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<TResult?>(
+			return _notifier.HandleOperationResult(new OperationResult<TResult?>(
 				stateValidationResult.Status,
 				default,
 				stateValidationResult.Message));
@@ -75,7 +76,7 @@ public class DefaultService<TRequest, TResult> : ServiceBase, IService<TRequest,
 		var beforeHooksResult = await _beforeHooks.Run(request, ActionType.Action);
 		if (!beforeHooksResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<TResult?>(
+			return _notifier.HandleOperationResult(new OperationResult<TResult?>(
 				beforeHooksResult.Status,
 				default,
 				beforeHooksResult.Message));
@@ -89,7 +90,7 @@ public class DefaultService<TRequest, TResult> : ServiceBase, IService<TRequest,
 		catch (Exception e)
 		{
 			_logger.LogError(e, "{type} failed to process", typeof(IProcessor<TRequest, TResult>));
-			return NotifyOfResult(new OperationResult<TResult?>(OperationStatus.Unknown));
+			return _notifier.HandleOperationResult(new OperationResult<TResult?>(OperationStatus.Unknown));
 		}
 
 		if (result.Status is OperationStatus.Success)
@@ -97,6 +98,6 @@ public class DefaultService<TRequest, TResult> : ServiceBase, IService<TRequest,
 			await _afterHooks.Run(request, ActionType.Action);
 		}
 
-		return NotifyOfResult(result);
+		return _notifier.HandleOperationResult(result);
 	}
 }
