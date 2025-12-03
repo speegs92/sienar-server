@@ -15,5 +15,5 @@ public class WebResult<TResult>
 	/// <summary>
 	/// Notifications generated during the request
 	/// </summary>
-	public required Notification[] Notifications { get; set; }
+	public Notification[] Notifications { get; set; } = [];
 }

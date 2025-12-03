@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Sienar.Configuration;
 using Sienar.Data;
 using Sienar.Hooks;
+using Sienar.Infrastructure;
 using Sienar.Menus;
 using Sienar.Processors;
 using Sienar.Security;
@@ -37,6 +38,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		self.TryAddScoped<IMenuGenerator, DefaultMenuGenerator>();
 		self.TryAddScoped<IBotDetector, DefaultBotDetector>();
 		self.TryAddScoped(typeof(IMapper<,>), typeof(DefaultMapper<,>));
+		self.TryAddScoped<IOperationResultNotifier, DefaultOperationResultNotifier>();
 
 		return self;
 	}

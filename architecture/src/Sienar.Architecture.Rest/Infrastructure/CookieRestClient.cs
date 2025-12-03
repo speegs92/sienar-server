@@ -20,7 +20,6 @@ public class CookieRestClient : IRestClient
 	private readonly HttpClient _client;
 	private readonly IEnumerable<IBeforeTask<RestClientRequest<CookieRestClient>>> _beforeActionHooks;
 	private readonly IEnumerable<IAfterTask<RestClientResponse<CookieRestClient>>> _afterActionHooks;
-	private readonly INotifier _notifier;
 	private readonly ILogger<CookieRestClient> _logger;
 	private readonly JsonSerializerOptions _jsonOptions;
 
@@ -29,13 +28,11 @@ public class CookieRestClient : IRestClient
 		HttpClient client,
 		IEnumerable<IBeforeTask<RestClientRequest<CookieRestClient>>> beforeActionHooks,
 		IEnumerable<IAfterTask<RestClientResponse<CookieRestClient>>> afterActionHooks,
-		INotifier notifier,
 		ILogger<CookieRestClient> logger)
 	{
 		_client = client;
 		_beforeActionHooks = beforeActionHooks;
 		_afterActionHooks = afterActionHooks;
-		_notifier = notifier;
 		_logger = logger;
 		_jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 	}
@@ -49,7 +46,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	public Task<OperationResult<TResult?>> Get<TResult>(
+	public Task<OperationResult<WebResult<TResult?>>> Get<TResult>(
 		string endpoint,
 		object? input = null)
 		=> SendRequest<TResult>(endpoint, input, HttpMethod.Get);
@@ -61,7 +58,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	public Task<OperationResult<TResult?>> Post<TResult>(
+	public Task<OperationResult<WebResult<TResult?>>> Post<TResult>(
 		string endpoint,
 		object input)
 		=> SendRequest<TResult>(endpoint, input, HttpMethod.Post);
@@ -73,7 +70,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	public Task<OperationResult<TResult?>> Put<TResult>(
+	public Task<OperationResult<WebResult<TResult?>>> Put<TResult>(
 		string endpoint,
 		object input)
 		=> SendRequest<TResult>(endpoint, input, HttpMethod.Put);
@@ -85,7 +82,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	public Task<OperationResult<TResult?>> Patch<TResult>(
+	public Task<OperationResult<WebResult<TResult?>>> Patch<TResult>(
 		string endpoint,
 		object input)
 		=> SendRequest<TResult>(endpoint, input, HttpMethod.Patch);
@@ -97,7 +94,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	public Task<OperationResult<TResult?>> Delete<TResult>(
+	public Task<OperationResult<WebResult<TResult?>>> Delete<TResult>(
 		string endpoint,
 		object? input = null)
 		=> SendRequest<TResult>(endpoint, input, HttpMethod.Delete);
@@ -126,7 +123,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="method">the HTTP method</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>an operation result wrapping around the result</returns>
-	protected async Task<OperationResult<TResult?>> SendRequest<TResult>(
+	protected async Task<OperationResult<WebResult<TResult?>>> SendRequest<TResult>(
 		string endpoint,
 		object? input = null,
 		HttpMethod? method = null)
@@ -136,20 +133,15 @@ public class CookieRestClient : IRestClient
 		{
 			result = await SendRaw(endpoint, input, method);
 
-			var parsedResponse = await result.Content.ReadFromJsonAsync<WebResult<TResult>>(_jsonOptions);
+			var parsedResponse = await result.Content.ReadFromJsonAsync<WebResult<TResult?>>(_jsonOptions);
 
 			if (parsedResponse is null)
 			{
-				return new OperationResult<TResult?>(
+				return new OperationResult<WebResult<TResult?>>(
 					OperationStatus.Unknown,
-					default,
+					new WebResult<TResult?>(),
 					"Unable to read response from server");
 			}
-
-			foreach (var notification in parsedResponse.Notifications)
-            {
-            	_notifier.Notify(notification);
-            }
 
 			return CreateResult(result, parsedResponse);
 		}
@@ -243,10 +235,12 @@ public class CookieRestClient : IRestClient
 		return new(sb.ToString(), UriKind.Relative);
 	}
 
-	private OperationResult<TResult?> HandleException<TResult>(
+	private OperationResult<WebResult<TResult?>> HandleException<TResult>(
 		Exception e,
 		HttpResponseMessage? response)
 	{
+		string errorMessage;
+
 		// ASP.NET doesn't return a message body on 401/403 errors by default
 		// So if the framework returns these, then the HTTP response will not
 		// be null, and the status code will be either 401 or 403
@@ -254,11 +248,17 @@ public class CookieRestClient : IRestClient
 		// happened, just return unauthorized and skip logging errors
 		if (response?.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden)
 		{
-			return new OperationResult<TResult?>(OperationStatus.Unauthorized);
+			errorMessage = response.StatusCode is HttpStatusCode.Unauthorized
+				? StatusMessages.General.Unauthorized
+				: StatusMessages.General.Forbidden;
+
+			return new OperationResult<WebResult<TResult?>>(
+				OperationStatus.Unauthorized,
+				new WebResult<TResult?>(),
+				errorMessage);
 		}
 
 		string logMessage;
-		string errorMessage;
 		switch (e)
 		{
 			case HttpRequestException:
@@ -276,16 +276,19 @@ public class CookieRestClient : IRestClient
 		}
 
 		_logger.LogError(e, "{}", logMessage);
-		return new(OperationStatus.Unknown, default, errorMessage);
+		return new(
+			OperationStatus.Unknown,
+			new WebResult<TResult?>(),
+			errorMessage);
 	}
 
-	private OperationResult<TResult?> CreateResult<TResult>(
+	private OperationResult<WebResult<TResult?>> CreateResult<TResult>(
 		HttpResponseMessage message,
-		WebResult<TResult> parsedResult)
+		WebResult<TResult?> parsedResult)
 	{
 		if (message.IsSuccessStatusCode)
 		{
-			return new OperationResult<TResult?>(result: parsedResult.Result);
+			return new OperationResult<WebResult<TResult?>>(result: parsedResult);
 		}
 
 		string logMessage;
@@ -324,11 +327,9 @@ public class CookieRestClient : IRestClient
 
 		_logger.LogError("{}", logMessage);
 
-		return new OperationResult<TResult?>(
+		return new OperationResult<WebResult<TResult?>>(
 			status,
-			parsedResult.Result,
-			parsedResult.Notifications.Length == 0
-				? errorMessage
-				: null);
+			parsedResult,
+			errorMessage);
 	}
 }

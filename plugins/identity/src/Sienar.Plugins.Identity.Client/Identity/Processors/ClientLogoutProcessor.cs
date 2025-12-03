@@ -1,7 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Sienar.Data;
 using Sienar.Extensions;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
@@ -14,13 +13,16 @@ namespace Sienar.Identity.Processors;
 public class ClientLogoutProcessor : IStatusProcessor<LogoutRequest>
 {
 	private readonly IRestClient _client;
+	private readonly IOperationResultNotifier _notifier;
 	private readonly SienarAuthenticationStateProvider _authStateProvider;
 
 	public ClientLogoutProcessor(
 		IRestClient client,
+		IOperationResultNotifier notifier,
 		SienarAuthenticationStateProvider authStateProvider)
 	{
 		_client = client;
+		_notifier = notifier;
 		_authStateProvider = authStateProvider;
 	}
 
@@ -34,6 +36,6 @@ public class ClientLogoutProcessor : IStatusProcessor<LogoutRequest>
 			await _client.RefreshCsrfToken();
 		}
 
-		return loggedOutResult;
+		return _notifier.HandleWebResult(loggedOutResult);
 	}
 }

@@ -1,7 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Sienar.Data;
 using Sienar.Extensions;
 using Sienar.Identity.Requests;
 using Sienar.Identity.Results;
@@ -14,13 +13,16 @@ namespace Sienar.Identity.Processors;
 public class ClientLoginProcessor : IProcessor<LoginRequest, LoginResult>
 {
 	private readonly IRestClient _client;
+	private readonly IOperationResultNotifier _notifier;
 	private readonly IResultProcessor<AccountDataResult> _loadUserDataProcessor;
 
 	public ClientLoginProcessor(
 		IRestClient client,
+		IOperationResultNotifier notifier,
 		IResultProcessor<AccountDataResult> loadUserDataProcessor)
 	{
 		_client = client;
+		_notifier = notifier;
 		_loadUserDataProcessor = loadUserDataProcessor;
 	}
 
@@ -34,6 +36,6 @@ public class ClientLoginProcessor : IProcessor<LoginRequest, LoginResult>
 			await _client.RefreshCsrfToken();
 		}
 
-		return result;
+		return _notifier.HandleWebResult(result);
 	}
 }

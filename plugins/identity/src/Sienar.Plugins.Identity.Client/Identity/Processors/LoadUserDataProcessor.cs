@@ -2,7 +2,6 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using Sienar.Data;
 using Sienar.Hooks;
 using Sienar.Identity.Results;
 using Sienar.Infrastructure;
@@ -17,15 +16,18 @@ public class LoadUserDataProcessor
 	: IResultProcessor<AccountDataResult>, IBeforeTask<SienarStartupActor>
 {
 	private readonly IRestClient _client;
+	private readonly IOperationResultNotifier _notifier;
 	private readonly IUserClaimsFactory _claimsFactory;
 	private readonly SienarAuthenticationStateProvider _authStateProvider;
 
 	public LoadUserDataProcessor(
 		IRestClient client,
+		IOperationResultNotifier notifier,
 		IUserClaimsFactory claimsFactory,
 		SienarAuthenticationStateProvider authStateProvider)
 	{
 		_client = client;
+		_notifier = notifier;
 		_claimsFactory = claimsFactory;
 		_authStateProvider = authStateProvider;
 	}
@@ -38,17 +40,18 @@ public class LoadUserDataProcessor
 
 	private async Task<OperationResult<AccountDataResult?>> LoadUserData()
 	{
-		var userResult = await _client.Get<AccountDataResult>("account");
+		var result = await _client.Get<AccountDataResult>("account");
 
-		if (userResult.Status is not OperationStatus.Success)
+		if (result.Status is not OperationStatus.Success)
 		{
-			return userResult;
+			return _notifier.HandleWebResult(result);
 		}
 
+		var userResult = result.Result!.Result!;
 		var user = new SienarUser
 		{
-			Username = userResult.Result!.Username,
-			Roles = userResult.Result!.Roles
+			Username = userResult.Username,
+			Roles = userResult.Roles
 				.Select(r => new SienarRole
 				{
 					Name = r
@@ -59,6 +62,6 @@ public class LoadUserDataProcessor
 		var userClaims = _claimsFactory.CreateClaims(user);
 		_authStateProvider.NotifyUserAuthentication(userClaims, true);
 
-		return userResult;
+		return _notifier.HandleWebResult(result);
 	}
 }

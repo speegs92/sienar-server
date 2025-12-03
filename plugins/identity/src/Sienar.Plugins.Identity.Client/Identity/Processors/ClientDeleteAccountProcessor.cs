@@ -1,7 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Sienar.Data;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
 using Sienar.Processors;
@@ -13,13 +12,16 @@ namespace Sienar.Identity.Processors;
 public class ClientDeleteAccountProcessor : IStatusProcessor<DeleteAccountRequest>
 {
 	private readonly IRestClient _client;
+	private readonly IOperationResultNotifier _notifier;
 	private readonly SienarAuthenticationStateProvider _authStateProvider;
 
 	public ClientDeleteAccountProcessor(
 		IRestClient client,
+		IOperationResultNotifier notifier,
 		SienarAuthenticationStateProvider authStateProvider)
 	{
 		_client = client;
+		_notifier = notifier;
 		_authStateProvider = authStateProvider;
 	}
 
@@ -32,6 +34,6 @@ public class ClientDeleteAccountProcessor : IStatusProcessor<DeleteAccountReques
 			_authStateProvider.NotifyUserAuthentication([], false);
 		}
 
-		return result;
+		return _notifier.HandleWebResult(result);
 	}
 }
