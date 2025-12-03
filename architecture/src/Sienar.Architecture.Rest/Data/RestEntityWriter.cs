@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Sienar.Hooks;
 using Sienar.Infrastructure;
 using Sienar.Security;
-using Sienar.Services;
 
 namespace Sienar.Data;
 
@@ -12,13 +11,13 @@ namespace Sienar.Data;
 /// An implementation of <see cref="IEntityWriter{TDto}"/> which writes entities to a REST endpoint
 /// </summary>
 /// <typeparam name="T">The type of the entity to write</typeparam>
-public class RestEntityWriter<T> : ServiceBase, IEntityWriter<T>
+public class RestEntityWriter<T> : IEntityWriter<T>
 	where T : EntityBase
 {
 	private readonly IRestClient _client;
 	private readonly ICrudEndpointGenerator<T> _endpointGenerator;
-	private readonly ILogger<RestEntityWriter<
-T>> _logger;
+	private readonly IOperationResultNotifier _notifier;
+	private readonly ILogger<RestEntityWriter<T>> _logger;
 	private readonly IAccessValidationRunner<T> _accessValidationRunner;
 	private readonly IStateValidationRunner<T> _stateValidationRunner;
 	private readonly IBeforeActionRunner<T> _beforeActionRunner;
@@ -27,27 +26,27 @@ T>> _logger;
 	/// <summary>
 	/// Creates a new instance of <c>RestEntityWriter</c>
 	/// </summary>
-	/// <param name="notifier">The notifier</param>
 	/// <param name="client">The rest client</param>
 	/// <param name="endpointGenerator">The endpoint generator for the given DTO</param>
+	/// <param name="notifier">The notifier</param>
 	/// <param name="logger">The logger</param>
 	/// <param name="accessValidationRunner">The access validation runner</param>
 	/// <param name="stateValidationRunner">The state validation runner</param>
 	/// <param name="beforeActionRunner">The before-action runner</param>
 	/// <param name="afterActionRunner">The after-action runner</param>
 	public RestEntityWriter(
-		INotifier notifier,
 		IRestClient client,
 		ICrudEndpointGenerator<T> endpointGenerator,
+		IOperationResultNotifier notifier,
 		ILogger<RestEntityWriter<T>> logger,
 		IAccessValidationRunner<T> accessValidationRunner,
 		IStateValidationRunner<T> stateValidationRunner,
 		IBeforeActionRunner<T> beforeActionRunner,
 		IAfterActionRunner<T> afterActionRunner)
-		: base(notifier)
 	{
 		_client = client;
 		_endpointGenerator = endpointGenerator;
+		_notifier = notifier;
 		_logger = logger;
 		_accessValidationRunner = accessValidationRunner;
 		_stateValidationRunner = stateValidationRunner;
@@ -64,7 +63,7 @@ T>> _logger;
 			ActionType.Create);
 		if (!accessValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int?>(
 				OperationStatus.Unauthorized,
 				null,
 				StatusMessages.Crud<T>.NoPermission()));
@@ -76,7 +75,7 @@ T>> _logger;
 			ActionType.Create);
 		if (!stateValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int?>(
 				OperationStatus.Unprocessable,
 				null,
 				stateValidationResult.Message ?? StatusMessages.Crud<T>.CreateFailed()));
@@ -88,24 +87,24 @@ T>> _logger;
 			ActionType.Create);
 		if (!beforeHooksResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int?>(
 				OperationStatus.Unknown,
 				null,
 				beforeHooksResult.Message ?? StatusMessages.Crud<T>.CreateFailed()));
 		}
 
-		int id;
+		OperationResult<WebResult<int?>> result;
 		try
 		{
 			var endpoint = _endpointGenerator.GenerateCreateUrl(model);
-			id = (await _client.Post<int>(
+			result = await _client.Post<int?>(
 				endpoint,
-				model)).Result;
+				model);
 		}
 		catch (Exception e)
 		{
 			_logger.LogError(e, StatusMessages.Database.QueryFailed);
-			return NotifyOfResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int?>(
 				OperationStatus.Unknown,
 				null,
 				StatusMessages.Crud<T>.CreateFailed()));
@@ -114,10 +113,7 @@ T>> _logger;
 		// Run after hooks
 		await _afterActionRunner.Run(model, ActionType.Create);
 
-		return NotifyOfResult(new OperationResult<int?>(
-			OperationStatus.Success,
-			id,
-			StatusMessages.Crud<T>.CreateSuccessful()));
+		return _notifier.HandleWebResult(result);
 	}
 
 	/// <inheritdoc />
@@ -129,7 +125,7 @@ T>> _logger;
 			ActionType.Update);
 		if (!accessValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<bool>(
+			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unauthorized,
 				false,
 				StatusMessages.Crud<T>.NoPermission()));
@@ -141,7 +137,7 @@ T>> _logger;
 			ActionType.Update);
 		if (!stateValidationResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<bool>(
+			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unprocessable,
 				false,
 				stateValidationResult.Message ?? StatusMessages.Crud<T>.UpdateFailed()));
@@ -151,24 +147,24 @@ T>> _logger;
 		var beforeHooksResult = await _beforeActionRunner.Run(model, ActionType.Update);
 		if (!beforeHooksResult.Result)
 		{
-			return NotifyOfResult(new OperationResult<bool>(
+			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unknown,
 				false,
 				beforeHooksResult.Message ?? StatusMessages.Crud<T>.UpdateFailed()));
 		}
 
-		bool successful;
+		OperationResult<WebResult<bool>> result;
 		try
 		{
 			var endpoint = _endpointGenerator.GenerateUpdateUrl(model);
-			successful = (await _client.Put<bool?>(
+			result = await _client.Put<bool>(
 				endpoint,
-				model)).Result ?? false;
+				model);
 		}
 		catch (Exception e)
 		{
 			_logger.LogError(e, StatusMessages.Database.QueryFailed);
-			return NotifyOfResult(new OperationResult<bool>(
+			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unknown,
 				false,
 				StatusMessages.Crud<T>.UpdateFailed()));
@@ -177,17 +173,6 @@ T>> _logger;
 		// Run after hooks
 		await _afterActionRunner.Run(model, ActionType.Update);
 
-		if (!successful)
-		{
-			return NotifyOfResult(new OperationResult<bool>(
-				OperationStatus.Unknown,
-				false,
-				StatusMessages.Crud<T>.UpdateFailed()));
-		}
-
-		return NotifyOfResult(new OperationResult<bool>(
-			OperationStatus.Success,
-			true,
-			StatusMessages.Crud<T>.UpdateSuccessful()));
+		return _notifier.HandleWebResult(result);
 	}
 }
