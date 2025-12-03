@@ -1,7 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Sienar.Data;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
 using Sienar.Processors;
@@ -12,12 +11,17 @@ namespace Sienar.Identity.Processors;
 public class ClientRemoveUserFromRoleProcessor : IStatusProcessor<RemoveUserFromRoleRequest>
 {
 	private readonly IRestClient _client;
+	private readonly IOperationResultNotifier _notifier;
 
-	public ClientRemoveUserFromRoleProcessor(IRestClient client)
+	public ClientRemoveUserFromRoleProcessor(
+		IRestClient client,
+		IOperationResultNotifier notifier)
 	{
 		_client = client;
+		_notifier = notifier;
 	}
 
-	public Task<OperationResult<bool>> Process(RemoveUserFromRoleRequest request)
-		=> _client.Delete<bool>("users/roles", request);
+	public async Task<OperationResult<bool>> Process(RemoveUserFromRoleRequest request)
+		=> _notifier.HandleWebResult(
+			await _client.Delete<bool>("users/roles", request));
 }
