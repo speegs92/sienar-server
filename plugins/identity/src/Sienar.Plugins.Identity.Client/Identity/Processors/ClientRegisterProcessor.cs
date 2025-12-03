@@ -1,7 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 using System.Threading.Tasks;
-using Sienar.Data;
 using Sienar.Errors;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
@@ -13,10 +12,14 @@ namespace Sienar.Identity.Processors;
 public class ClientRegisterProcessor : IStatusProcessor<RegisterRequest>
 {
 	private readonly IRestClient _client;
+	private readonly IOperationResultNotifier _notifier;
 
-	public ClientRegisterProcessor(IRestClient client)
+	public ClientRegisterProcessor(
+		IRestClient client,
+		IOperationResultNotifier notifier)
 	{
 		_client = client;
+		_notifier = notifier;
 	}
 
 	public async Task<OperationResult<bool>> Process(RegisterRequest request)
@@ -29,6 +32,7 @@ public class ClientRegisterProcessor : IStatusProcessor<RegisterRequest>
 				CoreErrors.Account.MustAcceptTos);
 		}
 
-		return await _client.Post<bool>("account", request);
+		return _notifier.HandleWebResult(
+			await _client.Post<bool>("account", request));
 	}
 }
