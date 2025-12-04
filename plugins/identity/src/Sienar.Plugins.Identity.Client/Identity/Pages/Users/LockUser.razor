@@ -1,8 +1,8 @@
 ﻿@using Sienar.Errors
 @attribute [Authorize(Roles = Roles.Admin)]
 @attribute [Route($"{DashboardUrls.Users.Index}/{{userId:int}}/lock")]
-@inject IEntityReader<ViewUserDto> UserReader
-@inject IEntityReader<LockoutReasonDto> LockoutReasonReader
+@inject IEntityReadActor<ViewUserDto> UserReader
+@inject IEntityReadAllActor<LockoutReasonDto> LockoutReasonReader
 
 @if (_user is null)
 {
