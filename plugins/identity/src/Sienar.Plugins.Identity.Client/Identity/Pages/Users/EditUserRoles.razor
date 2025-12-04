@@ -1,8 +1,8 @@
 @inherits ActionPage
 @attribute [Authorize(Roles = Roles.Admin)]
 @attribute [Route($"{DashboardUrls.Users.Index}/{{userId:int}}/roles")]
-@inject IEntityReader<ViewUserDto> UserReader
-@inject IEntityReader<RoleDto> RoleReader
+@inject IEntityReadActor<ViewUserDto> UserReader
+@inject IEntityReadAllActor<RoleDto> RoleReader
 @inject IStatusService<AddUserToRoleRequest> AddRoleService
 @inject IStatusService<RemoveUserFromRoleRequest> RemoveRoleService
 
