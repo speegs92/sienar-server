@@ -159,7 +159,6 @@ public static class SienarEfServiceCollectionExtensions
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddEntityFramework(this IServiceCollection self)
 	{
-		self.TryAddScoped(typeof(IEntityReader<>), typeof(EfEntityReader<>));
 		self.TryAddScoped(typeof(IEntityReadActor<>), typeof(EfEntityReadActor<>));
 		self.TryAddScoped(typeof(IEntityReadAllActor<>), typeof(EfEntityReadAllActor<>));
 		self.TryAddScoped(typeof(IEntityWriter<>), typeof(EfEntityWriter<>));
