@@ -42,7 +42,7 @@ public partial class UpdateForm<TViewDto, TEditDto>
 	public Delegate? OnSuccess { get; set; }
 
 	[Inject]
-	private IEntityReader<TViewDto> Reader { get; set; } = null!;
+	private IEntityReadActor<TViewDto> Reader { get; set; } = null!;
 
 	[Inject]
 	private IMapper<TViewDto, TEditDto> Mapper { get; set; } = null!;
