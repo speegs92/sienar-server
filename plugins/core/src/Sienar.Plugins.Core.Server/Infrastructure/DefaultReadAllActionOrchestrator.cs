@@ -11,18 +11,18 @@ public class DefaultReadAllActionOrchestrator<TDto, TEntity> : IReadAllActionOrc
 	where TEntity : EntityBase
 {
 	private readonly IMapper<TEntity, TDto> _entityToDtoMapper;
-	private readonly IEntityReader<TEntity> _entityReader;
+	private readonly IEntityReadAllActor<TEntity> _entityReader;
 	private readonly IOperationResultMapper _resultMapper;
 
 	/// <summary>
 	/// Creates a new <c>DefaultReadAllActionOrchestrator</c>
 	/// </summary>
 	/// <param name="entityToDtoMapper">The entity-to-DTO mapper</param>
-	/// <param name="entityReader">The entity reader</param>
+	/// <param name="entityReader">The entity read-all actor</param>
 	/// <param name="resultMapper">The result mapper</param>
 	public DefaultReadAllActionOrchestrator(
 		IMapper<TEntity, TDto> entityToDtoMapper,
-		IEntityReader<TEntity> entityReader,
+		IEntityReadAllActor<TEntity> entityReader,
 		IOperationResultMapper resultMapper)
 	{
 		_entityToDtoMapper = entityToDtoMapper;
