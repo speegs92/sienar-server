@@ -163,6 +163,7 @@ public static class SienarEfServiceCollectionExtensions
 		self.TryAddScoped(typeof(IEntityReadAllActor<>), typeof(EfEntityReadAllActor<>));
 		self.TryAddScoped(typeof(IEntityWriter<>), typeof(EfEntityWriter<>));
 		self.TryAddScoped(typeof(IEntityCreateActor<>), typeof(EfEntityCreateActor<>));
+		self.TryAddScoped(typeof(IEntityUpdateActor<>), typeof(EfEntityUpdateActor<>));
 		self.TryAddScoped(typeof(IEntityDeleter<>), typeof(EfEntityDeleter<>));
 
 		return self;
