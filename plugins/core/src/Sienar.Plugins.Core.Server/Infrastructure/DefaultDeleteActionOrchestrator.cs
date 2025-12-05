@@ -5,10 +5,10 @@ using Sienar.Data;
 namespace Sienar.Infrastructure;
 
 /// <inheritdoc />
-public class DefaultDeleteActionOrchestrator<TEntity> : IDeleteActionOrchestrator<TEntity>
-	where TEntity : EntityBase
+public class DefaultDeleteActionOrchestrator<T> : IDeleteActionOrchestrator<T>
+	where T : EntityBase
 {
-	private readonly IEntityDeleter<TEntity> _entityDeleter;
+	private readonly IEntityDeleteActor<T> _entityDeleter;
 	private readonly IOperationResultMapper _resultMapper;
 
 	/// <summary>
@@ -17,7 +17,7 @@ public class DefaultDeleteActionOrchestrator<TEntity> : IDeleteActionOrchestrato
 	/// <param name="entityDeleter">The entity deleter</param>
 	/// <param name="resultMapper">The result mapper</param>
 	public DefaultDeleteActionOrchestrator(
-		IEntityDeleter<TEntity> entityDeleter,
+		IEntityDeleteActor<T> entityDeleter,
 		IOperationResultMapper resultMapper)
 	{
 		_entityDeleter = entityDeleter;

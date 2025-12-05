@@ -9,18 +9,18 @@ using Sienar.Security;
 namespace Sienar.Data;
 
 /// <summary>
-/// An implementation of <see cref="IEntityDeleter{TEntity}"/> which deletes entities from an EntityFramework <see cref="DbContext"/>
+/// An implementation of <see cref="IEntityDeleteActor{T}"/> which deletes entities from an EntityFramework <see cref="DbContext"/>
 /// </summary>
-/// <typeparam name="TEntity">The type of the entity to delete</typeparam>
-public class EfEntityDeleter<TEntity> : IEntityDeleter<TEntity>
-	where TEntity : EntityBase
+/// <typeparam name="T">The type of the entity to delete</typeparam>
+public class EfEntityDeleteActor<T> : IEntityDeleteActor<T>
+	where T : EntityBase
 {
 	private readonly IDbContext _context;
-	private readonly ILogger<EfEntityDeleter<TEntity>> _logger;
-	private readonly IAccessValidationRunner<TEntity> _accessValidationRunner;
-	private readonly IStateValidationRunner<TEntity> _stateValidationRunner;
-	private readonly IBeforeActionRunner<TEntity> _beforeActionRunner;
-	private readonly IAfterActionRunner<TEntity> _afterActionRunner;
+	private readonly ILogger<EfEntityDeleteActor<T>> _logger;
+	private readonly IAccessValidationRunner<T> _accessValidationRunner;
+	private readonly IStateValidationRunner<T> _stateValidationRunner;
+	private readonly IBeforeActionRunner<T> _beforeActionRunner;
+	private readonly IAfterActionRunner<T> _afterActionRunner;
 	private readonly IOperationResultNotifier _notifier;
 
 	/// <summary>
@@ -33,13 +33,13 @@ public class EfEntityDeleter<TEntity> : IEntityDeleter<TEntity>
 	/// <param name="beforeActionRunner">The before-hook action runner</param>
 	/// <param name="afterActionRunner">The after-hook action runner</param>
 	/// <param name="notifier">The operation result notifier</param>
-	public EfEntityDeleter(
+	public EfEntityDeleteActor(
 		IDbContext context,
-		ILogger<EfEntityDeleter<TEntity>> logger,
-		IAccessValidationRunner<TEntity> accessValidationRunner,
-		IStateValidationRunner<TEntity> stateValidationRunner,
-		IBeforeActionRunner<TEntity> beforeActionRunner,
-		IAfterActionRunner<TEntity> afterActionRunner,
+		ILogger<EfEntityDeleteActor<T>> logger,
+		IAccessValidationRunner<T> accessValidationRunner,
+		IStateValidationRunner<T> stateValidationRunner,
+		IBeforeActionRunner<T> beforeActionRunner,
+		IAfterActionRunner<T> afterActionRunner,
 		IOperationResultNotifier notifier)
 	{
 		_context = context;
@@ -54,8 +54,8 @@ public class EfEntityDeleter<TEntity> : IEntityDeleter<TEntity>
 	/// <inheritdoc />
 	public async Task<OperationResult<bool>> Delete(int id)
 	{
-		TEntity? entity;
-		var entitySet = _context.Set<TEntity>();
+		T? entity;
+		var entitySet = _context.Set<T>();
 
 		try
 		{
@@ -65,7 +65,7 @@ public class EfEntityDeleter<TEntity> : IEntityDeleter<TEntity>
 				return _notifier.HandleOperationResult(new OperationResult<bool>(
 					OperationStatus.NotFound,
 					false,
-					StatusMessages.Crud<TEntity>.NotFound(id)));
+					StatusMessages.Crud<T>.NotFound(id)));
 			}
 		}
 		catch (Exception e)
@@ -74,7 +74,7 @@ public class EfEntityDeleter<TEntity> : IEntityDeleter<TEntity>
 			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unknown,
 				false,
-				StatusMessages.Crud<TEntity>.DeleteFailed()));
+				StatusMessages.Crud<T>.DeleteFailed()));
 		}
 
 		// Run access validation
@@ -86,7 +86,7 @@ public class EfEntityDeleter<TEntity> : IEntityDeleter<TEntity>
 			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unauthorized,
 				false,
-				StatusMessages.Crud<TEntity>.NoPermission()));
+				StatusMessages.Crud<T>.NoPermission()));
 		}
 
 		// Run state validation
@@ -96,7 +96,7 @@ public class EfEntityDeleter<TEntity> : IEntityDeleter<TEntity>
 			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unprocessable,
 				false,
-				stateValidationResult.Message ?? StatusMessages.Crud<TEntity>.DeleteFailed()));
+				stateValidationResult.Message ?? StatusMessages.Crud<T>.DeleteFailed()));
 		}
 
 		// Run before hooks
@@ -108,7 +108,7 @@ public class EfEntityDeleter<TEntity> : IEntityDeleter<TEntity>
 			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unknown,
 				false,
-				beforeHooksResult.Message ?? StatusMessages.Crud<TEntity>.DeleteFailed()));
+				beforeHooksResult.Message ?? StatusMessages.Crud<T>.DeleteFailed()));
 		}
 
 		try
@@ -122,7 +122,7 @@ public class EfEntityDeleter<TEntity> : IEntityDeleter<TEntity>
 			return _notifier.HandleOperationResult(new OperationResult<bool>(
 				OperationStatus.Unknown,
 				false,
-				StatusMessages.Crud<TEntity>.DeleteFailed()));
+				StatusMessages.Crud<T>.DeleteFailed()));
 		}
 
 		// Run after hooks
@@ -131,6 +131,6 @@ public class EfEntityDeleter<TEntity> : IEntityDeleter<TEntity>
 		return _notifier.HandleOperationResult(new OperationResult<bool>(
 			OperationStatus.Success,
 			true,
-			StatusMessages.Crud<TEntity>.DeleteSuccessful()));
+			StatusMessages.Crud<T>.DeleteSuccessful()));
 	}
 }

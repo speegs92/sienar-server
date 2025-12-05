@@ -6,16 +6,16 @@ using Sienar.Infrastructure;
 namespace Sienar.Data;
 
 /// <summary>
-/// An implementation of <see cref="IEntityDeleter{T}"/> which deletes entities from a REST endpoint
+/// An implementation of <see cref="IEntityDeleteActor{T}"/> which deletes entities from a REST endpoint
 /// </summary>
 /// <typeparam name="T">The type of the entity to write</typeparam>
-public class RestEntityDeleter<T> : IEntityDeleter<T>
+public class RestEntityDeleteActor<T> : IEntityDeleteActor<T>
 	where T : EntityBase
 {
 	private readonly IRestClient _client;
 	private readonly IOperationResultNotifier _notifier;
 	private readonly ICrudEndpointGenerator<T> _endpointGenerator;
-	private readonly ILogger<RestEntityDeleter<T>> _logger;
+	private readonly ILogger<RestEntityDeleteActor<T>> _logger;
 
 	/// <summary>
 	/// Creates a new instance of <c>RestEntityDeleter</c>
@@ -24,11 +24,11 @@ public class RestEntityDeleter<T> : IEntityDeleter<T>
 	/// <param name="notifier">The operation result notifier</param>
 	/// <param name="endpointGenerator">The endpoint generator for the given DTO</param>
 	/// <param name="logger">The logger</param>
-	public RestEntityDeleter(
+	public RestEntityDeleteActor(
 		IRestClient client,
 		IOperationResultNotifier notifier,
 		ICrudEndpointGenerator<T> endpointGenerator,
-		ILogger<RestEntityDeleter<T>> logger)
+		ILogger<RestEntityDeleteActor<T>> logger)
 	{
 		_client = client;
 		_notifier = notifier;

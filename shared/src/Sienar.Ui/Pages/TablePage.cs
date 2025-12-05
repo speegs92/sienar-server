@@ -16,7 +16,7 @@ public class TablePage<TEntity> : ComponentBase
 	protected IEntityReadAllActor<TEntity> Reader { get; set; } = null!;
 
 	[Inject]
-	protected IEntityDeleter<TEntity> Deleter { get; set; } = null!;
+	protected IEntityDeleteActor<TEntity> Deleter { get; set; } = null!;
 
 	[Inject]
 	protected IDialogService DialogService { get; set; } = null!;

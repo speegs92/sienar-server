@@ -4,10 +4,10 @@ using Sienar.Infrastructure;
 namespace Sienar.Data;
 
 /// <summary>
-/// A service to delete instances of <c>TEntity</c> from the appropriate repository
+/// A service to delete instances of <c>T</c> from the appropriate repository
 /// </summary>
-/// <typeparam name="TEntity">the type of the entity</typeparam>
-public interface IEntityDeleter<TEntity>
+/// <typeparam name="T">the type of the entity</typeparam>
+public interface IEntityDeleteActor<T>
 {
 	/// <summary>
 	/// Deletes an entity by primary key
