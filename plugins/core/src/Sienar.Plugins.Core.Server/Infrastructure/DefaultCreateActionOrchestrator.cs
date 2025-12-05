@@ -11,22 +11,22 @@ public class DefaultCreateActionOrchestrator<TDto, TEntity>
 	where TEntity : EntityBase, new()
 {
 	private readonly IMapper<TDto, TEntity> _dtoToEntityMapper;
-	private readonly IEntityWriter<TEntity> _entityWriter;
+	private readonly IEntityCreateActor<TEntity> _entityCreator;
 	private readonly IOperationResultMapper _resultMapper;
 
 	/// <summary>
 	/// Creates a new instance of <c>DefaultCreateActionOrchestrator</c>
 	/// </summary>
 	/// <param name="dtoToEntityMapper">The DTO-to-entity mapper</param>
-	/// <param name="entityWriter">The entity writer</param>
+	/// <param name="entityCreator">The entity create actor</param>
 	/// <param name="resultMapper">The result mapper</param>
 	public DefaultCreateActionOrchestrator(
 		IMapper<TDto, TEntity> dtoToEntityMapper,
-		IEntityWriter<TEntity> entityWriter,
+		IEntityCreateActor<TEntity> entityCreator,
 		IOperationResultMapper resultMapper)
 	{
 		_dtoToEntityMapper = dtoToEntityMapper;
-		_entityWriter = entityWriter;
+		_entityCreator = entityCreator;
 		_resultMapper = resultMapper;
 	}
 
@@ -35,7 +35,7 @@ public class DefaultCreateActionOrchestrator<TDto, TEntity>
 	{
 		var entity = new TEntity();
 		_dtoToEntityMapper.Map(dto, entity);
-		var result = await _entityWriter.Create(entity);
+		var result = await _entityCreator.Create(entity);
 		return _resultMapper.MapToObjectResult(result);
 	}
 }
