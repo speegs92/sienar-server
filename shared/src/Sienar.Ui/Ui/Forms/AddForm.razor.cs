@@ -24,16 +24,16 @@ public partial class AddForm<T>
 	/// A function to execute if the form is submitted successfully
 	/// </summary>
 	/// <remarks>
-	/// The arguments of the provided delegate will be resolved from the DI container. The only exception to this is the <c>OperationResult&lt;int?&gt;</c> returned by <see cref="IEntityWriter{TEntity}.Create">IEntityWriter&lt;TEntity&gt;.Create()</see>, which can be provided at any position (but is not required).
+	/// The arguments of the provided delegate will be resolved from the DI container. The only exception to this is the <c>OperationResult&lt;int?&gt;</c> returned by <see cref="IEntityCreateActor{T}.Create">IEntityCreateActor&lt;T&gt;.Create()</see>, which can be provided at any position (but is not required).
 	/// </remarks>
 	[Parameter]
 	public Delegate? OnSuccess { get; set; }
 
-	private Task HandleAdd(IEntityWriter<T> writer)
+	private Task HandleAdd(IEntityCreateActor<T> creator)
 	{
 		return SubmitRequest(async () =>
 		{
-			var result = await writer.Create(Value);
+			var result = await creator.Create(Value);
 
 			if (result.Status is OperationStatus.Success)
 			{
