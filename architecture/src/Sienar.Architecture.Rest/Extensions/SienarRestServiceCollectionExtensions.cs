@@ -22,6 +22,7 @@ public static class SienarRestServiceCollectionExtensions
 		self.TryAddScoped(typeof(IEntityReadAllActor<>), typeof(RestEntityReadAllActor<>));
 		self.TryAddScoped(typeof(IEntityWriter<>), typeof(RestEntityWriter<>));
 		self.TryAddScoped(typeof(IEntityCreateActor<>), typeof(RestEntityCreateActor<>));
+		self.TryAddScoped(typeof(IEntityUpdateActor<>), typeof(RestEntityUpdateActor<>));
 		self.TryAddScoped(typeof(IEntityDeleter<>), typeof(RestEntityDeleter<>));
 
 		return self;
