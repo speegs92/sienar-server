@@ -33,7 +33,7 @@ public partial class UpsertForm<TViewDto, TUpsertDto>
 	/// A function to execute if the add form is submitted successfully
 	/// </summary>
 	/// <remarks>
-	/// The arguments of the provided delegate will be resolved from the DI container. The only exception to this is the <c>OperationResult&lt;int?&gt;</c> returned by <see cref="Sienar.Data.IEntityWriter{TEntity}.Create">IEntityWriter&lt;TEntity&gt;.Create()</see>, which can be provided at any position (but is not required).
+	/// The arguments of the provided delegate will be resolved from the DI container. The only exception to this is the <c>OperationResult&lt;int?&gt;</c> returned by <see cref="Sienar.Data.IEntityCreateActor{T}.Create">IEntityCreateActor&lt;T&gt;.Create()</see>, which can be provided at any position (but is not required).
 	/// </remarks>
 	[Parameter]
 	public Delegate? OnAddSuccess { get; set; }
@@ -42,7 +42,7 @@ public partial class UpsertForm<TViewDto, TUpsertDto>
 	/// A function to execute if the form is submitted successfully
 	/// </summary>
 	/// <remarks>
-	/// The arguments of the provided delegate will be resolved from the DI container. The only exception to this is the <c>OperationResult&lt;bool?&gt;</c> returned by <see cref="Sienar.Data.IEntityWriter{TEntity}.Update">IEntityWriter&lt;TEntity&gt;.Update()</see>, which can be provided at any position (but is not required).
+	/// The arguments of the provided delegate will be resolved from the DI container. The only exception to this is the <c>OperationResult&lt;bool?&gt;</c> returned by <see cref="Sienar.Data.IEntityUpdateActor{T}.Update">IEntityUpdateActor&lt;T&gt;.Update()</see>, which can be provided at any position (but is not required).
 	/// </remarks>
 	[Parameter]
 	public Delegate? OnUpdateSuccess { get; set; }
