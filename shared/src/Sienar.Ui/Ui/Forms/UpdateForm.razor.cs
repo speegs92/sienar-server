@@ -36,7 +36,7 @@ public partial class UpdateForm<TViewDto, TEditDto>
 	/// A function to execute if the form is submitted successfully
 	/// </summary>
 	/// <remarks>
-	/// The arguments of the provided delegate will be resolved from the DI container. The only exception to this is the <c>OperationResult&lt;bool?&gt;</c> returned by <see cref="IEntityWriter{TEntity}.Update">IEntityWriter&lt;TEntity&gt;.Update()</see>, which can be provided at any position (but is not required).
+	/// The arguments of the provided delegate will be resolved from the DI container. The only exception to this is the <c>OperationResult&lt;bool?&gt;</c> returned by <see cref="IEntityUpdateActor{T}.Update">IEntityUpdateActor&lt;T&gt;.Update()</see>, which can be provided at any position (but is not required).
 	/// </remarks>
 	[Parameter]
 	public Delegate? OnSuccess { get; set; }
@@ -63,11 +63,11 @@ public partial class UpdateForm<TViewDto, TEditDto>
 			Mapper.Map(result.Result, Value);
 		});
 
-	private Task HandleUpdate(IEntityWriter<TEditDto> writer)
+	private Task HandleUpdate(IEntityUpdateActor<TEditDto> updater)
 	{
 		return SubmitRequest(async () =>
 		{
-			var result = await writer.Update(Value);
+			var result = await updater.Update(Value);
 
 			if (result.Status is OperationStatus.Success)
 			{
