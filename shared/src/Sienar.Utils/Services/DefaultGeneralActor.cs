@@ -21,7 +21,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 	private readonly IAccessValidationRunner<TRequest> _accessValidator;
 	private readonly IStateValidationRunner<TRequest> _stateValidator;
 	private readonly IBeforeActionRunner<TRequest> _beforeHooks;
-	private readonly IAfterActionRunner<TRequest> _afterHooks;
+	private readonly IAfterActionRunner<IAfterGeneralAction<TRequest>, TRequest> _afterHooks;
 	private readonly IProcessor<TRequest, TResult> _processor;
 	private readonly IOperationResultNotifier _notifier;
 
@@ -31,7 +31,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 		IAccessValidationRunner<TRequest> accessValidator,
 		IStateValidationRunner<TRequest> stateValidator,
 		IBeforeActionRunner<TRequest> beforeHooks,
-		IAfterActionRunner<TRequest> afterHooks,
+		IAfterActionRunner<IAfterGeneralAction<TRequest>, TRequest> afterHooks,
 		IProcessor<TRequest, TResult> processor,
 		IOperationResultNotifier notifier)
 	{
@@ -95,7 +95,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 
 		if (result.Status is OperationStatus.Success)
 		{
-			await _afterHooks.Run(request, ActionType.Action);
+			await _afterHooks.Run(request);
 		}
 
 		return _notifier.HandleOperationResult(result);
