@@ -20,7 +20,7 @@ public class EfEntityDeleteActor<T> : IEntityDeleteActor<T>
 	private readonly IAccessValidationRunner<T> _accessValidationRunner;
 	private readonly IStateValidationRunner<T> _stateValidationRunner;
 	private readonly IBeforeActionRunner<T> _beforeActionRunner;
-	private readonly IAfterActionRunner<T> _afterActionRunner;
+	private readonly IAfterActionRunner<IAfterDeleteAction<T>, T> _afterActionRunner;
 	private readonly IOperationResultNotifier _notifier;
 
 	/// <summary>
@@ -39,7 +39,7 @@ public class EfEntityDeleteActor<T> : IEntityDeleteActor<T>
 		IAccessValidationRunner<T> accessValidationRunner,
 		IStateValidationRunner<T> stateValidationRunner,
 		IBeforeActionRunner<T> beforeActionRunner,
-		IAfterActionRunner<T> afterActionRunner,
+		IAfterActionRunner<IAfterDeleteAction<T>, T> afterActionRunner,
 		IOperationResultNotifier notifier)
 	{
 		_context = context;
@@ -126,7 +126,7 @@ public class EfEntityDeleteActor<T> : IEntityDeleteActor<T>
 		}
 
 		// Run after hooks
-		await _afterActionRunner.Run(entity, ActionType.Delete);
+		await _afterActionRunner.Run(entity);
 
 		return _notifier.HandleOperationResult(new OperationResult<bool>(
 			OperationStatus.Success,
