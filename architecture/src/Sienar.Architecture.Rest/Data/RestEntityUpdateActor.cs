@@ -21,7 +21,7 @@ public class RestEntityUpdateActor<T> : IEntityUpdateActor<T>
 	private readonly IAccessValidationRunner<T> _accessValidationRunner;
 	private readonly IStateValidationRunner<T> _stateValidationRunner;
 	private readonly IBeforeActionRunner<T> _beforeActionRunner;
-	private readonly IAfterActionRunner<T> _afterActionRunner;
+	private readonly IAfterActionRunner<IAfterUpdateAction<T>, T> _afterActionRunner;
 
 	/// <summary>
 	/// Creates a new instance of <c>RestEntityUpdateActor</c>
@@ -42,7 +42,7 @@ public class RestEntityUpdateActor<T> : IEntityUpdateActor<T>
 		IAccessValidationRunner<T> accessValidationRunner,
 		IStateValidationRunner<T> stateValidationRunner,
 		IBeforeActionRunner<T> beforeActionRunner,
-		IAfterActionRunner<T> afterActionRunner)
+		IAfterActionRunner<IAfterUpdateAction<T>, T> afterActionRunner)
 	{
 		_client = client;
 		_endpointGenerator = endpointGenerator;
@@ -111,7 +111,7 @@ public class RestEntityUpdateActor<T> : IEntityUpdateActor<T>
 		}
 
 		// Run after hooks
-		await _afterActionRunner.Run(model, ActionType.Update);
+		await _afterActionRunner.Run(model);
 
 		return _notifier.HandleWebResult(result);
 	}
