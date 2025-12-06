@@ -1,6 +1,6 @@
 @inherits ActionPage
 @attribute [Route(DashboardUrls.Account.EmailChange.Confirm)]
-@inject IStatusService<PerformEmailChangeRequest> EmailChangeService
+@inject IStatusActor<PerformEmailChangeRequest> EmailChangeActor
 
 <DocTitle Title="Updating your email address"/>
 
@@ -45,7 +45,7 @@
 			VerificationCode = Code
 		};
 
-		await SubmitRequest(() => EmailChangeService.Execute(request));
+		await SubmitRequest(() => EmailChangeActor.Execute(request));
 		if (WasSuccessful)
 		{
 			NavManager.NavigateTo(DashboardUrls.Account.EmailChange.Successful);

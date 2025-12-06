@@ -28,7 +28,7 @@ public static class SienarUtilsServiceCollectionExtensions
 	[ExcludeFromCodeCoverage]
 	public static IServiceCollection AddSienarCoreUtilities(this IServiceCollection self)
 	{
-		self.TryAddScoped(typeof(IStatusService<>), typeof(DefaultStatusService<>));
+		self.TryAddScoped(typeof(IStatusActor<>), typeof(DefaultStatusActor<>));
 		self.TryAddScoped(typeof(IGeneralActor<,>), typeof(DefaultGeneralActor<,>));
 		self.TryAddScoped(typeof(IResultService<>), typeof(DefaultResultService<>));
 		self.TryAddScoped(typeof(IAccessValidationRunner<>), typeof(DefaultAccessValidationRunner<>));

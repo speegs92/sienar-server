@@ -1,7 +1,7 @@
 ﻿@inherits ActionPage
 @attribute [AllowAnonymous]
 @attribute [Route(DashboardUrls.Account.Confirm.Index)]
-@inject IStatusService<ConfirmAccountRequest> Service
+@inject IStatusActor<ConfirmAccountRequest> Actor
 
 <DocTitle Title="Confirming your account"/>
 
@@ -51,7 +51,7 @@
 			VerificationCode = Code
 		};
 
-		await SubmitRequest(() => Service.Execute(model));
+		await SubmitRequest(() => Actor.Execute(model));
 
 		if (WasSuccessful)
 		{

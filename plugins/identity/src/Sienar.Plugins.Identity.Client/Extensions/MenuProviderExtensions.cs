@@ -81,7 +81,7 @@ public static class MenuProviderExtensions
 					Icon = Icons.Material.Filled.Logout,
 					RequireLoggedIn = true,
 					OnClick = async (
-						IStatusService<LogoutRequest> service,
+						IStatusActor<LogoutRequest> service,
 						NavigationManager navManager) =>
 					{
 						var result = await service.Execute(new LogoutRequest());

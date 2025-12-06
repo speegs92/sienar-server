@@ -52,11 +52,11 @@
 @code {
 
 	private static async Task OnSubmit(
-		IStatusService<RegisterRequest> registerService,
+		IStatusActor<RegisterRequest> registerActor,
 		NavigationManager navManager,
 		RegisterRequest request)
 	{
-		var result = await registerService.Execute(request);
+		var result = await registerActor.Execute(request);
 
 		if (result.Status is OperationStatus.Success)
 		{

@@ -26,8 +26,8 @@ public class AccountController : SienarController
 	[AllowAnonymous]
 	public Task<IActionResult> Register(
 		RegisterRequest data,
-		[FromServices] IStatusService<RegisterRequest> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IStatusActor<RegisterRequest> actor)
+		=> Execute(() => actor.Execute(data));
 
 	[HttpGet]
 	public Task<IActionResult> GetAccountData(
@@ -37,15 +37,15 @@ public class AccountController : SienarController
 	[HttpDelete]
 	public Task<IActionResult> DeleteAccount(
 		DeleteAccountRequest data,
-		[FromServices] IStatusService<DeleteAccountRequest> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IStatusActor<DeleteAccountRequest> actor)
+		=> Execute(() => actor.Execute(data));
 
 	[HttpPost("confirm")]
 	[AllowAnonymous]
 	public Task<IActionResult> Confirm(
 		ConfirmAccountRequest data,
-		[FromServices] IStatusService<ConfirmAccountRequest> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IStatusActor<ConfirmAccountRequest> actor)
+		=> Execute(() => actor.Execute(data));
 
 	[HttpPost("login")]
 	[AllowAnonymous]
@@ -57,40 +57,40 @@ public class AccountController : SienarController
 	[HttpDelete("login")]
 	public Task<IActionResult> Logout(
 		LogoutRequest data,
-		[FromServices] IStatusService<LogoutRequest> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IStatusActor<LogoutRequest> actor)
+		=> Execute(() => actor.Execute(data));
 
 	[HttpDelete("password")]
 	[AllowAnonymous]
 	public Task<IActionResult> RequestPasswordReset(
 		ForgotPasswordRequest data,
-		[FromServices] IStatusService<ForgotPasswordRequest> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IStatusActor<ForgotPasswordRequest> actor)
+		=> Execute(() => actor.Execute(data));
 
 	[HttpPatch("password")]
 	[AllowAnonymous]
 	public Task<IActionResult> PerformPasswordReset(
 		ResetPasswordRequest data,
-		[FromServices] IStatusService<ResetPasswordRequest> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IStatusActor<ResetPasswordRequest> actor)
+		=> Execute(() => actor.Execute(data));
 
 	[HttpPatch("change-password")]
 	public Task<IActionResult> ChangePassword(
 		ChangePasswordRequest data,
-		[FromServices] IStatusService<ChangePasswordRequest> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IStatusActor<ChangePasswordRequest> actor)
+		=> Execute(() => actor.Execute(data));
 
 	[HttpPost("change-email")]
 	public Task<IActionResult> ChangeEmail(
 		InitiateEmailChangeRequest data,
-		[FromServices] IStatusService<InitiateEmailChangeRequest> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IStatusActor<InitiateEmailChangeRequest> actor)
+		=> Execute(() => actor.Execute(data));
 
 	[HttpPatch("email")]
 	public Task<IActionResult> UpdateEmail(
 		PerformEmailChangeRequest data,
-		[FromServices] IStatusService<PerformEmailChangeRequest> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IStatusActor<PerformEmailChangeRequest> actor)
+		=> Execute(() => actor.Execute(data));
 
 	[HttpGet("personal-data")]
 	public async Task<IActionResult> GetPersonalData(
