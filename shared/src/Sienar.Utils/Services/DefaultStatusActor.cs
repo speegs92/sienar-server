@@ -20,7 +20,7 @@ public class DefaultStatusActor<TRequest> : IStatusActor<TRequest>
 	private readonly IAccessValidationRunner<TRequest> _accessValidator;
 	private readonly IStateValidationRunner<TRequest> _stateValidator;
 	private readonly IBeforeActionRunner<TRequest> _beforeHooks;
-	private readonly IAfterActionRunner<TRequest> _afterHooks;
+	private readonly IAfterActionRunner<IAfterStatusAction<TRequest>, TRequest> _afterHooks;
 	private readonly IStatusProcessor<TRequest> _processor;
 	private readonly IOperationResultNotifier _notifier;
 
@@ -30,7 +30,7 @@ public class DefaultStatusActor<TRequest> : IStatusActor<TRequest>
 		IAccessValidationRunner<TRequest> accessValidator,
 		IStateValidationRunner<TRequest> stateValidator,
 		IBeforeActionRunner<TRequest> beforeHooks,
-		IAfterActionRunner<TRequest> afterHooks,
+		IAfterActionRunner<IAfterStatusAction<TRequest>, TRequest> afterHooks,
 		IStatusProcessor<TRequest> processor,
 		IOperationResultNotifier notifier)
 	{
@@ -85,7 +85,7 @@ public class DefaultStatusActor<TRequest> : IStatusActor<TRequest>
 
 		if (result.Status is OperationStatus.Success)
 		{
-			await _afterHooks.Run(request, ActionType.Status);
+			await _afterHooks.Run(request);
 		}
 
 		return _notifier.HandleOperationResult(result);
