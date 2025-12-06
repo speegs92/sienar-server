@@ -157,12 +157,25 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// <param name="self">The service collection</param>
 	/// <typeparam name="THook">The hook implementation</typeparam>
 	/// <typeparam name="TEntity">The entity type</typeparam>
-	/// <returns></returns>
+	/// <returns>The service collection</returns>
 	public static IServiceCollection AddAfterReadActionHook<THook, TEntity>(
 		this IServiceCollection self)
 		where THook : class, IAfterReadAction<TEntity>
 		where TEntity : EntityBase
 		=> self.AddScoped<IAfterReadAction<TEntity>, THook>();
+
+	/// <summary>
+	/// Adds an after-read-all hook for the given <c>TEntity</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TEntity">The entity type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddAfterReadAllActionHook<THook, TEntity>(
+		this IServiceCollection self)
+		where THook : class, IAfterReadAllAction<TEntity>
+		where TEntity : EntityBase
+		=> self.AddScoped<IAfterReadAllAction<TEntity>, THook>();
 
 	/// <summary>
 	/// Adds an after-task hook for the given <c>TRequest</c>
