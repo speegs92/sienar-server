@@ -1,40 +1,50 @@
-﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace Sienar.Hooks;
 
-/// <exclude />
-public class DefaultAfterActionRunner<T> : IAfterActionRunner<T>
+/// <summary>
+/// Runs any type of after-action hook
+/// </summary>
+/// <typeparam name="THook">The type of the hook to run. Must inherit from <see cref="IAfterActionBase{T}">IAfterActionBase&lt;TTarget&gt;</see></typeparam>
+/// <typeparam name="TTarget">The type of the after-action hook input</typeparam>
+public class DefaultAfterActionRunner<THook, TTarget> : IAfterActionRunner<THook, TTarget>
+	where THook : IAfterActionBase<TTarget>
 {
-	private readonly IEnumerable<IAfterAction<T>> _hooks;
-	private readonly ILogger<DefaultAfterActionRunner<T>> _logger;
+	private readonly IEnumerable<THook> _hooks;
+	private readonly ILogger<DefaultAfterActionRunner<THook, TTarget>> _logger;
 
+	/// <summary>
+	/// Creates a new instance of <c>DefaultAfterActionRunner</c>
+	/// </summary>
+	/// <param name="hooks">The hooks to run</param>
+	/// <param name="logger">The logger</param>
 	public DefaultAfterActionRunner(
-		IEnumerable<IAfterAction<T>> hooks,
-		ILogger<DefaultAfterActionRunner<T>> logger)
+		IEnumerable<THook> hooks,
+		ILogger<DefaultAfterActionRunner<THook, TTarget>> logger)
 	{
 		_hooks = hooks;
 		_logger = logger;
 	}
 
-	public async Task Run(T input, ActionType action)
+	/// <inheritdoc />
+	public async Task Run(TTarget input)
 	{
 		foreach (var hook in _hooks)
 		{
 			try
 			{
-				await hook.Handle(input, action);
+				await hook.Handle(input);
 			}
 			catch (Exception e)
 			{
 				_logger.LogError(
 					e,
-					"One or more after {action} hooks failed to run",
-					action);
+					"{hookType} {hookFqcn} failed to run",
+					typeof(THook),
+					hook.GetType().FullName);
 			}
 		}
 	}
