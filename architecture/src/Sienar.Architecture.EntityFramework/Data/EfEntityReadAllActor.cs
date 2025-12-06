@@ -20,7 +20,7 @@ public class EfEntityReadAllActor<T> : IEntityReadAllActor<T>
 	private readonly IDbContext _context;
 	private readonly IEfFilterProcessor<T> _filterProcessor;
 	private readonly ILogger<EfEntityReadAllActor<T>> _logger;
-	private readonly IAfterActionRunner<T> _afterActionRunner;
+	private readonly IAfterActionRunner<IAfterReadAllAction<T>, T> _afterActionRunner;
 	private readonly IOperationResultNotifier _notifier;
 
 	/// <summary>
@@ -35,7 +35,7 @@ public class EfEntityReadAllActor<T> : IEntityReadAllActor<T>
 		IDbContext context,
 		IEfFilterProcessor<T> filterProcessor,
 		ILogger<EfEntityReadAllActor<T>> logger,
-		IAfterActionRunner<T> afterActionRunner,
+		IAfterActionRunner<IAfterReadAllAction<T>, T> afterActionRunner,
 		IOperationResultNotifier notifier)
 	{
 		_context = context;
@@ -83,7 +83,7 @@ public class EfEntityReadAllActor<T> : IEntityReadAllActor<T>
 
 		foreach (var entity in queryResult.Items)
 		{
-			await _afterActionRunner.Run(entity, ActionType.ReadAll);
+			await _afterActionRunner.Run(entity);
 		}
 
 		return _notifier.HandleOperationResult(new OperationResult<PagedQueryResult<T>>(result: queryResult));

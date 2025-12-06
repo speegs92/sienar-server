@@ -17,7 +17,7 @@ public class RestEntityReadAllActor<T> : IEntityReadAllActor<T>
 	private readonly ICrudEndpointGenerator<T> _endpointGenerator;
 	private readonly IOperationResultNotifier _notifier;
 	private readonly ILogger<RestEntityReadAllActor<T>> _logger;
-	private readonly IAfterActionRunner<T> _afterActionRunner;
+	private readonly IAfterActionRunner<IAfterReadAllAction<T>, T> _afterActionRunner;
 
 	/// <summary>
 	/// Creates a new instance of <c>RestEntityReadAllActor</c>
@@ -32,7 +32,7 @@ public class RestEntityReadAllActor<T> : IEntityReadAllActor<T>
 		ICrudEndpointGenerator<T> endpointGenerator,
 		IOperationResultNotifier notifier,
 		ILogger<RestEntityReadAllActor<T>> logger,
-		IAfterActionRunner<T> afterActionRunner)
+		IAfterActionRunner<IAfterReadAllAction<T>, T> afterActionRunner)
 	{
 		_client = client;
 		_endpointGenerator = endpointGenerator;
@@ -66,7 +66,7 @@ public class RestEntityReadAllActor<T> : IEntityReadAllActor<T>
 
 		foreach (var entity in queryResult.Items)
 		{
-			await _afterActionRunner.Run(entity, ActionType.ReadAll);
+			await _afterActionRunner.Run(entity);
 		}
 
 		return _notifier.HandleWebResult(webResult);
