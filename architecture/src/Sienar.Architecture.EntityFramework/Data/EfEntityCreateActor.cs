@@ -20,7 +20,7 @@ public class EfEntityCreateActor<T> : IEntityCreateActor<T>
 	private readonly IAccessValidationRunner<T> _accessValidationRunner;
 	private readonly IStateValidationRunner<T> _stateValidationRunner;
 	private readonly IBeforeActionRunner<T> _beforeActionRunner;
-	private readonly IAfterActionRunner<T> _afterActionRunner;
+	private readonly IAfterActionRunner<IAfterCreateAction<T>, T> _afterActionRunner;
 	private readonly IOperationResultNotifier _notifier;
 
 	/// <summary>
@@ -39,7 +39,7 @@ public class EfEntityCreateActor<T> : IEntityCreateActor<T>
 		IAccessValidationRunner<T> accessValidationRunner,
 		IStateValidationRunner<T> stateValidationRunner,
 		IBeforeActionRunner<T> beforeActionRunner,
-		IAfterActionRunner<T> afterActionRunner,
+		IAfterActionRunner<IAfterCreateAction<T>, T> afterActionRunner,
 		IOperationResultNotifier notifier)
 	{
 		_context = context;
@@ -105,7 +105,7 @@ public class EfEntityCreateActor<T> : IEntityCreateActor<T>
 		}
 
 		// Run after hooks
-		await _afterActionRunner.Run(model, ActionType.Create);
+		await _afterActionRunner.Run(model);
 
 		return _notifier.HandleOperationResult(new OperationResult<int?>(
 			OperationStatus.Success,
