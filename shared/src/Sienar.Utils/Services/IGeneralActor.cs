@@ -9,7 +9,7 @@ namespace Sienar.Services;
 /// </summary>
 /// <typeparam name="TRequest">the type of the input</typeparam>
 /// <typeparam name="TResult">the type of the output</typeparam>
-public interface IService<TRequest, TResult>
+public interface IGeneralActor<TRequest, TResult>
 	where TRequest : IRequest
 	where TResult : IResult
 {

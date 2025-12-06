@@ -29,7 +29,7 @@ public static class SienarUtilsServiceCollectionExtensions
 	public static IServiceCollection AddSienarCoreUtilities(this IServiceCollection self)
 	{
 		self.TryAddScoped(typeof(IStatusService<>), typeof(DefaultStatusService<>));
-		self.TryAddScoped(typeof(IService<,>), typeof(DefaultService<,>));
+		self.TryAddScoped(typeof(IGeneralActor<,>), typeof(DefaultGeneralActor<,>));
 		self.TryAddScoped(typeof(IResultService<>), typeof(DefaultResultService<>));
 		self.TryAddScoped(typeof(IAccessValidationRunner<>), typeof(DefaultAccessValidationRunner<>));
 		self.TryAddScoped(typeof(IStateValidationRunner<>), typeof(DefaultStateValidationRunner<>));
