@@ -230,6 +230,19 @@ public static class SienarUtilsServiceCollectionExtensions
 		=> self.AddScoped<IAfterGeneralAction<TRequest>, THook>();
 
 	/// <summary>
+	/// Adds an after status action hook for the given <c>TRequest</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TRequest">The request type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddAfterStatusActionHook<THook, TRequest>(
+		this IServiceCollection self)
+		where THook : class, IAfterStatusAction<TRequest>
+		where TRequest : IRequest
+		=> self.AddScoped<IAfterStatusAction<TRequest>, THook>();
+
+	/// <summary>
 	/// Adds an after-task hook for the given <c>TRequest</c>
 	/// </summary>
 	/// <param name="self">the service collection</param>
