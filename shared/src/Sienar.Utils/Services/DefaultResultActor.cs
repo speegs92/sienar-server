@@ -17,14 +17,14 @@ public class DefaultResultActor<TResult> : IResultActor<TResult>
 {
 	private readonly ILogger<DefaultResultActor<TResult>> _logger;
 	private readonly IAccessValidationRunner<TResult> _accessValidator;
-	private readonly IAfterActionRunner<TResult> _afterHooks;
+	private readonly IAfterActionRunner<IAfterResultAction<TResult>, TResult> _afterHooks;
 	private readonly IResultProcessor<TResult> _processor;
 	private readonly IOperationResultNotifier _notifier;
 
 	public DefaultResultActor(
 		ILogger<DefaultResultActor<TResult>> logger,
 		IAccessValidationRunner<TResult> accessValidator,
-		IAfterActionRunner<TResult> afterHooks,
+		IAfterActionRunner<IAfterResultAction<TResult>, TResult> afterHooks,
 		IResultProcessor<TResult> processor,
 		IOperationResultNotifier notifier)
 	{
@@ -60,7 +60,7 @@ public class DefaultResultActor<TResult> : IResultActor<TResult>
 
 		if (result.Status is OperationStatus.Success && result.Result is not null)
 		{
-			await _afterHooks.Run(result.Result, ActionType.Result);
+			await _afterHooks.Run(result.Result);
 		}
 
 		return _notifier.HandleOperationResult(result);
