@@ -19,7 +19,7 @@ public class RestEntityReadActor<T> : IEntityReadActor<T>
 	private readonly IOperationResultNotifier _notifier;
 	private readonly ILogger<RestEntityReadActor<T>> _logger;
 	private readonly IAccessValidationRunner<T> _accessValidationRunner;
-	private readonly IAfterActionRunner<T> _afterActionRunner;
+	private readonly IAfterActionRunner<IAfterReadAction<T>, T> _afterActionRunner;
 
 	/// <summary>
 	/// Creates a new instance of <c>RestEntityReadActor</c>
@@ -36,7 +36,7 @@ public class RestEntityReadActor<T> : IEntityReadActor<T>
 		IOperationResultNotifier notifier,
 		ILogger<RestEntityReadActor<T>> logger,
 		IAccessValidationRunner<T> accessValidationRunner,
-		IAfterActionRunner<T> afterActionRunner)
+		IAfterActionRunner<IAfterReadAction<T>, T> afterActionRunner)
 	{
 		_client = client;
 		_endpointGenerator = endpointGenerator;
@@ -89,7 +89,7 @@ public class RestEntityReadActor<T> : IEntityReadActor<T>
 				StatusMessages.Crud<T>.NoPermission()));
 		}
 
-		await _afterActionRunner.Run(entity, ActionType.Read);
+		await _afterActionRunner.Run(entity);
 		return _notifier.HandleWebResult(result);
 	}
 }

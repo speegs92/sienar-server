@@ -20,7 +20,7 @@ public class EfEntityReadActor<T> : IEntityReadActor<T>
 	private readonly IEfFilterProcessor<T> _filterProcessor;
 	private readonly ILogger<EfEntityReadActor<T>> _logger;
 	private readonly IAccessValidationRunner<T> _accessValidationRunner;
-	private readonly IAfterActionRunner<T> _afterActionRunner;
+	private readonly IAfterActionRunner<IAfterReadAction<T>, T> _afterActionRunner;
 	private readonly IOperationResultNotifier _notifier;
 
 	/// <summary>
@@ -37,7 +37,7 @@ public class EfEntityReadActor<T> : IEntityReadActor<T>
 		IEfFilterProcessor<T> filterProcessor,
 		ILogger<EfEntityReadActor<T>> logger,
 		IAccessValidationRunner<T> accessValidationRunner,
-		IAfterActionRunner<T> afterActionRunner,
+		IAfterActionRunner<IAfterReadAction<T>, T> afterActionRunner,
 		IOperationResultNotifier notifier)
 	{
 		_context = context;
@@ -92,7 +92,8 @@ public class EfEntityReadActor<T> : IEntityReadActor<T>
 				StatusMessages.Crud<T>.NoPermission()));
 		}
 
-		await _afterActionRunner.Run(entity, ActionType.Read);
+		await _afterActionRunner.Run(entity);
+
 		return _notifier.HandleOperationResult(new OperationResult<T?>(result: entity));
 	}
 }
