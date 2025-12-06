@@ -30,7 +30,7 @@ public static class SienarUtilsServiceCollectionExtensions
 	{
 		self.TryAddScoped(typeof(IStatusActor<>), typeof(DefaultStatusActor<>));
 		self.TryAddScoped(typeof(IGeneralActor<,>), typeof(DefaultGeneralActor<,>));
-		self.TryAddScoped(typeof(IResultService<>), typeof(DefaultResultService<>));
+		self.TryAddScoped(typeof(IResultActor<>), typeof(DefaultResultActor<>));
 		self.TryAddScoped(typeof(IAccessValidationRunner<>), typeof(DefaultAccessValidationRunner<>));
 		self.TryAddScoped(typeof(IStateValidationRunner<>), typeof(DefaultStateValidationRunner<>));
 		self.TryAddScoped(typeof(IBeforeActionRunner<>), typeof(DefaultBeforeActionRunner<>));

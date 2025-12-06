@@ -31,8 +31,8 @@ public class AccountController : SienarController
 
 	[HttpGet]
 	public Task<IActionResult> GetAccountData(
-		[FromServices] IResultService<AccountDataResult> service)
-		=> Execute(service.Execute);
+		[FromServices] IResultActor<AccountDataResult> actor)
+		=> Execute(actor.Execute);
 
 	[HttpDelete]
 	public Task<IActionResult> DeleteAccount(
@@ -94,9 +94,9 @@ public class AccountController : SienarController
 
 	[HttpGet("personal-data")]
 	public async Task<IActionResult> GetPersonalData(
-		[FromServices] IResultService<PersonalDataResult> service)
+		[FromServices] IResultActor<PersonalDataResult> actor)
 	{
-		var result = await service.Execute();
+		var result = await actor.Execute();
 
 		if (result.Status != OperationStatus.Success
 			|| result.Result?.PersonalDataFile?.Contents is null)
