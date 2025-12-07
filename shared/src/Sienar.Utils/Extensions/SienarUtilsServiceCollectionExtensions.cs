@@ -177,6 +177,19 @@ public static class SienarUtilsServiceCollectionExtensions
 		=> self.AddScoped<IBeforeGeneralAction<TRequest>, THook>();
 
 	/// <summary>
+	/// Adds an before status action hook for the given <c>TRequest</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TRequest">The request type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddBeforeStatusActionHook<THook, TRequest>(
+		this IServiceCollection self)
+		where THook : class, IBeforeStatusAction<TRequest>
+		where TRequest : IRequest
+		=> self.AddScoped<IBeforeStatusAction<TRequest>, THook>();
+
+	/// <summary>
 	/// Adds a before-task hook for the given <c>TRequest</c>
 	/// </summary>
 	/// <param name="self">the service collection</param>
