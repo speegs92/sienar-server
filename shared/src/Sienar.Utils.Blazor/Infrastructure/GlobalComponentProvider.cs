@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// A provider to contain references to various global components to render in the Sienar UI

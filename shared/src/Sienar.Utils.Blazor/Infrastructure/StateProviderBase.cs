@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// A base state provider with a public <c>OnChange</c> event

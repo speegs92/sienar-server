@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// Handles time-delayed method calls similarly to JavaScript's <c>setTimeout()</c> and <c>setInterval()</c>

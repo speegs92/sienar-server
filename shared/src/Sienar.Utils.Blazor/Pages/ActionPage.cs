@@ -1,9 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Sienar.Infrastructure;
-
-namespace Sienar.Pages;
+﻿namespace Sienar.Pages;
 
 /// <summary>
 /// A component that provides tracking of the success state and loading state of HTTP requests
