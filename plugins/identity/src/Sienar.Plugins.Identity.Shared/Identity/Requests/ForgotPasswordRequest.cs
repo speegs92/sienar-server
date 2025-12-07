@@ -1,8 +1,3 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using Sienar.Data;
-using Sienar.Security;
-
 namespace Sienar.Identity.Requests;
 
 public class ForgotPasswordRequest : Honeypot, IRequest

@@ -1,9 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using Sienar.Data;
-using Sienar.Validation;
-
-namespace Sienar.Identity;
+﻿namespace Sienar.Identity;
 
 /// <summary>
 /// Creates or updates user in the database

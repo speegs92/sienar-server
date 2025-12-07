@@ -1,7 +1,4 @@
-﻿using System;
-using Sienar.Data;
-
-namespace Sienar.Identity.Results;
+﻿namespace Sienar.Identity.Results;
 
 /// <summary>
 /// Represents the result of a login operation

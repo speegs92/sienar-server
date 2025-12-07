@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 public class DownloadFile
 {

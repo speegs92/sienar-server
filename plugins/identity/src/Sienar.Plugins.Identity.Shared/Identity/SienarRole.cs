@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Sienar.Data;
-
-namespace Sienar.Identity;
+﻿namespace Sienar.Identity;
 
 [EntityName(Singular = "role", Plural ="roles")]
 public class SienarRole : EntityBase

@@ -1,7 +1,4 @@
-﻿using System;
-using Sienar.Data;
-
-namespace Sienar.Identity.Requests;
+﻿namespace Sienar.Identity.Requests;
 
 /// <summary>
 /// Represents a request to view an account's lockout reasons

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Sienar.Data;
-
 namespace Sienar.Identity;
 
 [EntityName(Singular = "user", Plural = "users")]

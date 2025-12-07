@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Sienar.Configuration;
-
-namespace Sienar.Identity;
+﻿namespace Sienar.Identity;
 
 public class AccountUrlProvider : IAccountUrlProvider
 {

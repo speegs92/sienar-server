@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sienar.Identity;
+﻿namespace Sienar.Identity;
 
 public class LoginOptions
 {
