@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,17 +24,20 @@ public class AccountController : SienarController
 
 	[HttpPost]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> Register(
 		RegisterRequest data,
 		[FromServices] IStatusActionOrchestrator<RegisterRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
 	[HttpGet]
+	[UsedImplicitly]
 	public Task<IActionResult> GetAccountData(
 		[FromServices] IResultActor<AccountDataResult> actor)
 		=> Execute(actor.Execute);
 
 	[HttpDelete]
+	[UsedImplicitly]
 	public Task<IActionResult> DeleteAccount(
 		DeleteAccountRequest data,
 		[FromServices] IStatusActionOrchestrator<DeleteAccountRequest> orchestrator)
@@ -41,6 +45,7 @@ public class AccountController : SienarController
 
 	[HttpPost("confirm")]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> Confirm(
 		ConfirmAccountRequest data,
 		[FromServices] IStatusActionOrchestrator<ConfirmAccountRequest> orchestrator)
@@ -48,12 +53,14 @@ public class AccountController : SienarController
 
 	[HttpPost("login")]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> Login(
 		LoginRequest data,
 		[FromServices] IGeneralActor<LoginRequest, LoginResult> service)
 		=> Execute(() => service.Execute(data));
 
 	[HttpDelete("login")]
+	[UsedImplicitly]
 	public Task<IActionResult> Logout(
 		LogoutRequest data,
 		[FromServices] IStatusActionOrchestrator<LogoutRequest> orchestrator)
@@ -61,6 +68,7 @@ public class AccountController : SienarController
 
 	[HttpDelete("password")]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> RequestPasswordReset(
 		ForgotPasswordRequest data,
 		[FromServices] IStatusActionOrchestrator<ForgotPasswordRequest> orchestrator)
@@ -68,30 +76,35 @@ public class AccountController : SienarController
 
 	[HttpPatch("password")]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> PerformPasswordReset(
 		ResetPasswordRequest data,
 		[FromServices] IStatusActionOrchestrator<ResetPasswordRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
 	[HttpPatch("change-password")]
+	[UsedImplicitly]
 	public Task<IActionResult> ChangePassword(
 		ChangePasswordRequest data,
 		[FromServices] IStatusActionOrchestrator<ChangePasswordRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
 	[HttpPost("change-email")]
+	[UsedImplicitly]
 	public Task<IActionResult> ChangeEmail(
 		InitiateEmailChangeRequest data,
 		[FromServices] IStatusActionOrchestrator<InitiateEmailChangeRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
 	[HttpPatch("email")]
+	[UsedImplicitly]
 	public Task<IActionResult> UpdateEmail(
 		PerformEmailChangeRequest data,
 		[FromServices] IStatusActionOrchestrator<PerformEmailChangeRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
 	[HttpGet("personal-data")]
+	[UsedImplicitly]
 	public async Task<IActionResult> GetPersonalData(
 		[FromServices] IResultActor<PersonalDataResult> actor)
 	{
@@ -116,6 +129,7 @@ public class AccountController : SienarController
 
 	[HttpGet("lockout-reasons")]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> GetLockoutReaons(
 		[FromQuery] AccountLockoutRequest data,
 		[FromServices] IGeneralActor<AccountLockoutRequest, AccountLockoutResult> service)
