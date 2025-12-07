@@ -18,7 +18,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 	private readonly IBotDetector _botDetector;
 	private readonly IAccessValidationRunner<TRequest> _accessValidator;
 	private readonly IStateValidationRunner<TRequest> _stateValidator;
-	private readonly IBeforeActionRunner<TRequest> _beforeHooks;
+	private readonly IBeforeActionRunner<IBeforeGeneralAction<TRequest>, TRequest> _beforeHooks;
 	private readonly IAfterActionRunner<IAfterGeneralAction<TRequest>, TRequest> _afterHooks;
 	private readonly IProcessor<TRequest, TResult> _processor;
 	private readonly IOperationResultNotifier _notifier;
@@ -28,7 +28,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 		IBotDetector botDetector,
 		IAccessValidationRunner<TRequest> accessValidator,
 		IStateValidationRunner<TRequest> stateValidator,
-		IBeforeActionRunner<TRequest> beforeHooks,
+		IBeforeActionRunner<IBeforeGeneralAction<TRequest>, TRequest> beforeHooks,
 		IAfterActionRunner<IAfterGeneralAction<TRequest>, TRequest> afterHooks,
 		IProcessor<TRequest, TResult> processor,
 		IOperationResultNotifier notifier)
@@ -71,7 +71,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 		}
 
 		// Run before hooks
-		var beforeHooksResult = await _beforeHooks.Run(request, ActionType.Action);
+		var beforeHooksResult = await _beforeHooks.Run(request);
 		if (!beforeHooksResult.Result)
 		{
 			return _notifier.HandleOperationResult(new OperationResult<TResult?>(
