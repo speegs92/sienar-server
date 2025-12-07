@@ -15,11 +15,8 @@ namespace Sienar.Identity;
 [ApiController]
 [Route("/api/users")]
 [Authorize(Roles = Roles.Admin)]
-public class UsersController : SienarController
+public class UsersController
 {
-	public UsersController(IOperationResultMapper mapper)
-		: base(mapper) {}
-
 	[HttpGet]
 	[UsedImplicitly]
 	public Task<IActionResult> Read(
