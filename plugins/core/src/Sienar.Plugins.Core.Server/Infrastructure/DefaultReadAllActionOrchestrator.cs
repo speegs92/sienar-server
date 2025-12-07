@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Sienar.Data;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <inheritdoc />
 public class DefaultReadAllActionOrchestrator<TDto, TEntity> : IReadAllActionOrchestrator<TDto, TEntity>

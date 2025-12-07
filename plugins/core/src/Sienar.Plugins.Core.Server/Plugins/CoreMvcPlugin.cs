@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Sienar.Configuration;
-using Sienar.Infrastructure;
+﻿using Microsoft.Extensions.Hosting;
 
 namespace Sienar.Plugins;
 

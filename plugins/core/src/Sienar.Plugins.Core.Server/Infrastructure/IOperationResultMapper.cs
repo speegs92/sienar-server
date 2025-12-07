@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Sienar.Data;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// Maps <see cref="OperationResult{T}"/> objects to <see cref="ObjectResult"/> objects

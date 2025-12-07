@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Sienar.Infrastructure;
-
-namespace Sienar.Extensions;
+﻿namespace Sienar.Extensions;
 
 /// <summary>
 /// Contains web-specific extensions of the <see cref="SienarAppBuilder"/> class
