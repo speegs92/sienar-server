@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Sienar.Extensions;
 using Sienar.Hooks;
 using Sienar.Infrastructure;
 
@@ -39,7 +40,7 @@ public class ConcurrencyStampValidator<TEntity> : IStateValidator<TEntity>
 			|| concurrencyStamp != request.ConcurrencyStamp)
 		{
 			_notifier.Error(
-				$"Unable to update {typeof(TEntity).Name}: the entity has been updated by another user.");
+				$"Unable to update {request.GetEntityName()}: the entity has been updated by another user.");
 			return OperationStatus.Conflict;
 		}
 
