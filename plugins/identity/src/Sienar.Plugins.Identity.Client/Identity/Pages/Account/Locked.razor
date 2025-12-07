@@ -1,7 +1,7 @@
 ﻿@inherits ActionPage
 @attribute [AllowAnonymous]
 @attribute [Route(DashboardUrls.Account.Locked)]
-@inject IService<AccountLockoutRequest, AccountLockoutResult> LockoutService
+@inject IGeneralActor<AccountLockoutRequest, AccountLockoutResult> LockoutService
 
 @if (_result is null)
 {

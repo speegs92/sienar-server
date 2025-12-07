@@ -1,8 +1,8 @@
 @inherits TablePage<ViewUserDto>
 @attribute [Authorize(Roles = Roles.Admin)]
 @attribute [Route(DashboardUrls.Users.Index)]
-@inject IStatusService<UnlockUserAccountRequest> UnlockService
-@inject IStatusService<ManuallyConfirmUserAccountRequest> ConfirmService
+@inject IStatusActor<UnlockUserAccountRequest> UnlockActor
+@inject IStatusActor<ManuallyConfirmUserAccountRequest> ConfirmActor
 
 <DocTitle Title="Users listing"/>
 
@@ -106,7 +106,7 @@
 		=> ConfirmAction(
 			$"Unlock {user.Username}'s account",
 			$"Are you sure you want to unlock {user.Username}'s account? This will take effect immediately",
-			async () => await UnlockService.Execute(new UnlockUserAccountRequest { UserId = user.Id }));
+			async () => await UnlockActor.Execute(new UnlockUserAccountRequest { UserId = user.Id }));
 
 	/// <summary>
 	/// Creates a prompt to confirm the specified user's account
@@ -115,7 +115,7 @@
 		=> ConfirmAction(
 			$"Confirm {user.Username}'s account",
 			$"Are you sure you want to confirm {user.Username}'s account? This will take effect immediately",
-			async () => await ConfirmService.Execute(new ManuallyConfirmUserAccountRequest { UserId = user.Id }));
+			async () => await ConfirmActor.Execute(new ManuallyConfirmUserAccountRequest { UserId = user.Id }));
 
 	/// <summary>
 	/// Creates a prompt to delete the specified user's account

@@ -1,0 +1,6 @@
+﻿namespace Sienar.Data;
+
+/// <summary>
+/// A marker interface that indicates a type can be used as input to an <c>IGeneralActor</c> or <c>IRequestService</c>
+/// </summary>
+public interface IRequest;

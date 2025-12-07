@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Sienar.Data;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
 using Sienar.Menus;
-using Sienar.Services;
 
 namespace Sienar.Extensions;
 
@@ -81,7 +81,7 @@ public static class MenuProviderExtensions
 					Icon = Icons.Material.Filled.Logout,
 					RequireLoggedIn = true,
 					OnClick = async (
-						IStatusService<LogoutRequest> service,
+						IStatusActor<LogoutRequest> service,
 						NavigationManager navManager) =>
 					{
 						var result = await service.Execute(new LogoutRequest());

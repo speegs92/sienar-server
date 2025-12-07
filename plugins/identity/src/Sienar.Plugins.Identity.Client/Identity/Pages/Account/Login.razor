@@ -50,7 +50,7 @@
 	public string? ReturnUrl { get; set; }
 
 	private async Task OnSubmit(
-		IService<LoginRequest, LoginResult> loginService,
+		IGeneralActor<LoginRequest, LoginResult> loginService,
 		NavigationManager navManager,
 		LoginRequest request)
 	{

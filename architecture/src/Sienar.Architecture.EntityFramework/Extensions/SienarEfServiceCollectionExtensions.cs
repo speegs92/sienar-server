@@ -4,8 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Sienar.Data;
-using Sienar.Hooks;
-using Sienar.Processors;
 
 namespace Sienar.Extensions;
 
@@ -76,7 +74,8 @@ public static class SienarEfServiceCollectionExtensions
 		where TEntity : EntityBase
 		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 	{
-		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
+		self.AddBeforeCreateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>();
+		self.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>();
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 
@@ -145,7 +144,9 @@ public static class SienarEfServiceCollectionExtensions
 			self.TryAddScoped<IMapper<TEditDto, TEntity>, TEditDtoToEntityMapper>();
 		}
 
-		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
+		self
+			.AddBeforeCreateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>()
+			.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>();
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 
@@ -159,9 +160,11 @@ public static class SienarEfServiceCollectionExtensions
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddEntityFramework(this IServiceCollection self)
 	{
-		self.TryAddScoped(typeof(IEntityReader<>), typeof(EfEntityReader<>));
-		self.TryAddScoped(typeof(IEntityWriter<>), typeof(EfEntityWriter<>));
-		self.TryAddScoped(typeof(IEntityDeleter<>), typeof(EfEntityDeleter<>));
+		self.TryAddScoped(typeof(IEntityReadActor<>), typeof(EfEntityReadActor<>));
+		self.TryAddScoped(typeof(IEntityReadAllActor<>), typeof(EfEntityReadAllActor<>));
+		self.TryAddScoped(typeof(IEntityCreateActor<>), typeof(EfEntityCreateActor<>));
+		self.TryAddScoped(typeof(IEntityUpdateActor<>), typeof(EfEntityUpdateActor<>));
+		self.TryAddScoped(typeof(IEntityDeleteActor<>), typeof(EfEntityDeleteActor<>));
 
 		return self;
 	}

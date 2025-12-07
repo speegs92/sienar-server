@@ -26,11 +26,11 @@
 @code {
 
 	private static async Task OnSubmit(
-		IStatusService<DeleteAccountRequest> deleteAccountService,
+		IStatusActor<DeleteAccountRequest> deleteAccountActor,
 		DeleteAccountRequest request,
 		NavigationManager navManager)
 	{
-		var result = await deleteAccountService.Execute(request);
+		var result = await deleteAccountActor.Execute(request);
 
 		if (result.Status is OperationStatus.Success)
 		{

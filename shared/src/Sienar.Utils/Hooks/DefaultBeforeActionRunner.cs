@@ -8,41 +8,51 @@ using Sienar.Infrastructure;
 
 namespace Sienar.Hooks;
 
-/// <exclude />
-public class DefaultBeforeActionRunner<T> : IBeforeActionRunner<T>
+/// <summary>
+/// Runs any type of before-action hook
+/// </summary>
+/// <typeparam name="THook">The type of the hook to run. Must inherit from <see cref="IBeforeActionBase{T}">IBeforeActionBase&lt;TTarget&gt;</see></typeparam>
+/// <typeparam name="TInput">The type of the after-action hook input</typeparam>
+public class DefaultBeforeActionRunner<THook, TInput> : IBeforeActionRunner<THook, TInput>
+	where THook : IBeforeActionBase<TInput>
 {
-	private readonly IEnumerable<IBeforeAction<T>> _hooks;
-	private readonly ILogger<DefaultBeforeActionRunner<T>> _logger;
+	private readonly IEnumerable<THook> _hooks;
+	private readonly ILogger<DefaultBeforeActionRunner<THook, TInput>> _logger;
 
+	/// <summary>
+	/// Creates a new instance of <c>DefaultBeforeActionRunner</c>
+	/// </summary>
+	/// <param name="hooks">The hooks to run</param>
+	/// <param name="logger">The logger</param>
 	public DefaultBeforeActionRunner(
-		IEnumerable<IBeforeAction<T>> hooks,
-		ILogger<DefaultBeforeActionRunner<T>> logger)
+		IEnumerable<THook> hooks,
+		ILogger<DefaultBeforeActionRunner<THook, TInput>> logger)
 	{
 		_hooks = hooks;
 		_logger = logger;
 	}
 
-	public async Task<OperationResult<bool>> Run(
-		T input,
-		ActionType action)
+	/// <inheritdoc />
+	public async Task<OperationResult<bool>> Run(TInput input)
 	{
-		try
+		foreach (var hook in _hooks)
 		{
-			foreach (var hook in _hooks)
+			try
 			{
-				await hook.Handle(input, action);
+				await hook.Handle(input);
 			}
-		}
-		catch (Exception e)
-		{
-			_logger.LogError(
-				e,
-				"One or more before {action} hooks failed to run",
-				action);
-			return new(
-				OperationStatus.Unknown,
-				false,
-				StatusMessages.Processes.BeforeHookFailure);
+			catch (Exception e)
+			{
+				_logger.LogError(
+					e,
+					"{hookType} {hookFqcn} failed to run",
+					typeof(THook),
+					hook.GetType().FullName);
+				return new(
+					OperationStatus.Unknown,
+					false,
+					StatusMessages.Processes.BeforeHookFailure);
+			}
 		}
 
 		return new(OperationStatus.Success, true);

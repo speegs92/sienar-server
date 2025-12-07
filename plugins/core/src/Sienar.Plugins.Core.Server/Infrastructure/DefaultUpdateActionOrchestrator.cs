@@ -12,7 +12,7 @@ public class DefaultUpdateActionOrchestrator<TDto, TEntity> : IUpdateActionOrche
 {
 	private readonly IDbContext _context;
 	private readonly IMapper<TDto, TEntity> _dtoToEntityMapper;
-	private readonly IEntityWriter<TEntity> _entityWriter;
+	private readonly IEntityUpdateActor<TEntity> _entityUpdater;
 	private readonly IOperationResultMapper _resultMapper;
 
 	/// <summary>
@@ -20,17 +20,17 @@ public class DefaultUpdateActionOrchestrator<TDto, TEntity> : IUpdateActionOrche
 	/// </summary>
 	/// <param name="context">The database context</param>
 	/// <param name="dtoToEntityMapper">The DTO-to-entity mapper</param>
-	/// <param name="entityWriter">The entity writer</param>
+	/// <param name="entityUpdater">The entity update actor</param>
 	/// <param name="resultMapper">The result mapper</param>
 	public DefaultUpdateActionOrchestrator(
 		IDbContext context,
 		IMapper<TDto, TEntity> dtoToEntityMapper,
-		IEntityWriter<TEntity> entityWriter,
+		IEntityUpdateActor<TEntity> entityUpdater,
 		IOperationResultMapper resultMapper)
 	{
 		_context = context;
 		_dtoToEntityMapper = dtoToEntityMapper;
-		_entityWriter = entityWriter;
+		_entityUpdater = entityUpdater;
 		_resultMapper = resultMapper;
 	}
 
@@ -41,7 +41,7 @@ public class DefaultUpdateActionOrchestrator<TDto, TEntity> : IUpdateActionOrche
 			.Set<TEntity>()
 			.FindAsync(dto.Id) ?? new TEntity();
 		_dtoToEntityMapper.Map(dto, entity);
-		var result = await _entityWriter.Update(entity);
+		var result = await _entityUpdater.Update(entity);
 		return _resultMapper.MapToObjectResult(result);
 	}
 }

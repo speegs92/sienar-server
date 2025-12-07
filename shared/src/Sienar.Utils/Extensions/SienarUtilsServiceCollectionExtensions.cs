@@ -9,9 +9,7 @@ using Sienar.Data;
 using Sienar.Hooks;
 using Sienar.Infrastructure;
 using Sienar.Menus;
-using Sienar.Processors;
 using Sienar.Security;
-using Sienar.Services;
 
 namespace Sienar.Extensions;
 
@@ -28,13 +26,13 @@ public static class SienarUtilsServiceCollectionExtensions
 	[ExcludeFromCodeCoverage]
 	public static IServiceCollection AddSienarCoreUtilities(this IServiceCollection self)
 	{
-		self.TryAddScoped(typeof(IStatusService<>), typeof(DefaultStatusService<>));
-		self.TryAddScoped(typeof(IService<,>), typeof(DefaultService<,>));
-		self.TryAddScoped(typeof(IResultService<>), typeof(DefaultResultService<>));
+		self.TryAddScoped(typeof(IStatusActor<>), typeof(DefaultStatusActor<>));
+		self.TryAddScoped(typeof(IGeneralActor<,>), typeof(DefaultGeneralActor<,>));
+		self.TryAddScoped(typeof(IResultActor<>), typeof(DefaultResultActor<>));
 		self.TryAddScoped(typeof(IAccessValidationRunner<>), typeof(DefaultAccessValidationRunner<>));
 		self.TryAddScoped(typeof(IStateValidationRunner<>), typeof(DefaultStateValidationRunner<>));
-		self.TryAddScoped(typeof(IBeforeActionRunner<>), typeof(DefaultBeforeActionRunner<>));
-		self.TryAddScoped(typeof(IAfterActionRunner<>), typeof(DefaultAfterActionRunner<>));
+		self.TryAddScoped(typeof(IBeforeActionRunner<,>), typeof(DefaultBeforeActionRunner<,>));
+		self.TryAddScoped(typeof(IAfterActionRunner<,>), typeof(DefaultAfterActionRunner<,>));
 		self.TryAddScoped<IMenuGenerator, DefaultMenuGenerator>();
 		self.TryAddScoped<IBotDetector, DefaultBotDetector>();
 		self.TryAddScoped(typeof(IMapper<,>), typeof(DefaultMapper<,>));
@@ -115,16 +113,69 @@ public static class SienarUtilsServiceCollectionExtensions
 		=> self.AddScoped<IStateValidator<TRequest>, TValidator>();
 
 	/// <summary>
-	/// Adds a before-action hook for the given <c>TRequest</c>
+	/// Adds an before-create hook for the given <c>TEntity</c>
 	/// </summary>
-	/// <param name="self">the service collection</param>
-	/// <typeparam name="TRequest">the data type of the request</typeparam>
-	/// <typeparam name="THook">the hook implementation</typeparam>
-	/// <returns>the service collection</returns>
-	public static IServiceCollection AddBeforeActionHook<THook, TRequest>(
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TEntity">The entity type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddBeforeCreateActionHook<THook, TEntity>(
 		this IServiceCollection self)
-		where THook : class, IBeforeAction<TRequest>
-		=> self.AddScoped<IBeforeAction<TRequest>, THook>();
+		where THook : class, IBeforeCreateAction<TEntity>
+		where TEntity : EntityBase
+		=> self.AddScoped<IBeforeCreateAction<TEntity>, THook>();
+
+	/// <summary>
+	/// Adds an before-update hook for the given <c>TEntity</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TEntity">The entity type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddBeforeUpdateActionHook<THook, TEntity>(
+		this IServiceCollection self)
+		where THook : class, IBeforeUpdateAction<TEntity>
+		where TEntity : EntityBase
+		=> self.AddScoped<IBeforeUpdateAction<TEntity>, THook>();
+
+	/// <summary>
+	/// Adds an before-delete hook for the given <c>TEntity</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TEntity">The entity type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddBeforeDeleteActionHook<THook, TEntity>(
+		this IServiceCollection self)
+		where THook : class, IBeforeDeleteAction<TEntity>
+		where TEntity : EntityBase
+		=> self.AddScoped<IBeforeDeleteAction<TEntity>, THook>();
+
+	/// <summary>
+	/// Adds an before general action hook for the given <c>TRequest</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TRequest">The request type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddBeforeGeneralActionHook<THook, TRequest>(
+		this IServiceCollection self)
+		where THook : class, IBeforeGeneralAction<TRequest>
+		where TRequest : IRequest
+		=> self.AddScoped<IBeforeGeneralAction<TRequest>, THook>();
+
+	/// <summary>
+	/// Adds an before status action hook for the given <c>TRequest</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TRequest">The request type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddBeforeStatusActionHook<THook, TRequest>(
+		this IServiceCollection self)
+		where THook : class, IBeforeStatusAction<TRequest>
+		where TRequest : IRequest
+		=> self.AddScoped<IBeforeStatusAction<TRequest>, THook>();
 
 	/// <summary>
 	/// Adds a before-task hook for the given <c>TRequest</c>
@@ -140,16 +191,108 @@ public static class SienarUtilsServiceCollectionExtensions
 		=> self.AddScoped<IBeforeTask<TRequest>, THook>();
 
 	/// <summary>
-	/// Adds an after-action hook for the given <c>TRequest</c>
+	/// Adds an after-read hook for the given <c>TEntity</c>
 	/// </summary>
-	/// <param name="self">the service collection</param>
-	/// <typeparam name="TRequest">the data type of the request</typeparam>
-	/// <typeparam name="THook">the hook implementation</typeparam>
-	/// <returns>the service collection</returns>
-	public static IServiceCollection AddAfterActionHook<THook, TRequest>(
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TEntity">The entity type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddAfterReadActionHook<THook, TEntity>(
 		this IServiceCollection self)
-		where THook : class, IAfterAction<TRequest>
-		=> self.AddScoped<IAfterAction<TRequest>, THook>();
+		where THook : class, IAfterReadAction<TEntity>
+		where TEntity : EntityBase
+		=> self.AddScoped<IAfterReadAction<TEntity>, THook>();
+
+	/// <summary>
+	/// Adds an after-read-all hook for the given <c>TEntity</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TEntity">The entity type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddAfterReadAllActionHook<THook, TEntity>(
+		this IServiceCollection self)
+		where THook : class, IAfterReadAllAction<TEntity>
+		where TEntity : EntityBase
+		=> self.AddScoped<IAfterReadAllAction<TEntity>, THook>();
+
+	/// <summary>
+	/// Adds an after-create hook for the given <c>TEntity</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TEntity">The entity type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddAfterCreateActionHook<THook, TEntity>(
+		this IServiceCollection self)
+		where THook : class, IAfterCreateAction<TEntity>
+		where TEntity : EntityBase
+		=> self.AddScoped<IAfterCreateAction<TEntity>, THook>();
+
+	/// <summary>
+	/// Adds an after-update hook for the given <c>TEntity</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TEntity">The entity type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddAfterUpdateActionHook<THook, TEntity>(
+		this IServiceCollection self)
+		where THook : class, IAfterUpdateAction<TEntity>
+		where TEntity : EntityBase
+		=> self.AddScoped<IAfterUpdateAction<TEntity>, THook>();
+
+	/// <summary>
+	/// Adds an after-delete hook for the given <c>TEntity</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TEntity">The entity type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddAfterDeleteActionHook<THook, TEntity>(
+		this IServiceCollection self)
+		where THook : class, IAfterDeleteAction<TEntity>
+		where TEntity : EntityBase
+		=> self.AddScoped<IAfterDeleteAction<TEntity>, THook>();
+
+	/// <summary>
+	/// Adds an after general action hook for the given <c>TRequest</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TRequest">The request type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddAfterGeneralActionHook<THook, TRequest>(
+		this IServiceCollection self)
+		where THook : class, IAfterGeneralAction<TRequest>
+		where TRequest : IRequest
+		=> self.AddScoped<IAfterGeneralAction<TRequest>, THook>();
+
+	/// <summary>
+	/// Adds an after status action hook for the given <c>TRequest</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TRequest">The request type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddAfterStatusActionHook<THook, TRequest>(
+		this IServiceCollection self)
+		where THook : class, IAfterStatusAction<TRequest>
+		where TRequest : IRequest
+		=> self.AddScoped<IAfterStatusAction<TRequest>, THook>();
+
+	/// <summary>
+	/// Adds an after result action hook for the given <c>TResult</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TResult">The result type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddAfterResultActionHook<THook, TResult>(
+		this IServiceCollection self)
+		where THook : class, IAfterResultAction<TResult>
+		where TResult : IResult
+		=> self.AddScoped<IAfterResultAction<TResult>, THook>();
 
 	/// <summary>
 	/// Adds an after-task hook for the given <c>TRequest</c>

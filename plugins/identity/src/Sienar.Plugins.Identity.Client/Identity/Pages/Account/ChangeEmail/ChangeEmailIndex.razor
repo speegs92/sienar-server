@@ -31,11 +31,11 @@
 @code {
 
 	private static async Task OnSubmit(
-		IStatusService<InitiateEmailChangeRequest> emailChangeService,
+		IStatusActor<InitiateEmailChangeRequest> emailChangeActor,
 		InitiateEmailChangeRequest request,
 		NavigationManager navManager)
 	{
-		var result = await emailChangeService.Execute(request);
+		var result = await emailChangeActor.Execute(request);
 
 		if (result.Status is OperationStatus.Success)
 		{
