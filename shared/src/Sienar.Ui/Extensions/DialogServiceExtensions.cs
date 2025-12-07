@@ -1,8 +1,4 @@
-﻿using System.Threading.Tasks;
-using MudBlazor;
-using Sienar.Ui;
-
-namespace Sienar.Extensions;
+﻿namespace Sienar.Extensions;
 
 /// <summary>
 /// Adds extensions to MudBlazor <see cref="IDialogService"/>

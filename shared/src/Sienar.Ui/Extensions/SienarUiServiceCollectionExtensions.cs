@@ -1,9 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using MudBlazor;
-using Sienar.Infrastructure;
-using Sienar.Ui;
-
-namespace Sienar.Extensions;
+﻿namespace Sienar.Extensions;
 
 /// <summary>
 /// Contains <see cref="IServiceCollection"/> extension methods used by the <c>Sienar.Ui</c> assembly

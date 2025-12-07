@@ -1,13 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using Sienar.Extensions;
-using Sienar.Data;
-using Sienar.Infrastructure;
-using Sienar.Ui;
-
-namespace Sienar.Pages;
+﻿namespace Sienar.Pages;
 
 public class TablePage<TEntity> : ComponentBase
 	where TEntity : EntityBase

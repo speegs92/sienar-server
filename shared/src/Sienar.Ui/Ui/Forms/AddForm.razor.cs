@@ -1,11 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Sienar.Data;
-using Sienar.Extensions;
-using Sienar.Infrastructure;
-
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable once CheckNamespace
 namespace Sienar.Ui;
 
 /// <summary>

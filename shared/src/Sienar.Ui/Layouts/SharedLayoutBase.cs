@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-
-namespace Sienar.Layouts;
+﻿namespace Sienar.Layouts;
 
 public abstract class SharedLayoutBase : ComponentBase
 {

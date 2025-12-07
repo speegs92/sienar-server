@@ -1,5 +1,3 @@
-using MudBlazor;
-
 // ReSharper disable once CheckNamespace
 namespace Sienar.Ui;
 
