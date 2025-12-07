@@ -50,7 +50,8 @@ public class CoreMvcPlugin : IPlugin
 			.AddScoped(typeof(ICreateActionOrchestrator<,>), typeof(DefaultCreateActionOrchestrator<,>))
 			.AddScoped(typeof(IUpdateActionOrchestrator<,>), typeof(DefaultUpdateActionOrchestrator<,>))
 			.AddScoped(typeof(IDeleteActionOrchestrator<>), typeof(DefaultDeleteActionOrchestrator<>))
-			.AddScoped(typeof(IGeneralActionOrchestrator<,>), typeof(DefaultGeneralActionOrchestrator<,>));
+			.AddScoped(typeof(IGeneralActionOrchestrator<,>), typeof(DefaultGeneralActionOrchestrator<,>))
+			.AddScoped(typeof(IStatusActionOrchestrator<>), typeof(DefaultStatusActionOrchestrator<>));
 
 		// Add and configure MVC
 		var mvcbuilder = _builder.Services.AddMvc(
