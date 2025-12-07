@@ -52,30 +52,30 @@ public class UsersController : SienarController
 	[HttpPost("roles")]
 	public Task<IActionResult> AddToRole(
 		AddUserToRoleRequest data,
-		[FromServices] IStatusActor<AddUserToRoleRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<AddUserToRoleRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpDelete("roles")]
 	public Task<IActionResult> RemoveFromRole(
 		RemoveUserFromRoleRequest data,
-		[FromServices] IStatusActor<RemoveUserFromRoleRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<RemoveUserFromRoleRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpPatch("lock")]
 	public Task<IActionResult> LockUser(
 		LockUserAccountRequest data,
-		[FromServices] IStatusActor<LockUserAccountRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<LockUserAccountRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpDelete("lock")]
 	public Task<IActionResult> UnlockUser(
 		UnlockUserAccountRequest data,
-		[FromServices] IStatusActor<UnlockUserAccountRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<UnlockUserAccountRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpPatch("confirm")]
 	public Task<IActionResult> ConfirmUserAccount(
 		ManuallyConfirmUserAccountRequest data,
-		[FromServices] IStatusActor<ManuallyConfirmUserAccountRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<ManuallyConfirmUserAccountRequest> orchestrator)
+		=> orchestrator.Execute(data);
 }
