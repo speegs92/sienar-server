@@ -17,10 +17,8 @@ namespace Sienar.Identity;
 [ApiController]
 [Route("/api/account")]
 [Authorize]
-public class AccountController : SienarController
+public class AccountController : ControllerBase
 {
-	public AccountController(IOperationResultMapper mapper)
-		: base(mapper) {}
 
 	[HttpPost]
 	[AllowAnonymous]
