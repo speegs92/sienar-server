@@ -1,10 +1,4 @@
-﻿using System.Threading.Tasks;
-using Sienar.Data;
-using Sienar.Identity.Requests;
-using Sienar.Identity.Results;
-using Sienar.Infrastructure;
-
-namespace Sienar.Identity.Processors;
+﻿namespace Sienar.Identity.Processors;
 
 public class ClientAccountLockoutProcessor : IProcessor<AccountLockoutRequest, AccountLockoutResult>
 {
