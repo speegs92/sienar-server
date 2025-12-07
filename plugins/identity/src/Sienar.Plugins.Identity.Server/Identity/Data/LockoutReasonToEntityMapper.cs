@@ -1,7 +1,4 @@
-﻿using Sienar.Data;
-using Sienar.Extensions;
-
-namespace Sienar.Identity.Data;
+﻿namespace Sienar.Identity.Data;
 
 /// <summary>
 /// Maps from <see cref="LockoutReasonDto"/> to <see cref="LockoutReason"/>

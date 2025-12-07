@@ -1,15 +1,9 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 #pragma warning disable CA1822 // Member can be marked as static
 
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Sienar.Data;
-using Sienar.Identity.Requests;
-using Sienar.Identity.Results;
-using Sienar.Infrastructure;
 
 namespace Sienar.Identity;
 

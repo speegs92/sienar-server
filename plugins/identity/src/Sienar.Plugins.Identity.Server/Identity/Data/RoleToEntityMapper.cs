@@ -1,7 +1,4 @@
-﻿using System;
-using Sienar.Data;
-
-namespace Sienar.Identity.Data;
+﻿namespace Sienar.Identity.Data;
 
 /// <summary>
 /// Maps from <see cref="RoleDto"/> to <see cref="SienarRole"/>

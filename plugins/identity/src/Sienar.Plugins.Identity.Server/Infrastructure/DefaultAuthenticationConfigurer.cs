@@ -2,7 +2,6 @@
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Sienar.Configuration;
 
 namespace Sienar.Infrastructure;
 

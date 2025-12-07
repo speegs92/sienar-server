@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Sienar.Configuration;
-using Sienar.Extensions;
-using Sienar.Infrastructure;
 
 namespace Sienar.Plugins;
 

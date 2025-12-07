@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Sienar.Infrastructure;
-
-namespace Sienar.Configuration;
+﻿namespace Sienar.Configuration;
 
 /// <summary>
 /// Configures ASP.NET MVC to include an <see cref="AutoValidateAntiforgeryTokenAttribute"/>
