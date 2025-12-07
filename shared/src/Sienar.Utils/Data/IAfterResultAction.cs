@@ -1,6 +1,6 @@
 ﻿using Sienar.Hooks;
 
-namespace Sienar.Services;
+namespace Sienar.Data;
 
 /// <summary>
 /// Performs arbitrary work after a result action has already run

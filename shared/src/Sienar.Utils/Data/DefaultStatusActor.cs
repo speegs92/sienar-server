@@ -3,13 +3,12 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Sienar.Data;
 using Sienar.Hooks;
 using Sienar.Infrastructure;
 using Sienar.Processors;
 using Sienar.Security;
 
-namespace Sienar.Services;
+namespace Sienar.Data;
 
 /// <exclude />
 public class DefaultStatusActor<TRequest> : IStatusActor<TRequest>

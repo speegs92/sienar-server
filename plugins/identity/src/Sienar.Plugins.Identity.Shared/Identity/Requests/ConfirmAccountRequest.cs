@@ -2,7 +2,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using Sienar.Services;
+using Sienar.Data;
 
 namespace Sienar.Identity.Requests;
 

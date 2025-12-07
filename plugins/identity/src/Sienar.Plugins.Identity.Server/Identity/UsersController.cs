@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Sienar.Data;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
-using Sienar.Services;
 
 namespace Sienar.Identity;
 

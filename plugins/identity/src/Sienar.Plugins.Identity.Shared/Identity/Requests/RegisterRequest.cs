@@ -1,8 +1,8 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Sienar.Data;
 using Sienar.Validation;
 using Sienar.Security;
-using Sienar.Services;
 
 namespace Sienar.Identity.Requests;
 

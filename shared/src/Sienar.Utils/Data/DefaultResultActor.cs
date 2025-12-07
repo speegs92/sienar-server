@@ -8,7 +8,7 @@ using Sienar.Infrastructure;
 using Sienar.Processors;
 using Sienar.Security;
 
-namespace Sienar.Services;
+namespace Sienar.Data;
 
 /// <exclude />
 // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
