@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
-
-namespace Sienar.Extensions;
+﻿namespace Sienar.Extensions;
 
 /// <summary>
 /// Contains <see cref="AuthenticationState"/> extension methods used by the <c>Sienar.Plugins.Identity.Client</c> assembly

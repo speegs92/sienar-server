@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-
-namespace Sienar.Extensions;
+﻿namespace Sienar.Extensions;
 
 /// <summary>
 /// Contains <see cref="NavigationManager"/> extension methods used by the <c>Sienar.Plugins.Identity.Client</c> assembly

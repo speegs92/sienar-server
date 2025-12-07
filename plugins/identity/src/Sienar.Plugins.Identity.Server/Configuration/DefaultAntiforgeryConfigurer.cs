@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Antiforgery;
-using Sienar.Infrastructure;
 
 namespace Sienar.Configuration;
 

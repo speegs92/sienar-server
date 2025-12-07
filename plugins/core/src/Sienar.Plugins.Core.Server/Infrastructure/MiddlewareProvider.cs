@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// Contains prioritized middlewares for <see cref="SienarAppBuilder"/>

@@ -1,6 +1,4 @@
-﻿using Sienar.Data;
-
-namespace Sienar.Identity.Requests;
+﻿namespace Sienar.Identity.Requests;
 
 public class UnlockUserAccountRequest : IRequest
 {

@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Sienar.Infrastructure;
-
-namespace Sienar.Hooks;
+﻿namespace Sienar.Hooks;
 
 /// <summary>
 /// Runs before-action hooks for a hookable request

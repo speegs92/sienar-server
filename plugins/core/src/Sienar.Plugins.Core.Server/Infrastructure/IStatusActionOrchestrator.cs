@@ -1,8 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Sienar.Data;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// Orchestrates and calls the services needed to respond to an HTTP request which accepts input and returns the success status

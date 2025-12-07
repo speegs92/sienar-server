@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Sienar.Data;
-
-namespace Sienar.Identity.Results;
+﻿namespace Sienar.Identity.Results;
 
 public class AccountLockoutResult : IResult
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using Sienar.Configuration;
-using Sienar.Identity;
-
-namespace Sienar.Extensions;
+﻿namespace Sienar.Extensions;
 
 public static class SienarUserExtensions
 {

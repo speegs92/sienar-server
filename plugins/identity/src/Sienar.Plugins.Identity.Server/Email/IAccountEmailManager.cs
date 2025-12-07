@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Sienar.Identity;
-
-namespace Sienar.Email;
+﻿namespace Sienar.Email;
 
 /// <summary>
 /// Manages the sending of account-related emails

@@ -1,9 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Sienar.Configuration;
-using Sienar.Extensions;
-using Sienar.Infrastructure;
-
-namespace Sienar.Plugins;
+﻿namespace Sienar.Plugins;
 
 /// <summary>
 /// Configures the Sienar app to run as a web application with auth, CORS, and other core web-based services

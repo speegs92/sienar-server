@@ -1,7 +1,4 @@
-﻿using System;
-using Sienar.Data;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// Supplies various types of messages to the user

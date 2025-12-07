@@ -1,17 +1,5 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Sienar.Configuration;
-using Sienar.Extensions;
-using Sienar.Html;
-using Sienar.Identity;
-using Sienar.Identity.Processors;
-using Sienar.Identity.Requests;
-using Sienar.Identity.Results;
-using Sienar.Infrastructure;
+﻿using Sienar.Identity.Processors;
 using Sienar.Layouts;
-using Sienar.Menus;
-using Sienar.Ui;
 using Sienar.Ui.Views;
 
 namespace Sienar.Plugins;

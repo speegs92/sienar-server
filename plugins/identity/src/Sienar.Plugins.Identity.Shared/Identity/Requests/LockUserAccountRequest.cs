@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Sienar.Data;
-
-namespace Sienar.Identity.Requests;
+﻿namespace Sienar.Identity.Requests;
 
 public class LockUserAccountRequest : IRequest
 {

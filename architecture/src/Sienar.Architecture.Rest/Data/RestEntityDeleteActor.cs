@@ -1,9 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Sienar.Infrastructure;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// An implementation of <see cref="IEntityDeleteActor{T}"/> which deletes entities from a REST endpoint

@@ -1,0 +1,14 @@
+﻿global using Microsoft.AspNetCore.Builder;
+global using Microsoft.AspNetCore.Components.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using System;
+global using System.Collections.Generic;
+global using System.Threading.Tasks;
+global using Sienar.Configuration;
+global using Sienar.Data;
+global using Sienar.Extensions;
+global using Sienar.Infrastructure;
+global using Sienar.Security;
+global using Sienar.Ui;

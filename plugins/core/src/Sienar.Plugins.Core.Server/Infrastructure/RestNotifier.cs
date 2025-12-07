@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Sienar.Data;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// The default implementation of <see cref="IReadableNotifier"/>

@@ -1,8 +1,4 @@
-﻿using System;
-using Sienar.Infrastructure;
-using Sienar.Plugins;
-
-namespace Sienar.Configuration;
+﻿namespace Sienar.Configuration;
 
 /// <summary>
 /// Registers an <see cref="IConfigurer{TOptions}"/> to configure the <see cref="SienarAppBuilder"/>

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Sienar.Identity;
-
-namespace Sienar.Email;
+﻿namespace Sienar.Email;
 
 public interface IAccountEmailMessageFactory
 {

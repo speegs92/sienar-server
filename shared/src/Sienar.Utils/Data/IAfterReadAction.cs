@@ -1,6 +1,4 @@
-﻿using Sienar.Hooks;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// Performs arbitrary work after a read action has already run

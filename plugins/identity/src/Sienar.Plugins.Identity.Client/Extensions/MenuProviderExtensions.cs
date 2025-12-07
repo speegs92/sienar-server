@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using MudBlazor;
-using Sienar.Data;
-using Sienar.Identity.Requests;
-using Sienar.Infrastructure;
-using Sienar.Menus;
-
-namespace Sienar.Extensions;
+﻿namespace Sienar.Extensions;
 
 /// <summary>
 /// Contains <see cref="MenuProvider"/> extension methods used by the <c>Sienar.Plugins.Identity.Client</c> assembly

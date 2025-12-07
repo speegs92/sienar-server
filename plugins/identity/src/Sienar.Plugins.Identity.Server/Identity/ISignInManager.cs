@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Sienar.Identity;
+﻿namespace Sienar.Identity;
 
 public interface ISignInManager
 {

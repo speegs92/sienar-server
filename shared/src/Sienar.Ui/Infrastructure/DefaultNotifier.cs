@@ -1,8 +1,4 @@
-﻿using System;
-using MudBlazor;
-using Sienar.Data;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 public class DefaultNotifier : INotifier
 {

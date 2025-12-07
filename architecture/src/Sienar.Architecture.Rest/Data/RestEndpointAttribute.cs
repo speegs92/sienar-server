@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// Describes a RESTful endpoint for a DTO

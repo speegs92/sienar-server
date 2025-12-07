@@ -1,7 +1,4 @@
-﻿using MudBlazor;
-using Sienar.Infrastructure;
-
-namespace Sienar.Ui;
+﻿namespace Sienar.Ui;
 
 /// <summary>
 /// Contains the state required to render the current theme

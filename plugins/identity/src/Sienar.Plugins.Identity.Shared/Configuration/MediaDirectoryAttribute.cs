@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sienar.Configuration;
+﻿namespace Sienar.Configuration;
 
 [AttributeUsage(AttributeTargets.Field)]
 public class MediaDirectoryAttribute : Attribute

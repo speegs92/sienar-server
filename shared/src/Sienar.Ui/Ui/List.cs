@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-
-namespace Sienar.Ui;
+﻿namespace Sienar.Ui;
 
 public class List : ComponentBase
 {

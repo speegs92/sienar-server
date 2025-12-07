@@ -1,7 +1,4 @@
-﻿using Sienar.Data;
-using Sienar.Infrastructure;
-
-namespace Sienar.Identity.Results;
+﻿namespace Sienar.Identity.Results;
 
 public class PersonalDataResult : IResult
 {

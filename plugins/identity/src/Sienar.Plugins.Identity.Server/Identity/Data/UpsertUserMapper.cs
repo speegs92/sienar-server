@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Sienar.Data;
-using Sienar.Extensions;
 
 namespace Sienar.Identity.Data;
 

@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Sienar.Configuration;
+﻿namespace Sienar.Configuration;
 
 /// <summary>
 /// Configures core Sienar options

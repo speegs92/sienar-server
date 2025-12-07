@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
-using Sienar.Hooks;
-
-namespace Sienar.Ui;
+﻿namespace Sienar.Ui;
 
 /// <summary>
 /// A component that performs actions at application startup, after the Blazor UI has rendered

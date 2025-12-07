@@ -1,6 +1,4 @@
-﻿using MudBlazor;
-
-namespace Sienar.Ui;
+﻿namespace Sienar.Ui;
 
 public class NarrowContainer : MudContainer
 {

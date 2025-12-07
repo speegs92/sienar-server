@@ -1,10 +1,3 @@
-using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using Sienar.Data;
-using Sienar.Validation;
-using Sienar.Security;
-
 namespace Sienar.Identity.Requests;
 
 public class ResetPasswordRequest : Honeypot, IRequest

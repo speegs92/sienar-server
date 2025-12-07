@@ -1,12 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Sienar.Hooks;
-using Sienar.Infrastructure;
-using Sienar.Security;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// An implementation of <see cref="IEntityDeleteActor{T}"/> which deletes entities from an EntityFramework <see cref="DbContext"/>

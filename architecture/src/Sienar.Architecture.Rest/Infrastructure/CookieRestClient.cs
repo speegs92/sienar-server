@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Sienar.Data;
-using Sienar.Hooks;
 
 namespace Sienar.Infrastructure;
 

@@ -1,8 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using Sienar.Data;
-
-namespace Sienar.Identity.Requests;
+﻿namespace Sienar.Identity.Requests;
 
 public class DeleteAccountRequest : IRequest
 {

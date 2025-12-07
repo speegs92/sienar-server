@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Sienar.Infrastructure;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// A service to create instances of <c>T</c> in the appropriate repository

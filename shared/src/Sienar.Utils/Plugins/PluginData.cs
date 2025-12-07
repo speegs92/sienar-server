@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sienar.Plugins;
+﻿namespace Sienar.Plugins;
 
 /// <summary>
 /// A data class that contains identifying information for plugins

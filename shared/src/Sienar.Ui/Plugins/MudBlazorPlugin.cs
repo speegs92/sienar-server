@@ -1,9 +1,4 @@
-﻿using MudBlazor.Services;
-using Sienar.Configuration;
-using Sienar.Html;
-using Sienar.Infrastructure;
-
-namespace Sienar.Plugins;
+﻿namespace Sienar.Plugins;
 
 /// <summary>
 /// Configures the Sienar app to support MudBlazor

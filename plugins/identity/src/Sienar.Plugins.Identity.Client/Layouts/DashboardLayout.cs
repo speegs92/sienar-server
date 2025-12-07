@@ -1,6 +1,4 @@
-﻿using Sienar.Infrastructure;
-
-namespace Sienar.Layouts;
+﻿namespace Sienar.Layouts;
 
 public class DashboardLayout : DashboardLayoutBase
 {

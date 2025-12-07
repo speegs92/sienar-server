@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Sienar.Data;
-
-namespace Sienar.Identity;
+﻿namespace Sienar.Identity;
 
 /// <summary>
 /// A reason why a user might be locked out

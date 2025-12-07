@@ -1,6 +1,4 @@
-﻿using Sienar.Data;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// Handles notifications based on different types of <see cref="OperationResult{TResult}"/>

@@ -1,15 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Sienar.Configuration;
-using Sienar.Data;
-using Sienar.Email;
-using Sienar.Extensions;
-using Sienar.Identity.Requests;
-using Sienar.Infrastructure;
 
 namespace Sienar.Identity.Processors;
 

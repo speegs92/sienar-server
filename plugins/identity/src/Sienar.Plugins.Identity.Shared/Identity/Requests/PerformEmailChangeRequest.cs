@@ -1,7 +1,3 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-using Sienar.Data;
-
 namespace Sienar.Identity.Requests;
 
 public class PerformEmailChangeRequest : IRequest

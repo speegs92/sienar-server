@@ -1,6 +1,4 @@
-﻿using Sienar.Data;
-
-namespace Sienar.Identity.Data;
+﻿namespace Sienar.Identity.Data;
 
 /// <summary>
 /// Maps a <see cref="SienarUser"/> to a <see cref="ViewUserDto"/>

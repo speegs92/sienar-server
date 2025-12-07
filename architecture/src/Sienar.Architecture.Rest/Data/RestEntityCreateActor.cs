@@ -1,11 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Sienar.Hooks;
-using Sienar.Infrastructure;
-using Sienar.Security;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// An implementation of <see cref="IEntityCreateActor{T}"/> which creates entities at a REST endpoint

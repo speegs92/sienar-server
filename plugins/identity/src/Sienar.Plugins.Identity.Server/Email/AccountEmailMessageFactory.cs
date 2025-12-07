@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Sienar.Identity;
-
-namespace Sienar.Email;
+﻿namespace Sienar.Email;
 
 public class AccountEmailMessageFactory : IAccountEmailMessageFactory
 {

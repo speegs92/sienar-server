@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Components;
-
-namespace Sienar.Layouts;
+﻿namespace Sienar.Layouts;
 
 /// <summary>
 /// A standard base layout for use with Sienar

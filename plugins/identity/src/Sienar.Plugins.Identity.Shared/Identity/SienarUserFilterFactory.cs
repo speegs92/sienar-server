@@ -1,6 +1,4 @@
-﻿using Sienar.Data;
-
-namespace Sienar.Identity;
+﻿namespace Sienar.Identity;
 
 /// <summary>
 /// Contains utilities for creating frequently-used <see cref="Filter"/> patterns

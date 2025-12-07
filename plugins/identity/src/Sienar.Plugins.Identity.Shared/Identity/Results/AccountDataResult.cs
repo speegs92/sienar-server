@@ -1,6 +1,4 @@
-﻿using Sienar.Data;
-
-namespace Sienar.Identity.Results;
+﻿namespace Sienar.Identity.Results;
 
 /// <summary>
 /// Contains the account data of the currently logged in account

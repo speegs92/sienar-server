@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Sienar.Infrastructure;
-
-namespace Sienar.Extensions;
+﻿namespace Sienar.Extensions;
 
 /// <summary>
 /// Contains <see cref="IRestClient"/> extension methods used by the <c>Sienar.Plugins.Identity.Client</c> assembly

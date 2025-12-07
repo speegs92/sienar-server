@@ -1,8 +1,5 @@
 ﻿using System.Net.Mime;
 using System.Text.Json;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Sienar.Infrastructure;
 
 namespace Sienar.Configuration;
 

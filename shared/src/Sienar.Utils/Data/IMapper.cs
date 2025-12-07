@@ -1,11 +1,11 @@
-﻿// ReSharper disable TypeParameterCanBeVariant
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// Maps between two class instances
 /// </summary>
 /// <typeparam name="TSource">The type of the source class</typeparam>
 /// <typeparam name="TTarget">The type of the target class</typeparam>
+// ReSharper disable TypeParameterCanBeVariant
 public interface IMapper<TSource, TTarget>
 	where TSource : class
 	where TTarget : class

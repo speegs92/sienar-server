@@ -1,10 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Sienar.Hooks;
-using Sienar.Infrastructure;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// An implementation of <see cref="IEntityReadAllActor{T}"/> which reads entities from a REST endpoint

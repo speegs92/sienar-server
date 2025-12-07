@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Sienar.Identity;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 public interface ISienarDbContext : IDbContext
 {

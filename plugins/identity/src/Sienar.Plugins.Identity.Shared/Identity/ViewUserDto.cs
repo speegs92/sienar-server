@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Sienar.Data;
-
-namespace Sienar.Identity;
+﻿namespace Sienar.Identity;
 
 /// <summary>
 /// Reads a user from the database

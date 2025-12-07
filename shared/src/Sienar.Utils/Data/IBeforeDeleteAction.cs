@@ -1,6 +1,4 @@
-﻿using Sienar.Hooks;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// Performs arbitrary actions before a delete action has run

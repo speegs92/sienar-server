@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Components;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// A provider to contain references to various components to render in the Sienar UI

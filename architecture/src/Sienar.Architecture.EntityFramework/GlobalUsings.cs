@@ -1,0 +1,11 @@
+﻿global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Logging;
+global using System;
+global using System.Linq;
+global using System.Linq.Expressions;
+global using System.Threading.Tasks;
+global using Sienar.Data;
+global using Sienar.Extensions;
+global using Sienar.Hooks;
+global using Sienar.Infrastructure;
+global using Sienar.Security;

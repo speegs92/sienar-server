@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Sienar.Hooks;
-
-namespace Sienar.Security;
+﻿namespace Sienar.Security;
 
 /// <summary>
 /// Performs access validation for a hookable request

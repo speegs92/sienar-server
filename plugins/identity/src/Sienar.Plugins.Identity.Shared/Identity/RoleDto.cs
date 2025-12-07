@@ -1,6 +1,4 @@
-﻿using Sienar.Data;
-
-namespace Sienar.Identity;
+﻿namespace Sienar.Identity;
 
 /// <summary>
 /// An application role
