@@ -56,8 +56,8 @@ public class AccountController : SienarController
 	[UsedImplicitly]
 	public Task<IActionResult> Login(
 		LoginRequest data,
-		[FromServices] IGeneralActor<LoginRequest, LoginResult> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IGeneralActionOrchestrator<LoginRequest, LoginResult> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpDelete("login")]
 	[UsedImplicitly]
@@ -132,6 +132,6 @@ public class AccountController : SienarController
 	[UsedImplicitly]
 	public Task<IActionResult> GetLockoutReaons(
 		[FromQuery] AccountLockoutRequest data,
-		[FromServices] IGeneralActor<AccountLockoutRequest, AccountLockoutResult> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IGeneralActionOrchestrator<AccountLockoutRequest, AccountLockoutResult> orchestrator)
+		=> orchestrator.Execute(data);
 }
