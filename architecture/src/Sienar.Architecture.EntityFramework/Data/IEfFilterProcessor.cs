@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using Sienar.Hooks;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// A processor which converts a <see cref="Filter"/> into EF queries for the given <c>TEntity</c>
