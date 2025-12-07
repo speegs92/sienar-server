@@ -33,8 +33,8 @@ public class AccountController : SienarController
 	[HttpGet]
 	[UsedImplicitly]
 	public Task<IActionResult> GetAccountData(
-		[FromServices] IResultActor<AccountDataResult> actor)
-		=> Execute(actor.Execute);
+		[FromServices] IResultActionOrchestrator<AccountDataResult> orchestrator)
+		=> orchestrator.Execute();
 
 	[HttpDelete]
 	[UsedImplicitly]
