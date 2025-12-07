@@ -1,6 +1,4 @@
-﻿using System.Net.Http;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// A wrapper around an <see cref="HttpRequestMessage"/> that enables developers to create hooks typed to specific HTTP clients

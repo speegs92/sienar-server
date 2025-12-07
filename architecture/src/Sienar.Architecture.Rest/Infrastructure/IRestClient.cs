@@ -1,8 +1,4 @@
-﻿using System.Net.Http;
-using System.Threading.Tasks;
-using Sienar.Data;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 public interface IRestClient
 {

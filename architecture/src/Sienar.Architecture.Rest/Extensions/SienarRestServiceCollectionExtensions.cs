@@ -1,10 +1,7 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
-using Sienar.Data;
-using Sienar.Infrastructure;
 
 namespace Sienar.Extensions;
 

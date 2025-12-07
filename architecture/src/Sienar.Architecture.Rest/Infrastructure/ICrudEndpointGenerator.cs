@@ -1,6 +1,4 @@
-﻿using Sienar.Data;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// Generates endpoints for a given CRUD DTO
