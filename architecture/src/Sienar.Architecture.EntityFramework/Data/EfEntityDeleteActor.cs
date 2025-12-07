@@ -19,7 +19,7 @@ public class EfEntityDeleteActor<T> : IEntityDeleteActor<T>
 	private readonly ILogger<EfEntityDeleteActor<T>> _logger;
 	private readonly IAccessValidationRunner<T> _accessValidationRunner;
 	private readonly IStateValidationRunner<T> _stateValidationRunner;
-	private readonly IBeforeActionRunner<T> _beforeActionRunner;
+	private readonly IBeforeActionRunner<IBeforeDeleteAction<T>, T> _beforeActionRunner;
 	private readonly IAfterActionRunner<IAfterDeleteAction<T>, T> _afterActionRunner;
 	private readonly IOperationResultNotifier _notifier;
 
@@ -38,7 +38,7 @@ public class EfEntityDeleteActor<T> : IEntityDeleteActor<T>
 		ILogger<EfEntityDeleteActor<T>> logger,
 		IAccessValidationRunner<T> accessValidationRunner,
 		IStateValidationRunner<T> stateValidationRunner,
-		IBeforeActionRunner<T> beforeActionRunner,
+		IBeforeActionRunner<IBeforeDeleteAction<T>, T> beforeActionRunner,
 		IAfterActionRunner<IAfterDeleteAction<T>, T> afterActionRunner,
 		IOperationResultNotifier notifier)
 	{
@@ -100,9 +100,7 @@ public class EfEntityDeleteActor<T> : IEntityDeleteActor<T>
 		}
 
 		// Run before hooks
-		var beforeHooksResult = await _beforeActionRunner.Run(
-			entity,
-			ActionType.Delete);
+		var beforeHooksResult = await _beforeActionRunner.Run(entity);
 		if (!beforeHooksResult.Result)
 		{
 			return _notifier.HandleOperationResult(new OperationResult<bool>(
