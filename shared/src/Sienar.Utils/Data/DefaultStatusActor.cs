@@ -17,7 +17,7 @@ public class DefaultStatusActor<TRequest> : IStatusActor<TRequest>
 	private readonly IBotDetector _botDetector;
 	private readonly IAccessValidationRunner<TRequest> _accessValidator;
 	private readonly IStateValidationRunner<TRequest> _stateValidator;
-	private readonly IBeforeActionRunner<TRequest> _beforeHooks;
+	private readonly IBeforeActionRunner<IBeforeStatusAction<TRequest>, TRequest> _beforeHooks;
 	private readonly IAfterActionRunner<IAfterStatusAction<TRequest>, TRequest> _afterHooks;
 	private readonly IStatusProcessor<TRequest> _processor;
 	private readonly IOperationResultNotifier _notifier;
@@ -27,7 +27,7 @@ public class DefaultStatusActor<TRequest> : IStatusActor<TRequest>
 		IBotDetector botDetector,
 		IAccessValidationRunner<TRequest> accessValidator,
 		IStateValidationRunner<TRequest> stateValidator,
-		IBeforeActionRunner<TRequest> beforeHooks,
+		IBeforeActionRunner<IBeforeStatusAction<TRequest>, TRequest> beforeHooks,
 		IAfterActionRunner<IAfterStatusAction<TRequest>, TRequest> afterHooks,
 		IStatusProcessor<TRequest> processor,
 		IOperationResultNotifier notifier)
@@ -65,7 +65,7 @@ public class DefaultStatusActor<TRequest> : IStatusActor<TRequest>
 		}
 
 		// Run before hooks
-		result = await _beforeHooks.Run(request, ActionType.Status);
+		result = await _beforeHooks.Run(request);
 		if (!result.Result)
 		{
 			return _notifier.HandleOperationResult(result);
