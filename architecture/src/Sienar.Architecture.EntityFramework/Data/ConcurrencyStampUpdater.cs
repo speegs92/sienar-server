@@ -2,21 +2,18 @@
 
 using System;
 using System.Threading.Tasks;
-using Sienar.Hooks;
 
 namespace Sienar.Data;
 
 /// <exclude />
-public class ConcurrencyStampUpdater<TEntity> : IBeforeAction<TEntity>
+public class ConcurrencyStampUpdater<TEntity> :
+	IBeforeCreateAction<TEntity>,
+	IBeforeUpdateAction<TEntity>
 	where TEntity : EntityBase
 {
-	public Task Handle(TEntity entity, ActionType action)
+	public Task Handle(TEntity entity)
 	{
-		if (action is ActionType.Create or ActionType.Update)
-		{
-			entity.ConcurrencyStamp = Guid.NewGuid();
-		}
-
+		entity.ConcurrencyStamp = Guid.NewGuid();
 		return Task.CompletedTask;
 	}
 }

@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Sienar.Data;
-using Sienar.Hooks;
 
 namespace Sienar.Extensions;
 
@@ -75,7 +74,8 @@ public static class SienarEfServiceCollectionExtensions
 		where TEntity : EntityBase
 		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 	{
-		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
+		self.AddBeforeCreateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>();
+		self.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>();
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 
@@ -144,7 +144,9 @@ public static class SienarEfServiceCollectionExtensions
 			self.TryAddScoped<IMapper<TEditDto, TEntity>, TEditDtoToEntityMapper>();
 		}
 
-		self.TryAddScoped<IBeforeAction<TEntity>, ConcurrencyStampUpdater<TEntity>>();
+		self
+			.AddBeforeCreateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>()
+			.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>();
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 
