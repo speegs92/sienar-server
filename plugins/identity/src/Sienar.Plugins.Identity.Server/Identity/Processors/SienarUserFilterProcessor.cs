@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Sienar.Data;
 using Sienar.Extensions;
 using Sienar.Hooks;
-using Sienar.Processors;
 
 namespace Sienar.Identity.Processors;
 

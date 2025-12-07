@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
 using Sienar.Data;
-using Sienar.Processors;
 
 namespace Sienar.Identity.Processors;
 

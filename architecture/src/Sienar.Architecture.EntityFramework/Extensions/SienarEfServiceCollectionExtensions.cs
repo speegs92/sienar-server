@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Sienar.Data;
 using Sienar.Hooks;
-using Sienar.Processors;
 
 namespace Sienar.Extensions;
 

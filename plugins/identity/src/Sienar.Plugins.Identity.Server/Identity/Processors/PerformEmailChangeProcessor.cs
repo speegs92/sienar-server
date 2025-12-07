@@ -9,7 +9,6 @@ using Sienar.Errors;
 using Sienar.Extensions;
 using Sienar.Identity.Requests;
 using Sienar.Infrastructure;
-using Sienar.Processors;
 using Sienar.Security;
 
 namespace Sienar.Identity.Processors;

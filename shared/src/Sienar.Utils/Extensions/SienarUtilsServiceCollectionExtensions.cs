@@ -9,7 +9,6 @@ using Sienar.Data;
 using Sienar.Hooks;
 using Sienar.Infrastructure;
 using Sienar.Menus;
-using Sienar.Processors;
 using Sienar.Security;
 
 namespace Sienar.Extensions;

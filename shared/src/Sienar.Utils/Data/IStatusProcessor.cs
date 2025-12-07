@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Sienar.Infrastructure;
-using Sienar.Data;
 
-namespace Sienar.Processors;
+namespace Sienar.Data;
 
 // ReSharper disable once TypeParameterCanBeVariant
 /// <summary>
