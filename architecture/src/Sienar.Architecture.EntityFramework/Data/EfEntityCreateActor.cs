@@ -19,7 +19,7 @@ public class EfEntityCreateActor<T> : IEntityCreateActor<T>
 	private readonly ILogger<EfEntityCreateActor<T>> _logger;
 	private readonly IAccessValidationRunner<T> _accessValidationRunner;
 	private readonly IStateValidationRunner<T> _stateValidationRunner;
-	private readonly IBeforeActionRunner<T> _beforeActionRunner;
+	private readonly IBeforeActionRunner<IBeforeCreateAction<T>, T> _beforeActionRunner;
 	private readonly IAfterActionRunner<IAfterCreateAction<T>, T> _afterActionRunner;
 	private readonly IOperationResultNotifier _notifier;
 
@@ -38,7 +38,7 @@ public class EfEntityCreateActor<T> : IEntityCreateActor<T>
 		ILogger<EfEntityCreateActor<T>> logger,
 		IAccessValidationRunner<T> accessValidationRunner,
 		IStateValidationRunner<T> stateValidationRunner,
-		IBeforeActionRunner<T> beforeActionRunner,
+		IBeforeActionRunner<IBeforeCreateAction<T>, T> beforeActionRunner,
 		IAfterActionRunner<IAfterCreateAction<T>, T> afterActionRunner,
 		IOperationResultNotifier notifier)
 	{
@@ -79,7 +79,7 @@ public class EfEntityCreateActor<T> : IEntityCreateActor<T>
 		}
 
 		// Run before hooks
-		var beforeHooksResult = await _beforeActionRunner.Run(model, ActionType.Create);
+		var beforeHooksResult = await _beforeActionRunner.Run(model);
 		if (!beforeHooksResult.Result)
 		{
 			return _notifier.HandleOperationResult(new OperationResult<int?>(

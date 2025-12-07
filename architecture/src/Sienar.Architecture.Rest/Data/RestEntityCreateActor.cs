@@ -20,7 +20,7 @@ public class RestEntityCreateActor<T> : IEntityCreateActor<T>
 	private readonly ILogger<RestEntityCreateActor<T>> _logger;
 	private readonly IAccessValidationRunner<T> _accessValidationRunner;
 	private readonly IStateValidationRunner<T> _stateValidationRunner;
-	private readonly IBeforeActionRunner<T> _beforeActionRunner;
+	private readonly IBeforeActionRunner<IBeforeCreateAction<T>, T> _beforeActionRunner;
 	private readonly IAfterActionRunner<IAfterCreateAction<T>, T> _afterActionRunner;
 
 	/// <summary>
@@ -41,7 +41,7 @@ public class RestEntityCreateActor<T> : IEntityCreateActor<T>
 		ILogger<RestEntityCreateActor<T>> logger,
 		IAccessValidationRunner<T> accessValidationRunner,
 		IStateValidationRunner<T> stateValidationRunner,
-		IBeforeActionRunner<T> beforeActionRunner,
+		IBeforeActionRunner<IBeforeCreateAction<T>, T> beforeActionRunner,
 		IAfterActionRunner<IAfterCreateAction<T>, T> afterActionRunner)
 	{
 		_client = client;
@@ -82,9 +82,7 @@ public class RestEntityCreateActor<T> : IEntityCreateActor<T>
 		}
 
 		// Run before hooks
-		var beforeHooksResult = await _beforeActionRunner.Run(
-			model,
-			ActionType.Create);
+		var beforeHooksResult = await _beforeActionRunner.Run(model);
 		if (!beforeHooksResult.Result)
 		{
 			return _notifier.HandleOperationResult(new OperationResult<int?>(
