@@ -125,6 +125,19 @@ public static class SienarUtilsServiceCollectionExtensions
 		=> self.AddScoped<IBeforeAction<TRequest>, THook>();
 
 	/// <summary>
+	/// Adds an before-create hook for the given <c>TEntity</c>
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <typeparam name="THook">The hook implementation</typeparam>
+	/// <typeparam name="TEntity">The entity type</typeparam>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddBeforeCreateActionHook<THook, TEntity>(
+		this IServiceCollection self)
+		where THook : class, IBeforeCreateAction<TEntity>
+		where TEntity : EntityBase
+		=> self.AddScoped<IBeforeCreateAction<TEntity>, THook>();
+
+	/// <summary>
 	/// Adds a before-task hook for the given <c>TRequest</c>
 	/// </summary>
 	/// <param name="self">the service collection</param>
