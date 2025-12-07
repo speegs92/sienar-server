@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Sienar.Menus;
+﻿namespace Sienar.Menus;
 
 /// <summary>
 /// Contains all the data needed to create a menu link

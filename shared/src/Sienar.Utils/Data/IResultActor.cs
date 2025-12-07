@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Sienar.Infrastructure;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// A service that accepts no input and returns output

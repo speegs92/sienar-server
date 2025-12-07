@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sienar.Configuration;
+﻿namespace Sienar.Configuration;
 
 /// <summary>
 /// Used by Sienar to configure a service or middleware that is generally configured by an <see cref="Action{T}"/>

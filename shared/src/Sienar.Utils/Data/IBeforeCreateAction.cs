@@ -1,6 +1,4 @@
-﻿using Sienar.Hooks;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// Performs arbitrary actions before a create action has run

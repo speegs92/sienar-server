@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// Maps the properties of one type to another via reflection

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// Identifies an item as a service that should be loaded by the <see cref="OwningComponentBase"/> service provider

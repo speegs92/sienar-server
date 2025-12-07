@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Sienar.Hooks;
+﻿namespace Sienar.Hooks;
 
 /// <summary>
 /// Performs arbitrary work after an action has already run

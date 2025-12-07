@@ -1,6 +1,4 @@
-﻿using Sienar.Data;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <inheritdoc />
 public class DefaultOperationResultNotifier : IOperationResultNotifier

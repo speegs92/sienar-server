@@ -1,6 +1,4 @@
-﻿using Sienar.Data;
-
-namespace Sienar.Security;
+﻿namespace Sienar.Security;
 
 /// <summary>
 /// (Hopefully) detects bots

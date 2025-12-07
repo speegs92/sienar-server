@@ -1,17 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
-using Sienar.Configuration;
-using Sienar.Data;
-using Sienar.Hooks;
-using Sienar.Infrastructure;
-using Sienar.Menus;
-using Sienar.Security;
-
-namespace Sienar.Extensions;
+﻿namespace Sienar.Extensions;
 
 /// <summary>
 /// Contains <see cref="IServiceCollection"/> extension methods for the <c>Sienar.Utils</c> assembly

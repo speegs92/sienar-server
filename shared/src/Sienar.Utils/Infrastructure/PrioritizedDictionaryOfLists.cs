@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// Arranges multiple lists by <see cref="Priority"/>

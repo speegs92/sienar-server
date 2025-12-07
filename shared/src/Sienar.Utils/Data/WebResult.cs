@@ -1,6 +1,4 @@
-﻿using Sienar.Infrastructure;
-
-namespace Sienar.Data;
+﻿namespace Sienar.Data;
 
 /// <summary>
 /// Contains the information from a REST API request

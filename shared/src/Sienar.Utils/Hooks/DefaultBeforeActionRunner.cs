@@ -1,11 +1,5 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Sienar.Infrastructure;
-
 namespace Sienar.Hooks;
 
 /// <summary>
