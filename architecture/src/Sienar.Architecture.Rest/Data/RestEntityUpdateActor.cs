@@ -20,7 +20,7 @@ public class RestEntityUpdateActor<T> : IEntityUpdateActor<T>
 	private readonly ILogger<RestEntityUpdateActor<T>> _logger;
 	private readonly IAccessValidationRunner<T> _accessValidationRunner;
 	private readonly IStateValidationRunner<T> _stateValidationRunner;
-	private readonly IBeforeActionRunner<T> _beforeActionRunner;
+	private readonly IBeforeActionRunner<IBeforeUpdateAction<T>, T> _beforeActionRunner;
 	private readonly IAfterActionRunner<IAfterUpdateAction<T>, T> _afterActionRunner;
 
 	/// <summary>
@@ -41,7 +41,7 @@ public class RestEntityUpdateActor<T> : IEntityUpdateActor<T>
 		ILogger<RestEntityUpdateActor<T>> logger,
 		IAccessValidationRunner<T> accessValidationRunner,
 		IStateValidationRunner<T> stateValidationRunner,
-		IBeforeActionRunner<T> beforeActionRunner,
+		IBeforeActionRunner<IBeforeUpdateAction<T>, T> beforeActionRunner,
 		IAfterActionRunner<IAfterUpdateAction<T>, T> afterActionRunner)
 	{
 		_client = client;
@@ -84,7 +84,7 @@ public class RestEntityUpdateActor<T> : IEntityUpdateActor<T>
 		}
 
 		// Run before hooks
-		var beforeHooksResult = await _beforeActionRunner.Run(model, ActionType.Update);
+		var beforeHooksResult = await _beforeActionRunner.Run(model);
 		if (!beforeHooksResult.Result)
 		{
 			return _notifier.HandleOperationResult(new OperationResult<bool>(

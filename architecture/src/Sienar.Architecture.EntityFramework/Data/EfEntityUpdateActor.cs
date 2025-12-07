@@ -19,7 +19,7 @@ public class EfEntityUpdateActor<T> : IEntityUpdateActor<T>
 	private readonly ILogger<EfEntityUpdateActor<T>> _logger;
 	private readonly IAccessValidationRunner<T> _accessValidationRunner;
 	private readonly IStateValidationRunner<T> _stateValidationRunner;
-	private readonly IBeforeActionRunner<T> _beforeActionRunner;
+	private readonly IBeforeActionRunner<IBeforeUpdateAction<T>, T> _beforeActionRunner;
 	private readonly IAfterActionRunner<IAfterUpdateAction<T>, T> _afterActionRunner;
 	private readonly IOperationResultNotifier _notifier;
 
@@ -38,7 +38,7 @@ public class EfEntityUpdateActor<T> : IEntityUpdateActor<T>
 		ILogger<EfEntityUpdateActor<T>> logger,
 		IAccessValidationRunner<T> accessValidationRunner,
 		IStateValidationRunner<T> stateValidationRunner,
-		IBeforeActionRunner<T> beforeActionRunner,
+		IBeforeActionRunner<IBeforeUpdateAction<T>, T> beforeActionRunner,
 		IAfterActionRunner<IAfterUpdateAction<T>, T> afterActionRunner,
 		IOperationResultNotifier notifier)
 	{
@@ -79,7 +79,7 @@ public class EfEntityUpdateActor<T> : IEntityUpdateActor<T>
 		}
 
 		// Run before hooks
-		var beforeHooksResult = await _beforeActionRunner.Run(model, ActionType.Update);
+		var beforeHooksResult = await _beforeActionRunner.Run(model);
 		if (!beforeHooksResult.Result)
 		{
 			return _notifier.HandleOperationResult(new OperationResult<bool>(
