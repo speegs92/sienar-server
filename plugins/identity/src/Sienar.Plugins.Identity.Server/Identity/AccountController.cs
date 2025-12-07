@@ -1,7 +1,8 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable CA1822 // Member can be marked as static
 
-using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,82 +17,92 @@ namespace Sienar.Identity;
 [ApiController]
 [Route("/api/account")]
 [Authorize]
-public class AccountController : SienarController
+public class AccountController : ControllerBase
 {
-	public AccountController(IOperationResultMapper mapper)
-		: base(mapper) {}
 
 	[HttpPost]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> Register(
 		RegisterRequest data,
-		[FromServices] IStatusActor<RegisterRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<RegisterRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpGet]
+	[UsedImplicitly]
 	public Task<IActionResult> GetAccountData(
-		[FromServices] IResultActor<AccountDataResult> actor)
-		=> Execute(actor.Execute);
+		[FromServices] IResultActionOrchestrator<AccountDataResult> orchestrator)
+		=> orchestrator.Execute();
 
 	[HttpDelete]
+	[UsedImplicitly]
 	public Task<IActionResult> DeleteAccount(
 		DeleteAccountRequest data,
-		[FromServices] IStatusActor<DeleteAccountRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<DeleteAccountRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpPost("confirm")]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> Confirm(
 		ConfirmAccountRequest data,
-		[FromServices] IStatusActor<ConfirmAccountRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<ConfirmAccountRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpPost("login")]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> Login(
 		LoginRequest data,
-		[FromServices] IGeneralActor<LoginRequest, LoginResult> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IGeneralActionOrchestrator<LoginRequest, LoginResult> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpDelete("login")]
+	[UsedImplicitly]
 	public Task<IActionResult> Logout(
 		LogoutRequest data,
-		[FromServices] IStatusActor<LogoutRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<LogoutRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpDelete("password")]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> RequestPasswordReset(
 		ForgotPasswordRequest data,
-		[FromServices] IStatusActor<ForgotPasswordRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<ForgotPasswordRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpPatch("password")]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> PerformPasswordReset(
 		ResetPasswordRequest data,
-		[FromServices] IStatusActor<ResetPasswordRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<ResetPasswordRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpPatch("change-password")]
+	[UsedImplicitly]
 	public Task<IActionResult> ChangePassword(
 		ChangePasswordRequest data,
-		[FromServices] IStatusActor<ChangePasswordRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<ChangePasswordRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpPost("change-email")]
+	[UsedImplicitly]
 	public Task<IActionResult> ChangeEmail(
 		InitiateEmailChangeRequest data,
-		[FromServices] IStatusActor<InitiateEmailChangeRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<InitiateEmailChangeRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpPatch("email")]
+	[UsedImplicitly]
 	public Task<IActionResult> UpdateEmail(
 		PerformEmailChangeRequest data,
-		[FromServices] IStatusActor<PerformEmailChangeRequest> actor)
-		=> Execute(() => actor.Execute(data));
+		[FromServices] IStatusActionOrchestrator<PerformEmailChangeRequest> orchestrator)
+		=> orchestrator.Execute(data);
 
 	[HttpGet("personal-data")]
+	[UsedImplicitly]
 	public async Task<IActionResult> GetPersonalData(
 		[FromServices] IResultActor<PersonalDataResult> actor)
 	{
@@ -116,8 +127,9 @@ public class AccountController : SienarController
 
 	[HttpGet("lockout-reasons")]
 	[AllowAnonymous]
+	[UsedImplicitly]
 	public Task<IActionResult> GetLockoutReaons(
 		[FromQuery] AccountLockoutRequest data,
-		[FromServices] IGeneralActor<AccountLockoutRequest, AccountLockoutResult> service)
-		=> Execute(() => service.Execute(data));
+		[FromServices] IGeneralActionOrchestrator<AccountLockoutRequest, AccountLockoutResult> orchestrator)
+		=> orchestrator.Execute(data);
 }
