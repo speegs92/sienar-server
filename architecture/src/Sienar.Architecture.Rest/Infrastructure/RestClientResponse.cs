@@ -4,7 +4,7 @@
 /// A wrapper around an <see cref="HttpResponseMessage"/> that enables developers to create hooks typed to specific HTTP clients
 /// </summary>
 /// <typeparam name="TClient">The type of the HTTP client for which a hook should run</typeparam>
-public class RestClientResponse<TClient>
+public class RestClientResponse<TClient> : IRequest
 {
 	/// <summary>
 	/// The current request's <see cref="HttpResponseMessage"/>

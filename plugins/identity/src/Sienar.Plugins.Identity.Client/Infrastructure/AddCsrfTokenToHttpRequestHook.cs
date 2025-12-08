@@ -3,7 +3,7 @@
 namespace Sienar.Infrastructure;
 
 /// <exclude />
-public class AddCsrfTokenToHttpRequestHook : IBeforeTask<RestClientRequest<CookieRestClient>>
+public class AddCsrfTokenToHttpRequestHook : IBeforeStatusAction<RestClientRequest<CookieRestClient>>
 {
 	private readonly IJSRuntime _js;
 
