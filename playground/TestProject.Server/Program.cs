@@ -4,10 +4,11 @@ using Sienar.Infrastructure;
 using TestProject;
 using TestProject.Client;
 
-await SienarAppBuilder
+var app = await SienarAppBuilder
 	.Create(args)
 	.AddWebAdapter()
 	.AddPlugin<TestProjectServerPlugin>()
 	.AddPlugin<TestProjectClientPlugin>()
-	.Build<WebApplication>()
-	.RunAsync();
+	.Build<WebApplication>();
+
+await app.RunAsync();

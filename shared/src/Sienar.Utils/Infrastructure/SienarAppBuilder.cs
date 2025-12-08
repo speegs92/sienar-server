@@ -93,7 +93,7 @@ public sealed class SienarAppBuilder
 	/// Builds the final application and returns it
 	/// </summary>
 	/// <returns>The new application</returns>
-	public TApp Build<TApp>()
+	public async Task<TApp> Build<TApp>()
 		where TApp : class
 	{
 		if (_adapter is null)
@@ -123,6 +123,6 @@ public sealed class SienarAppBuilder
 				.AddSingleton(sp.GetRequiredService<StyleProvider>());
 		});
 
-		return _adapter.Build<TApp>(sp);
+		return await _adapter.Build<TApp>(sp);
 	}
 }
