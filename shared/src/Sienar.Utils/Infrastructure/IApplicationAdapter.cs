@@ -22,7 +22,8 @@ public interface IApplicationAdapter
 	/// </summary>
 	/// <param name="startupServiceProvider">The application startup service container</param>
 	/// <returns>The built application</returns>
-	object Build(IServiceProvider startupServiceProvider);
+	T Build<T>(IServiceProvider startupServiceProvider)
+		where T : class;
 
 	/// <summary>
 	/// Adds services to the udnerlying app builder's <see cref="IServiceCollection"/>

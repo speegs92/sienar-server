@@ -94,6 +94,7 @@ public sealed class SienarAppBuilder
 	/// </summary>
 	/// <returns>The new application</returns>
 	public TApp Build<TApp>()
+		where TApp : class
 	{
 		if (_adapter is null)
 		{
@@ -122,6 +123,6 @@ public sealed class SienarAppBuilder
 				.AddSingleton(sp.GetRequiredService<StyleProvider>());
 		});
 
-		return (TApp)_adapter.Build(sp);
+		return _adapter.Build<TApp>(sp);
 	}
 }

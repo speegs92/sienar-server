@@ -26,7 +26,8 @@ public class WebApplicationAdapter : IApplicationAdapter<WebApplicationBuilder>
 	}
 
 	/// <inheritdoc />
-	public object Build(IServiceProvider sp)
+	public T Build<T>(IServiceProvider sp)
+		where T : class
 	{
 		var app = Builder.Build();
 
@@ -37,7 +38,7 @@ public class WebApplicationAdapter : IApplicationAdapter<WebApplicationBuilder>
 			middleware(app);
 		}
 
-		return app;
+		return (app as T)!;
 	}
 
 	/// <inheritdoc />

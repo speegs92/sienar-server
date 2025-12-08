@@ -31,7 +31,9 @@ public class WasmApplicationAdapter : IApplicationAdapter<WebAssemblyHostBuilder
 	}
 
 	/// <inheritdoc />
-	public object Build(IServiceProvider sp) => Builder.Build();
+	public T Build<T>(IServiceProvider sp)
+		where T : class
+		=> (Builder.Build() as T)!;
 
 	/// <inheritdoc />
 	public void AddServices(Action<IServiceCollection> configurer)
