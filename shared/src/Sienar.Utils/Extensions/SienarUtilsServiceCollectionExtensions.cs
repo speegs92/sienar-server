@@ -165,19 +165,6 @@ public static class SienarUtilsServiceCollectionExtensions
 		=> self.AddScoped<IBeforeStatusAction<TRequest>, THook>();
 
 	/// <summary>
-	/// Adds a before-task hook for the given <c>TRequest</c>
-	/// </summary>
-	/// <param name="self">the service collection</param>
-	/// <typeparam name="THook">the hook implementation</typeparam>
-	/// <typeparam name="TRequest">the data type of the request</typeparam>
-	/// <returns>the service collection</returns>
-	public static IServiceCollection AddBeforeTaskHook<THook, TRequest>(
-		this IServiceCollection self)
-		where THook : class, IBeforeTask<TRequest>
-		where TRequest : class
-		=> self.AddScoped<IBeforeTask<TRequest>, THook>();
-
-	/// <summary>
 	/// Adds an after-read hook for the given <c>TEntity</c>
 	/// </summary>
 	/// <param name="self">The service collection</param>
@@ -280,19 +267,6 @@ public static class SienarUtilsServiceCollectionExtensions
 		where THook : class, IAfterResultAction<TResult>
 		where TResult : IResult
 		=> self.AddScoped<IAfterResultAction<TResult>, THook>();
-
-	/// <summary>
-	/// Adds an after-task hook for the given <c>TRequest</c>
-	/// </summary>
-	/// <param name="self">the service collection</param>
-	/// <typeparam name="THook">the hook implementation</typeparam>
-	/// <typeparam name="TRequest">the data type of the request</typeparam>
-	/// <returns>the service collection</returns>
-	public static IServiceCollection AddAfterTaskHook<THook, TRequest>(
-		this IServiceCollection self)
-		where THook : class, IAfterTask<TRequest>
-		where TRequest : class
-		=> self.AddScoped<IAfterTask<TRequest>, THook>();
 
 	/// <summary>
 	/// Adds a processor

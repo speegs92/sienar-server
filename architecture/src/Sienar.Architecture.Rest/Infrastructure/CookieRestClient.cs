@@ -11,16 +11,16 @@ namespace Sienar.Infrastructure;
 public class CookieRestClient : IRestClient
 {
 	private readonly HttpClient _client;
-	private readonly IEnumerable<IBeforeTask<RestClientRequest<CookieRestClient>>> _beforeActionHooks;
-	private readonly IEnumerable<IAfterTask<RestClientResponse<CookieRestClient>>> _afterActionHooks;
+	private readonly IEnumerable<IBeforeStatusAction<RestClientRequest<CookieRestClient>>> _beforeActionHooks;
+	private readonly IEnumerable<IAfterStatusAction<RestClientResponse<CookieRestClient>>> _afterActionHooks;
 	private readonly ILogger<CookieRestClient> _logger;
 	private readonly JsonSerializerOptions _jsonOptions;
 
 	/// <exclude />
 	public CookieRestClient(
 		HttpClient client,
-		IEnumerable<IBeforeTask<RestClientRequest<CookieRestClient>>> beforeActionHooks,
-		IEnumerable<IAfterTask<RestClientResponse<CookieRestClient>>> afterActionHooks,
+		IEnumerable<IBeforeStatusAction<RestClientRequest<CookieRestClient>>> beforeActionHooks,
+		IEnumerable<IAfterStatusAction<RestClientResponse<CookieRestClient>>> afterActionHooks,
 		ILogger<CookieRestClient> logger)
 	{
 		_client = client;

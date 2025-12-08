@@ -106,9 +106,6 @@ public class IdentityClientPlugin : IPlugin
 		{
 			// Infrastructure
 			s
-				.AddCookieRestClient()
-				.AddBeforeTaskHook<AddCsrfTokenToHttpRequestHook, RestClientRequest<CookieRestClient>>()
-				.AddBeforeStatusActionHook<InitializeCsrfTokenOnAppStartHook, Startup>()
 				.AddBeforeStatusActionHook<LoadUserDataProcessor, Startup>();
 
 			s.TryAddScoped<INotifier, DefaultNotifier>();

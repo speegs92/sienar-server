@@ -37,10 +37,13 @@ public class CoreClientPlugin : IPlugin
 		{
 			services
 				.AddSienarBlazorUtilities()
+				.AddCookieRestClient()
 				.AddRestfulEntities()
 				.AddSingleton(_sp.GetRequiredService<GlobalComponentProvider>())
 				.AddSingleton(_sp.GetRequiredService<ComponentProvider>())
-				.AddSingleton(_sp.GetRequiredService<RoutableAssemblyProvider>());
+				.AddSingleton(_sp.GetRequiredService<RoutableAssemblyProvider>())
+				.AddBeforeStatusActionHook<AddCsrfTokenToHttpRequestHook, RestClientRequest<CookieRestClient>>()
+				.AddBeforeStatusActionHook<InitializeCsrfTokenOnAppStartHook, Startup>();
 
 			if (_adapter.ApplicationType is not ApplicationType.Client)
 			{
