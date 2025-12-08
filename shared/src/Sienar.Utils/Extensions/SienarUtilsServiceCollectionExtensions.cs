@@ -25,7 +25,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		self.TryAddScoped(typeof(IMapper<,>), typeof(DefaultMapper<,>));
 		self.TryAddScoped<IOperationResultNotifier, DefaultOperationResultNotifier>();
 
-		return self;
+		return self.AddStatusProcessor<StartupProcessor, Startup>();
 	}
 
 	/// <summary>

@@ -26,7 +26,8 @@ public class WebApplicationAdapter : IApplicationAdapter<WebApplicationBuilder>
 	}
 
 	/// <inheritdoc />
-	public object Build(IServiceProvider sp)
+	public async Task<T> Build<T>(IServiceProvider sp)
+		where T : class
 	{
 		var app = Builder.Build();
 
@@ -37,7 +38,12 @@ public class WebApplicationAdapter : IApplicationAdapter<WebApplicationBuilder>
 			middleware(app);
 		}
 
-		return app;
+		await using var scope = app.Services.CreateAsyncScope();
+
+		var startupActor = scope.ServiceProvider.GetRequiredService<IStatusActor<Startup>>();
+		await startupActor.Execute(new Startup());
+
+		return (app as T)!;
 	}
 
 	/// <inheritdoc />

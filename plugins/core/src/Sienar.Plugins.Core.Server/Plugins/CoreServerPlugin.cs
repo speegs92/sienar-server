@@ -20,7 +20,12 @@ public class CoreServerPlugin : IPlugin
 	/// <inheritdoc />
 	public void Configure()
 	{
-		_adapter.AddServices(sp => sp.AddEntityFramework());
+		_adapter.AddServices(sp =>
+		{
+			sp
+				.AddEntityFramework()
+				.AddBeforeStatusActionHook<EnsureBaseDirectoryCreated, Startup>();
+		});
 	}
 
 	private class SienarAppConfigurer : IConfigurer<SienarAppBuilder>

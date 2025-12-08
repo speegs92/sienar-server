@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Sienar.Data;
 
 namespace Sienar.Infrastructure;
 
@@ -31,7 +33,17 @@ public class WasmApplicationAdapter : IApplicationAdapter<WebAssemblyHostBuilder
 	}
 
 	/// <inheritdoc />
-	public object Build(IServiceProvider sp) => Builder.Build();
+	public async Task<T> Build<T>(IServiceProvider sp)
+		where T : class
+	{
+		var app = Builder.Build();
+		await using var scope = app.Services.CreateAsyncScope();
+
+		var startupActor = scope.ServiceProvider.GetRequiredService<IStatusActor<Startup>>();
+		await startupActor.Execute(new Startup());
+
+		return (app as T)!;
+	}
 
 	/// <inheritdoc />
 	public void AddServices(Action<IServiceCollection> configurer)

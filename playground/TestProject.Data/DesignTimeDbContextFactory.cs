@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Sienar;
 
 namespace TestProject.Data;
 
@@ -9,8 +8,6 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbConte
 	/// <inheritdoc />
 	public AppDbContext CreateDbContext(string[] args)
 	{
-		SienarUtils.SetupBaseDirectory();
-
 		var builder = new DbContextOptionsBuilder<AppDbContext>();
 
 		builder.UseSienarDb();

@@ -11,12 +11,13 @@ using Sienar.Extensions;
 using Sienar.Infrastructure;
 using TestProject.Client;
 
-await SienarAppBuilder
+var app = await SienarAppBuilder
 	.Create(args)
 	.AddWasmAdapter()
 	.AddPlugin<TestProjectClientPlugin>()
-	.Build<WebAssemblyHost>()
-	.RunAsync();
+	.Build<WebAssemblyHost>();
+
+await app.RunAsync();
 
 // await SienarWasmAppBuilder
 // 	.Create<Program>(args)

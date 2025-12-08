@@ -33,8 +33,6 @@ public class IdentityServerPlugin : IPlugin
 			Version = Version.Parse("0.1.1")
 		});
 
-		SienarUtils.SetupBaseDirectory();
-
 		var services = _builder.Services;
 		var config = _builder.Configuration;
 
