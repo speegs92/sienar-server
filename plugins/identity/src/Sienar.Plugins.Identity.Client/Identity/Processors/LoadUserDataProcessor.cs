@@ -4,7 +4,7 @@ namespace Sienar.Identity.Processors;
 
 /// <exclude />
 public class LoadUserDataProcessor
-	: IResultProcessor<AccountDataResult>, IBeforeTask<SienarStartupActor>
+	: IResultProcessor<AccountDataResult>, IBeforeStatusAction<Startup>
 {
 	private readonly IRestClient _client;
 	private readonly IOperationResultNotifier _notifier;
@@ -26,7 +26,7 @@ public class LoadUserDataProcessor
 	Task<OperationResult<AccountDataResult?>> IResultProcessor<AccountDataResult>.Process()
 		=> LoadUserData();
 
-	Task IBeforeTask<SienarStartupActor>.Handle(SienarStartupActor? a)
+	public Task Handle(Startup a)
 		=> LoadUserData();
 
 	private async Task<OperationResult<AccountDataResult?>> LoadUserData()
