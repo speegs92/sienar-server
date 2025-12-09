@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Sienar.Data;
-using Sienar.Infrastructure;
+﻿using System.Reflection;
 
 // ReSharper disable once CheckNamespace
 namespace Sienar.Ui;
@@ -14,17 +10,13 @@ namespace Sienar.Ui;
 /// <typeparam name="TEditDto">The type of the edit DTO</typeparam>
 public partial class UpdateForm<TViewDto, TEditDto>
 {
+	private string _displayName = typeof(TViewDto).GetEntityName();
+
 	/// <summary>
 	/// The ID of the editing entity
 	/// </summary>
 	[Parameter]
 	public int EntityId { get; set; }
-
-	/// <summary>
-	/// A function to retrieve the name of the editing entity
-	/// </summary>
-	[Parameter]
-	public required Func<TEditDto, string> For { get; set; }
 
 	/// <summary>
 	/// A function to call when the view-DTO is loaded
@@ -61,6 +53,8 @@ public partial class UpdateForm<TViewDto, TEditDto>
 
 			OnLoaded?.Invoke(result.Result);
 			Mapper.Map(result.Result, Value);
+
+			GenerateDisplayName(result.Result);
 		});
 
 	private Task HandleUpdate(IEntityUpdateActor<TEditDto> updater)
@@ -74,5 +68,24 @@ public partial class UpdateForm<TViewDto, TEditDto>
 				await DelegateHandler.Handle(OnSuccess, result);
 			}
 		});
+	}
+
+	private void GenerateDisplayName(TViewDto viewDto)
+	{
+		var dtoType = typeof(TViewDto);
+		var propName = dtoType.GetCustomAttribute<DisplayPropertyAttribute>()?.Property;
+
+		if (!string.IsNullOrWhiteSpace(propName))
+		{
+			var newName = dtoType
+				.GetProperty(propName)
+				?.GetValue(viewDto)
+				?.ToString();
+
+			if (!string.IsNullOrEmpty(newName))
+			{
+				_displayName = newName;
+			}
+		}
 	}
 }
