@@ -5,6 +5,7 @@
 /// </summary>
 [EntityName(Singular = "user", Plural = "users")]
 [RestEndpoint("users")]
+[DisplayProperty(nameof(Username))]
 public class ViewUserDto : EntityBase
 {
 	/// <summary>
