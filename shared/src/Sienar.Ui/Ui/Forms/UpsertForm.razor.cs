@@ -18,12 +18,6 @@ public partial class UpsertForm<TViewDto, TUpsertDto>
 	public int? EntityId { get; set; }
 
 	/// <summary>
-	/// A function to retrieve the name of the editing entity
-	/// </summary>
-	[Parameter]
-	public required Func<TUpsertDto, string> For { get; set; }
-
-	/// <summary>
 	/// A function to call when the view-DTO is loaded
 	/// </summary>
 	[Parameter]
