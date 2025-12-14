@@ -40,7 +40,7 @@ public class IdentityServerPlugin : IPlugin
 
 		services.TryAddScoped<IPasswordHasher<SienarUser>, PasswordHasher<SienarUser>>();
 		services.TryAddScoped<IPasswordManager, PasswordManager>();
-		services.TryAddScoped<IUserClaimsFactory, UserClaimsFactory>();
+		services.TryAddScoped<IUserClaimsFactory<SienarUser>, ServerUserClaimsFactory>();
 		services.TryAddScoped<IUserClaimsPrincipalFactory<SienarUser>, UserClaimsPrincipalFactory>();
 		services.TryAddScoped<IVerificationCodeManager, VerificationCodeManager>();
 

@@ -8,13 +8,16 @@ public class GetLockoutReasonsProcessor
 {
 	private readonly ISienarDbContext _context;
 	private readonly IVerificationCodeManager _vcManager;
+	private readonly IMapper<LockoutReason, LockoutReasonDto> _lockoutReasonMapper;
 
 	public GetLockoutReasonsProcessor(
 		ISienarDbContext context,
-		IVerificationCodeManager vcManager)
+		IVerificationCodeManager vcManager,
+		IMapper<LockoutReason, LockoutReasonDto> lockoutReasonMapper)
 	{
 		_context = context;
 		_vcManager = vcManager;
+		_lockoutReasonMapper = lockoutReasonMapper;
 	}
 
 	public async Task<OperationResult<AccountLockoutResult>> Process(
@@ -60,11 +63,20 @@ public class GetLockoutReasonsProcessor
 			});
 		}
 
+		var lockoutReasons = new List<LockoutReasonDto>();
+
+		foreach (var reason in user.LockoutReasons)
+		{
+			var dto = new LockoutReasonDto();
+			_lockoutReasonMapper.Map(reason, dto);
+			lockoutReasons.Add(dto);
+		}
+
 		return new(
 			OperationStatus.Success,
 			new()
 			{
-				LockoutReasons = user.LockoutReasons,
+				LockoutReasons = lockoutReasons,
 				LockoutEnd = user.LockoutEnd == DateTime.MaxValue ? null : user.LockoutEnd
 			});
 	}

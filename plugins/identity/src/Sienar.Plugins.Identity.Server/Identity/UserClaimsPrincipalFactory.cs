@@ -7,9 +7,9 @@ namespace Sienar.Identity;
 public class UserClaimsPrincipalFactory
 	: IUserClaimsPrincipalFactory<SienarUser>
 {
-	private readonly IUserClaimsFactory _claimsFactory;
+	private readonly IUserClaimsFactory<SienarUser> _claimsFactory;
 
-	public UserClaimsPrincipalFactory(IUserClaimsFactory claimsFactory)
+	public UserClaimsPrincipalFactory(IUserClaimsFactory<SienarUser> claimsFactory)
 	{
 		_claimsFactory = claimsFactory;
 	}

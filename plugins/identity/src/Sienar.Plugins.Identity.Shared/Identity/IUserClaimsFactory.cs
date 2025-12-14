@@ -2,7 +2,7 @@
 
 namespace Sienar.Identity;
 
-public interface IUserClaimsFactory
+public interface IUserClaimsFactory<T>
 {
-	IEnumerable<Claim> CreateClaims(SienarUser user);
+	IEnumerable<Claim> CreateClaims(T user);
 }

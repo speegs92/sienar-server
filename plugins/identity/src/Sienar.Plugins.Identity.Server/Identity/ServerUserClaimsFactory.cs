@@ -2,7 +2,10 @@
 
 namespace Sienar.Identity;
 
-public class UserClaimsFactory : IUserClaimsFactory
+/// <summary>
+/// Creates user claims for use by the server application
+/// </summary>
+public class ServerUserClaimsFactory : IUserClaimsFactory<SienarUser>
 {
 	/// <inheritdoc />
 	public IEnumerable<Claim> CreateClaims(SienarUser user)
