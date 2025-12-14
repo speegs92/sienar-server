@@ -39,7 +39,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	public Task<OperationResult<WebResult<TResult?>>> Get<TResult>(
+	public Task<OperationResult<WebResult<TResult>>> Get<TResult>(
 		string endpoint,
 		object? input = null)
 		=> SendRequest<TResult>(endpoint, input, HttpMethod.Get);
@@ -51,7 +51,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	public Task<OperationResult<WebResult<TResult?>>> Post<TResult>(
+	public Task<OperationResult<WebResult<TResult>>> Post<TResult>(
 		string endpoint,
 		object input)
 		=> SendRequest<TResult>(endpoint, input, HttpMethod.Post);
@@ -63,7 +63,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	public Task<OperationResult<WebResult<TResult?>>> Put<TResult>(
+	public Task<OperationResult<WebResult<TResult>>> Put<TResult>(
 		string endpoint,
 		object input)
 		=> SendRequest<TResult>(endpoint, input, HttpMethod.Put);
@@ -75,7 +75,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	public Task<OperationResult<WebResult<TResult?>>> Patch<TResult>(
+	public Task<OperationResult<WebResult<TResult>>> Patch<TResult>(
 		string endpoint,
 		object input)
 		=> SendRequest<TResult>(endpoint, input, HttpMethod.Patch);
@@ -87,7 +87,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	public Task<OperationResult<WebResult<TResult?>>> Delete<TResult>(
+	public Task<OperationResult<WebResult<TResult>>> Delete<TResult>(
 		string endpoint,
 		object? input = null)
 		=> SendRequest<TResult>(endpoint, input, HttpMethod.Delete);
@@ -116,7 +116,7 @@ public class CookieRestClient : IRestClient
 	/// <param name="method">the HTTP method</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>an operation result wrapping around the result</returns>
-	protected async Task<OperationResult<WebResult<TResult?>>> SendRequest<TResult>(
+	protected async Task<OperationResult<WebResult<TResult>>> SendRequest<TResult>(
 		string endpoint,
 		object? input = null,
 		HttpMethod? method = null)
@@ -126,13 +126,13 @@ public class CookieRestClient : IRestClient
 		{
 			result = await SendRaw(endpoint, input, method);
 
-			var parsedResponse = await result.Content.ReadFromJsonAsync<WebResult<TResult?>>(_jsonOptions);
+			var parsedResponse = await result.Content.ReadFromJsonAsync<WebResult<TResult>>(_jsonOptions);
 
 			if (parsedResponse is null)
 			{
-				return new OperationResult<WebResult<TResult?>>(
+				return new OperationResult<WebResult<TResult>>(
 					OperationStatus.Unknown,
-					new WebResult<TResult?>(),
+					new WebResult<TResult>(),
 					"Unable to read response from server");
 			}
 
@@ -228,7 +228,7 @@ public class CookieRestClient : IRestClient
 		return new(sb.ToString(), UriKind.Relative);
 	}
 
-	private OperationResult<WebResult<TResult?>> HandleException<TResult>(
+	private OperationResult<WebResult<TResult>> HandleException<TResult>(
 		Exception e,
 		HttpResponseMessage? response)
 	{
@@ -245,9 +245,9 @@ public class CookieRestClient : IRestClient
 				? StatusMessages.General.Unauthorized
 				: StatusMessages.General.Forbidden;
 
-			return new OperationResult<WebResult<TResult?>>(
+			return new OperationResult<WebResult<TResult>>(
 				OperationStatus.Unauthorized,
-				new WebResult<TResult?>(),
+				new WebResult<TResult>(),
 				errorMessage);
 		}
 
@@ -275,13 +275,13 @@ public class CookieRestClient : IRestClient
 			errorMessage);
 	}
 
-	private OperationResult<WebResult<TResult?>> CreateResult<TResult>(
+	private OperationResult<WebResult<TResult>> CreateResult<TResult>(
 		HttpResponseMessage message,
-		WebResult<TResult?> parsedResult)
+		WebResult<TResult> parsedResult)
 	{
 		if (message.IsSuccessStatusCode)
 		{
-			return new OperationResult<WebResult<TResult?>>(result: parsedResult);
+			return new OperationResult<WebResult<TResult>>(result: parsedResult);
 		}
 
 		string logMessage;
@@ -320,7 +320,7 @@ public class CookieRestClient : IRestClient
 
 		_logger.LogError("{}", logMessage);
 
-		return new OperationResult<WebResult<TResult?>>(
+		return new OperationResult<WebResult<TResult>>(
 			status,
 			parsedResult,
 			errorMessage);
