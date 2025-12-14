@@ -44,7 +44,7 @@ public class EfEntityCreateActor<T> : IEntityCreateActor<T>
 	}
 
 	/// <inheritdoc />
-	public async Task<OperationResult<int?>> Create(T model)
+	public async Task<OperationResult<int>> Create(T model)
 	{
 		// Run access validation
 		var accessValidationResult = await _accessValidationRunner.Validate(
@@ -52,9 +52,9 @@ public class EfEntityCreateActor<T> : IEntityCreateActor<T>
 			ActionType.Create);
 		if (!accessValidationResult.Result)
 		{
-			return _notifier.HandleOperationResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int>(
 				OperationStatus.Unauthorized,
-				null,
+				0,
 				StatusMessages.Crud<T>.NoPermission()));
 		}
 
@@ -64,9 +64,9 @@ public class EfEntityCreateActor<T> : IEntityCreateActor<T>
 			ActionType.Create);
 		if (!stateValidationResult.Result)
 		{
-			return _notifier.HandleOperationResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int>(
 				OperationStatus.Unprocessable,
-				null,
+				0,
 				stateValidationResult.Message ?? StatusMessages.Crud<T>.CreateFailed()));
 		}
 
@@ -74,9 +74,9 @@ public class EfEntityCreateActor<T> : IEntityCreateActor<T>
 		var beforeHooksResult = await _beforeActionRunner.Run(model);
 		if (!beforeHooksResult.Result)
 		{
-			return _notifier.HandleOperationResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int>(
 				OperationStatus.Unknown,
-				null,
+				0,
 				beforeHooksResult.Message ?? StatusMessages.Crud<T>.CreateFailed()));
 		}
 
@@ -90,16 +90,16 @@ public class EfEntityCreateActor<T> : IEntityCreateActor<T>
 		catch (Exception e)
 		{
 			_logger.LogError(e, StatusMessages.Database.QueryFailed);
-			return _notifier.HandleOperationResult(new OperationResult<int?>(
+			return _notifier.HandleOperationResult(new OperationResult<int>(
 				OperationStatus.Unknown,
-				null,
+				0,
 				StatusMessages.Crud<T>.CreateFailed()));
 		}
 
 		// Run after hooks
 		await _afterActionRunner.Run(model);
 
-		return _notifier.HandleOperationResult(new OperationResult<int?>(
+		return _notifier.HandleOperationResult(new OperationResult<int>(
 			OperationStatus.Success,
 			model.Id,
 			StatusMessages.Crud<T>.CreateSuccessful()));
