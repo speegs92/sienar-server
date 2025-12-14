@@ -23,13 +23,13 @@ public class LoadUserDataProcessor
 		_authStateProvider = authStateProvider;
 	}
 
-	Task<OperationResult<AccountDataResult?>> IResultProcessor<AccountDataResult>.Process()
+	Task<OperationResult<AccountDataResult>> IResultProcessor<AccountDataResult>.Process()
 		=> LoadUserData();
 
 	public Task Handle(Startup a)
 		=> LoadUserData();
 
-	private async Task<OperationResult<AccountDataResult?>> LoadUserData()
+	private async Task<OperationResult<AccountDataResult>> LoadUserData()
 	{
 		var result = await _client.Get<AccountDataResult>("account");
 

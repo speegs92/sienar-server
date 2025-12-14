@@ -14,7 +14,7 @@ public class GetAccountDataProcessor : IResultProcessor<AccountDataResult>
 		_userAccessor = userAccessor;
 	}
 
-	public async Task<OperationResult<AccountDataResult?>> Process()
+	public async Task<OperationResult<AccountDataResult>> Process()
 	{
 		if (!await _userAccessor.IsSignedIn())
 		{
