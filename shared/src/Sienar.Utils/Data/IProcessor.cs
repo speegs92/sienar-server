@@ -15,5 +15,5 @@ public interface IProcessor<TRequest, TResult>
 	/// </summary>
 	/// <param name="request">the request input</param>
 	/// <returns>the result of the operation</returns>
-	Task<OperationResult<TResult?>> Process(TRequest request);
+	Task<OperationResult<TResult>> Process(TRequest request);
 }

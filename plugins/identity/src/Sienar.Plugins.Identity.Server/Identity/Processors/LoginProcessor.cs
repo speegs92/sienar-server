@@ -31,7 +31,7 @@ public class LoginProcessor : IProcessor<LoginRequest, LoginResult>
 		_appOptions = appOptions.Value;
 	}
 
-	public async Task<OperationResult<LoginResult?>> Process(LoginRequest request)
+	public async Task<OperationResult<LoginResult>> Process(LoginRequest request)
 	{
 		var normalizedAccountName = request.AccountName.ToNormalized();
 		var user = await _context.Users
