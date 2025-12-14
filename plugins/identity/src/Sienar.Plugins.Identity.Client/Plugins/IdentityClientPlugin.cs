@@ -109,7 +109,7 @@ public class IdentityClientPlugin : IPlugin
 				.AddBeforeStatusActionHook<LoadUserDataProcessor, Startup>();
 
 			s.TryAddScoped<INotifier, DefaultNotifier>();
-			s.TryAddScoped<IUserClaimsFactory, UserClaimsFactory>();
+			s.TryAddScoped<IUserClaimsFactory<ViewUserDto>, ClientUserClaimsFactory>();
 
 			s
 				// Account

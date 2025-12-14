@@ -8,13 +8,13 @@ public class LoadUserDataProcessor
 {
 	private readonly IRestClient _client;
 	private readonly IOperationResultNotifier _notifier;
-	private readonly IUserClaimsFactory _claimsFactory;
+	private readonly IUserClaimsFactory<ViewUserDto> _claimsFactory;
 	private readonly SienarAuthenticationStateProvider _authStateProvider;
 
 	public LoadUserDataProcessor(
 		IRestClient client,
 		IOperationResultNotifier notifier,
-		IUserClaimsFactory claimsFactory,
+		IUserClaimsFactory<ViewUserDto> claimsFactory,
 		SienarAuthenticationStateProvider authStateProvider)
 	{
 		_client = client;
@@ -39,11 +39,11 @@ public class LoadUserDataProcessor
 		}
 
 		var userResult = result.Result!.Result!;
-		var user = new SienarUser
+		var user = new ViewUserDto
 		{
 			Username = userResult.Username,
 			Roles = userResult.Roles
-				.Select(r => new SienarRole
+				.Select(r => new RoleDto
 				{
 					Name = r
 				})
