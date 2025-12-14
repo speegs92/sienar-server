@@ -10,5 +10,5 @@ public interface IResultActor<TResult> where TResult : IResult
 	/// Executes the request
 	/// </summary>
 	/// <returns>the output of the operation, or <c>null</c></returns>
-	Task<OperationResult<TResult?>> Execute();
+	Task<OperationResult<TResult>> Execute();
 }
