@@ -36,14 +36,9 @@ public class CoreClientPlugin : IPlugin
 		_adapter.AddServices(services =>
 		{
 			services
-				.AddSienarBlazorUtilities()
-				.AddCookieRestClient()
-				.AddRestfulEntities()
 				.AddSingleton(_sp.GetRequiredService<GlobalComponentProvider>())
 				.AddSingleton(_sp.GetRequiredService<ComponentProvider>())
-				.AddSingleton(_sp.GetRequiredService<RoutableAssemblyProvider>())
-				.AddBeforeStatusActionHook<AddCsrfTokenToHttpRequestHook, RestClientRequest<CookieRestClient>>()
-				.AddBeforeStatusActionHook<InitializeCsrfTokenOnAppStartHook, Startup>();
+				.AddSingleton(_sp.GetRequiredService<RoutableAssemblyProvider>());
 
 			if (_adapter.ApplicationType is not ApplicationType.Client)
 			{
@@ -52,7 +47,13 @@ public class CoreClientPlugin : IPlugin
 
 			services.TryAddScoped<IUserAccessor, BlazorUserAccessor>();
 
-			services.AddAuthorizationCore();
+			services
+				.AddAuthorizationCore()
+				.AddSienarBlazorUtilities()
+				.AddCookieRestClient()
+				.AddRestfulEntities()
+				.AddBeforeStatusActionHook<AddCsrfTokenToHttpRequestHook, RestClientRequest<CookieRestClient>>()
+				.AddBeforeStatusActionHook<InitializeCsrfTokenOnAppStartHook, Startup>();
 		});
 	}
 
