@@ -53,9 +53,8 @@ public class InitiateEmailChangeProcessor : IStatusProcessor<InitiateEmailChange
 				message: CoreErrors.Account.LoginFailedInvalid);
 		}
 
-		var shouldSendConfirmationEmail = SienarUserExtensions.ShouldSendEmailConfirmationEmail(
-			_loginOptions,
-			_sienarOptions);
+		var shouldSendConfirmationEmail = _loginOptions.RequireConfirmedAccount &&
+			_sienarOptions.EnableEmail;
 
 		if (shouldSendConfirmationEmail)
 		{

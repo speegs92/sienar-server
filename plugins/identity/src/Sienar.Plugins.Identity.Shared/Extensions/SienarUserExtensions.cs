@@ -2,11 +2,6 @@
 
 public static class SienarUserExtensions
 {
-	public static bool ShouldSendEmailConfirmationEmail(
-		LoginOptions loginOptions,
-		SienarOptions sienarOptions)
-		=> loginOptions.RequireConfirmedAccount && sienarOptions.EnableEmail;
-
 	/// <summary>
 	/// Determines whether the given user is locked out
 	/// </summary>

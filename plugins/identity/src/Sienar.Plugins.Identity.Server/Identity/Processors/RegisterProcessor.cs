@@ -43,9 +43,9 @@ public class RegisterProcessor : IStatusProcessor<RegisterRequest>
 			user,
 			request.Password);
 
-		var shouldSendRegistrationEmail = SienarUserExtensions.ShouldSendEmailConfirmationEmail(
-			_loginOptions,
-			_appOptions);
+		var shouldSendRegistrationEmail = 
+			_loginOptions.RequireConfirmedAccount &&
+			_appOptions.EnableEmail;
 		if (!shouldSendRegistrationEmail)
 		{
 			user.EmailConfirmed = true;
