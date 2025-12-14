@@ -12,7 +12,7 @@ public interface IEntityReadActor<T>
 	/// <param name="id">The primary key of the entity to retrieve</param>
 	/// <param name="filter">A <see cref="Filter"/> to specify included results</param>
 	/// <returns>the requested entity</returns>
-	Task<OperationResult<T?>> Read(
+	Task<OperationResult<T>> Read(
 		int id,
 		Filter? filter = null);
 }

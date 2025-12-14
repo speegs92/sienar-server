@@ -40,12 +40,12 @@ public class RestEntityReadActor<T> : IEntityReadActor<T>
 	}
 
 	/// <inheritdoc />
-	public async Task<OperationResult<T?>> Read(
+	public async Task<OperationResult<T>> Read(
 		int id,
 		Filter? filter = null)
 	{
 		T? entity;
-		OperationResult<WebResult<T?>> result;
+		OperationResult<WebResult<T>> result;
 
 		try
 		{
@@ -58,7 +58,7 @@ public class RestEntityReadActor<T> : IEntityReadActor<T>
 		catch (Exception e)
 		{
 			_logger.LogError(e, StatusMessages.Database.QueryFailed);
-			return _notifier.HandleOperationResult(new OperationResult<T?>(
+			return _notifier.HandleOperationResult(new OperationResult<T>(
 				OperationStatus.Unknown,
 				null,
 				StatusMessages.Crud<T>.ReadSingleFailed()));
@@ -66,7 +66,7 @@ public class RestEntityReadActor<T> : IEntityReadActor<T>
 
 		if (entity is null)
 		{
-			return _notifier.HandleOperationResult(new OperationResult<T?>(
+			return _notifier.HandleOperationResult(new OperationResult<T>(
 				OperationStatus.NotFound,
 				null,
 				StatusMessages.Crud<T>.NotFound(id)));
@@ -76,7 +76,7 @@ public class RestEntityReadActor<T> : IEntityReadActor<T>
 		var accessValidationResult = await _accessValidationRunner.Validate(entity, ActionType.Read);
 		if (!accessValidationResult.Result)
 		{
-			return _notifier.HandleOperationResult(new OperationResult<T?>(
+			return _notifier.HandleOperationResult(new OperationResult<T>(
 				OperationStatus.Unauthorized,
 				null,
 				StatusMessages.Crud<T>.NoPermission()));
