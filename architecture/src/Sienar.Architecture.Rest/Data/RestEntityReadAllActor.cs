@@ -38,7 +38,7 @@ public class RestEntityReadAllActor<T> : IEntityReadAllActor<T>
 	/// <inheritdoc />
 	public async Task<OperationResult<PagedQueryResult<T>>> Read(Filter? filter = null)
 	{
-		OperationResult<WebResult<PagedQueryResult<T>?>> webResult;
+		OperationResult<WebResult<PagedQueryResult<T>>> webResult;
 		PagedQueryResult<T> queryResult;
 
 		try

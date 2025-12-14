@@ -40,7 +40,7 @@ public class EfEntityReadActor<T> : IEntityReadActor<T>
 	}
 	
 	/// <inheritdoc />
-	public async Task<OperationResult<T?>> Read(
+	public async Task<OperationResult<T>> Read(
 		int id,
 		Filter? filter = null)
 	{
@@ -59,7 +59,7 @@ public class EfEntityReadActor<T> : IEntityReadActor<T>
 		catch (Exception e)
 		{
 			_logger.LogError(e, StatusMessages.Database.QueryFailed);
-			return _notifier.HandleOperationResult(new OperationResult<T?>(
+			return _notifier.HandleOperationResult(new OperationResult<T>(
 				OperationStatus.Unknown,
 				null,
 				StatusMessages.Crud<T>.ReadSingleFailed()));
@@ -67,7 +67,7 @@ public class EfEntityReadActor<T> : IEntityReadActor<T>
 
 		if (entity is null)
 		{
-			return _notifier.HandleOperationResult(new OperationResult<T?>(
+			return _notifier.HandleOperationResult(new OperationResult<T>(
 				OperationStatus.NotFound,
 				null,
 				StatusMessages.Crud<T>.NotFound(id)));
@@ -77,7 +77,7 @@ public class EfEntityReadActor<T> : IEntityReadActor<T>
 		var accessValidationResult = await _accessValidationRunner.Validate(entity, ActionType.Read);
 		if (!accessValidationResult.Result)
 		{
-			return _notifier.HandleOperationResult(new OperationResult<T?>(
+			return _notifier.HandleOperationResult(new OperationResult<T>(
 				OperationStatus.Unauthorized,
 				null,
 				StatusMessages.Crud<T>.NoPermission()));
@@ -85,6 +85,6 @@ public class EfEntityReadActor<T> : IEntityReadActor<T>
 
 		await _afterActionRunner.Run(entity);
 
-		return _notifier.HandleOperationResult(new OperationResult<T?>(result: entity));
+		return _notifier.HandleOperationResult(new OperationResult<T>(result: entity));
 	}
 }

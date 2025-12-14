@@ -36,18 +36,18 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 		_notifier = notifier;
 	}
 
-	public virtual async Task<OperationResult<TResult?>> Execute(TRequest request)
+	public virtual async Task<OperationResult<TResult>> Execute(TRequest request)
 	{
 		if (request is Honeypot honeypot && _botDetector.IsSpambot(honeypot))
 		{
-			return _notifier.HandleOperationResult(new OperationResult<TResult?>());
+			return _notifier.HandleOperationResult(new OperationResult<TResult>());
 		}
 
 		// Run access validation
 		var accessValidationResult = await _accessValidator.Validate(request, ActionType.Action);
 		if (!accessValidationResult.Result)
 		{
-			return _notifier.HandleOperationResult(new OperationResult<TResult?>(
+			return _notifier.HandleOperationResult(new OperationResult<TResult>(
 				accessValidationResult.Status,
 				default,
 				accessValidationResult.Message));
@@ -57,7 +57,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 		var stateValidationResult = await _stateValidator.Validate(request, ActionType.Action);
 		if (!stateValidationResult.Result)
 		{
-			return _notifier.HandleOperationResult(new OperationResult<TResult?>(
+			return _notifier.HandleOperationResult(new OperationResult<TResult>(
 				stateValidationResult.Status,
 				default,
 				stateValidationResult.Message));
@@ -67,13 +67,13 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 		var beforeHooksResult = await _beforeHooks.Run(request);
 		if (!beforeHooksResult.Result)
 		{
-			return _notifier.HandleOperationResult(new OperationResult<TResult?>(
+			return _notifier.HandleOperationResult(new OperationResult<TResult>(
 				beforeHooksResult.Status,
 				default,
 				beforeHooksResult.Message));
 		}
 
-		OperationResult<TResult?> result;
+		OperationResult<TResult> result;
 		try
 		{
 			result = await _processor.Process(request);
@@ -81,7 +81,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 		catch (Exception e)
 		{
 			_logger.LogError(e, "{type} failed to process", typeof(IProcessor<TRequest, TResult>));
-			return _notifier.HandleOperationResult(new OperationResult<TResult?>(OperationStatus.Unknown));
+			return _notifier.HandleOperationResult(new OperationResult<TResult>(OperationStatus.Unknown));
 		}
 
 		if (result.Status is OperationStatus.Success)

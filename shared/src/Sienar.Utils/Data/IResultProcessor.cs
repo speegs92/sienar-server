@@ -11,5 +11,5 @@ public interface IResultProcessor<TResult> where TResult : IResult
 	/// Processes the request and generates the result
 	/// </summary>
 	/// <returns>the result of the operation</returns>
-	Task<OperationResult<TResult?>> Process();
+	Task<OperationResult<TResult>> Process();
 }

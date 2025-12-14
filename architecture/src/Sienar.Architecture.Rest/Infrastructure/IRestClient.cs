@@ -9,7 +9,7 @@ public interface IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	Task<OperationResult<WebResult<TResult?>>> Get<TResult>(
+	Task<OperationResult<WebResult<TResult>>> Get<TResult>(
 		string endpoint,
 		object? input = null);
 
@@ -20,7 +20,7 @@ public interface IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	Task<OperationResult<WebResult<TResult?>>> Post<TResult>(
+	Task<OperationResult<WebResult<TResult>>> Post<TResult>(
 		string endpoint,
 		object input);
 
@@ -31,7 +31,7 @@ public interface IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	Task<OperationResult<WebResult<TResult?>>> Put<TResult>(
+	Task<OperationResult<WebResult<TResult>>> Put<TResult>(
 		string endpoint,
 		object input);
 
@@ -42,7 +42,7 @@ public interface IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	Task<OperationResult<WebResult<TResult?>>> Patch<TResult>(
+	Task<OperationResult<WebResult<TResult>>> Patch<TResult>(
 		string endpoint,
 		object input);
 
@@ -53,7 +53,7 @@ public interface IRestClient
 	/// <param name="input">the request payload, if any</param>
 	/// <typeparam name="TResult">the type of the response</typeparam>
 	/// <returns>the response wrapped with an operation result</returns>
-	Task<OperationResult<WebResult<TResult?>>> Delete<TResult>(
+	Task<OperationResult<WebResult<TResult>>> Delete<TResult>(
 		string endpoint,
 		object? input = null);
 

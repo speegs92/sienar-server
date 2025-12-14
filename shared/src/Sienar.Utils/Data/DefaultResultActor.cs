@@ -27,19 +27,19 @@ public class DefaultResultActor<TResult> : IResultActor<TResult>
 		_notifier = notifier;
 	}
 
-	public virtual async Task<OperationResult<TResult?>> Execute()
+	public virtual async Task<OperationResult<TResult>> Execute()
 	{
 		// Run access validation
 		var accessValidationResult = await _accessValidator.Validate(default, ActionType.Result);
 		if (!accessValidationResult.Result)
 		{
-			return _notifier.HandleOperationResult(new OperationResult<TResult?>(
+			return _notifier.HandleOperationResult(new OperationResult<TResult>(
 				accessValidationResult.Status,
 				default,
 				accessValidationResult.Message));
 		}
 
-		OperationResult<TResult?> result;
+		OperationResult<TResult> result;
 		try
 		{
 			result = await _processor.Process();
@@ -47,7 +47,7 @@ public class DefaultResultActor<TResult> : IResultActor<TResult>
 		catch (Exception e)
 		{
 			_logger.LogError(e, "{type} failed to process", typeof(IResultProcessor<TResult>));
-			return _notifier.HandleOperationResult(new OperationResult<TResult?>(OperationStatus.Unknown));
+			return _notifier.HandleOperationResult(new OperationResult<TResult>(OperationStatus.Unknown));
 		}
 
 		if (result.Status is OperationStatus.Success && result.Result is not null)

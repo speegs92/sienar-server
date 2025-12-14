@@ -15,5 +15,5 @@ public interface IGeneralActor<TRequest, TResult>
 	/// </summary>
 	/// <param name="request">the input of the operation</param>
 	/// <returns>the output of the operation, or <c>null</c></returns>
-	Task<OperationResult<TResult?>> Execute(TRequest request);
+	Task<OperationResult<TResult>> Execute(TRequest request);
 }

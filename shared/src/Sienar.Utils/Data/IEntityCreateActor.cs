@@ -12,5 +12,5 @@ public interface IEntityCreateActor<T>
 	/// </summary>
 	/// <param name="model">The entity to create</param>
 	/// <returns>The entity's new primary key</returns>
-	Task<OperationResult<int?>> Create(T model);
+	Task<OperationResult<int>> Create(T model);
 }

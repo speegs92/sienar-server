@@ -13,7 +13,7 @@ public class ClientAccountLockoutProcessor : IProcessor<AccountLockoutRequest, A
 		_notifier = notifier;
 	}
 
-	public async Task<OperationResult<AccountLockoutResult?>> Process(AccountLockoutRequest request)
+	public async Task<OperationResult<AccountLockoutResult>> Process(AccountLockoutRequest request)
 		=> _notifier.HandleWebResult(
 			await _client.Get<AccountLockoutResult>("account/lockout-reasons", request));
 }

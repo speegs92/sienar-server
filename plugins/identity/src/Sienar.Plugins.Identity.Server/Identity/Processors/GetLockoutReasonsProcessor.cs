@@ -17,7 +17,7 @@ public class GetLockoutReasonsProcessor
 		_vcManager = vcManager;
 	}
 
-	public async Task<OperationResult<AccountLockoutResult?>> Process(
+	public async Task<OperationResult<AccountLockoutResult>> Process(
 		AccountLockoutRequest request)
 	{
 		var user = await _context.Users

@@ -19,9 +19,9 @@ public class ClientLoginProcessor : IProcessor<LoginRequest, LoginResult>
 		_loadUserDataProcessor = loadUserDataProcessor;
 	}
 
-	public async Task<OperationResult<LoginResult?>> Process(LoginRequest request)
+	public async Task<OperationResult<LoginResult>> Process(LoginRequest request)
 	{
-		var result = await _client.Post<LoginResult?>("account/login", request);
+		var result = await _client.Post<LoginResult>("account/login", request);
 
 		if (result.Status == OperationStatus.Success)
 		{
