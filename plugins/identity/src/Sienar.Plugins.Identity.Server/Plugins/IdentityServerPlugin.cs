@@ -61,7 +61,7 @@ public class IdentityServerPlugin : IPlugin
 		services
 			.AddEfEntity<ViewUserDto, ViewUserMapper, UpsertUserDto, UpsertUserMapper, UpsertUserDto, UpsertUserMapper, SienarUser, SienarUserFilterProcessor>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<SienarUser>, SienarUser>(Server)
-			.AddBeforeDeleteActionHook<RemoveUserRelatedEntitiesHook, SienarUser>()
+			.AddBeforeDeleteActionHook<RemoveUserRelatedEntitiesHook, SienarUser>(Server)
 			.AddStateValidator<EnsureAccountInfoUniqueValidator, SienarUser>(Server)
 			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor>(Server)
 			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor>(Server)
