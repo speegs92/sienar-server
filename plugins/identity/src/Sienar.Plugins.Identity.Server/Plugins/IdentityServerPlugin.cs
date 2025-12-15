@@ -68,21 +68,21 @@ public class IdentityServerPlugin : IPlugin
 
 		// Security
 			.AddProcessor<LoginProcessor, LoginRequest, LoginResult>(Server)
-			.AddStatusProcessor<LogoutProcessor, LogoutRequest>()
+			.AddStatusProcessor<LogoutProcessor, LogoutRequest>(Server)
 			.AddResultProcessor<PersonalDataProcessor, PersonalDataResult>()
-			.AddStatusProcessor<UserRoleChangeProcessor, AddUserToRoleRequest>()
+			.AddStatusProcessor<UserRoleChangeProcessor, AddUserToRoleRequest>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<AddUserToRoleRequest>, AddUserToRoleRequest>(Server)
-			.AddStatusProcessor<UserRoleChangeProcessor, RemoveUserFromRoleRequest>()
+			.AddStatusProcessor<UserRoleChangeProcessor, RemoveUserFromRoleRequest>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<RemoveUserFromRoleRequest>, RemoveUserFromRoleRequest>(Server)
-			.AddStatusProcessor<LockUserAccountProcessor, LockUserAccountRequest>()
+			.AddStatusProcessor<LockUserAccountProcessor, LockUserAccountRequest>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<LockUserAccountRequest>, LockUserAccountRequest>(Server)
-			.AddStatusProcessor<UnlockUserAccountProcessor, UnlockUserAccountRequest>()
+			.AddStatusProcessor<UnlockUserAccountProcessor, UnlockUserAccountRequest>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<UnlockUserAccountRequest>, UnlockUserAccountRequest>(Server)
-			.AddStatusProcessor<ManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>()
+			.AddStatusProcessor<ManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<ManuallyConfirmUserAccountRequest>, ManuallyConfirmUserAccountRequest>(Server)
-			.AddStatusProcessor<ChangePasswordProcessor, ChangePasswordRequest>()
-			.AddStatusProcessor<ForgotPasswordProcessor, ForgotPasswordRequest>()
-			.AddStatusProcessor<ResetPasswordProcessor, ResetPasswordRequest>()
+			.AddStatusProcessor<ChangePasswordProcessor, ChangePasswordRequest>(Server)
+			.AddStatusProcessor<ForgotPasswordProcessor, ForgotPasswordRequest>(Server)
+			.AddStatusProcessor<ResetPasswordProcessor, ResetPasswordRequest>(Server)
 			.AddResultProcessor<GetAccountDataProcessor, AccountDataResult>()
 			.AddProcessor<GetLockoutReasonsProcessor, AccountLockoutRequest, AccountLockoutResult>(Server)
 
@@ -90,16 +90,16 @@ public class IdentityServerPlugin : IPlugin
 			.AddStateValidator<RegistrationOpenValidator, RegisterRequest>(Server)
 			.AddStateValidator<AcceptTosValidator, RegisterRequest>(Server)
 			.AddStateValidator<EnsureAccountInfoUniqueValidator, RegisterRequest>(Server)
-			.AddStatusProcessor<RegisterProcessor, RegisterRequest>()
+			.AddStatusProcessor<RegisterProcessor, RegisterRequest>(Server)
 
 		// Email
-			.AddStatusProcessor<ConfirmAccountProcessor, ConfirmAccountRequest>()
-			.AddStatusProcessor<InitiateEmailChangeProcessor, InitiateEmailChangeRequest>()
-			.AddStatusProcessor<PerformEmailChangeProcessor, PerformEmailChangeRequest>()
+			.AddStatusProcessor<ConfirmAccountProcessor, ConfirmAccountRequest>(Server)
+			.AddStatusProcessor<InitiateEmailChangeProcessor, InitiateEmailChangeRequest>(Server)
+			.AddStatusProcessor<PerformEmailChangeProcessor, PerformEmailChangeRequest>(Server)
 
 		// Personal data
 			.AddBeforeStatusActionHook<RemoveUserRelatedEntitiesHook, DeleteAccountRequest>(Server)
-			.AddStatusProcessor<DeleteAccountProcessor, DeleteAccountRequest>();
+			.AddStatusProcessor<DeleteAccountProcessor, DeleteAccountRequest>(Server);
 
 
 		/********
