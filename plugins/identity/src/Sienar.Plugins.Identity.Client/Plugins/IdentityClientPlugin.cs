@@ -116,23 +116,23 @@ public class IdentityClientPlugin : IPlugin
 				// Account
 				.TryAddProcessor<ClientLoginProcessor, LoginRequest, LoginResult>(Client)
 				.TryAddProcessor<ClientAccountLockoutProcessor, AccountLockoutRequest, AccountLockoutResult>(Client)
-				.TryAddStatusProcessor<ClientLogoutProcessor, LogoutRequest>()
-				.TryAddStatusProcessor<ClientRegisterProcessor, RegisterRequest>()
-				.TryAddStatusProcessor<ClientConfirmAccountProcessor, ConfirmAccountRequest>()
-				.TryAddStatusProcessor<ClientInitiateEmailChangeProcessor, InitiateEmailChangeRequest>()
-				.TryAddStatusProcessor<ClientPerformEmailChangeProcessor, PerformEmailChangeRequest>()
-				.TryAddStatusProcessor<ClientChangePasswordProcessor, ChangePasswordRequest>()
-				.TryAddStatusProcessor<ClientForgotPasswordProcessor, ForgotPasswordRequest>()
-				.TryAddStatusProcessor<ClientResetPasswordProcessor, ResetPasswordRequest>()
-				.TryAddStatusProcessor<ClientDeleteAccountProcessor, DeleteAccountRequest>()
+				.TryAddStatusProcessor<ClientLogoutProcessor, LogoutRequest>(Client)
+				.TryAddStatusProcessor<ClientRegisterProcessor, RegisterRequest>(Client)
+				.TryAddStatusProcessor<ClientConfirmAccountProcessor, ConfirmAccountRequest>(Client)
+				.TryAddStatusProcessor<ClientInitiateEmailChangeProcessor, InitiateEmailChangeRequest>(Client)
+				.TryAddStatusProcessor<ClientPerformEmailChangeProcessor, PerformEmailChangeRequest>(Client)
+				.TryAddStatusProcessor<ClientChangePasswordProcessor, ChangePasswordRequest>(Client)
+				.TryAddStatusProcessor<ClientForgotPasswordProcessor, ForgotPasswordRequest>(Client)
+				.TryAddStatusProcessor<ClientResetPasswordProcessor, ResetPasswordRequest>(Client)
+				.TryAddStatusProcessor<ClientDeleteAccountProcessor, DeleteAccountRequest>(Client)
 				.TryAddResultProcessor<LoadUserDataProcessor, AccountDataResult>()
 
 				// Users
-				.TryAddStatusProcessor<ClientLockUserAccountProcessor, LockUserAccountRequest>()
-				.TryAddStatusProcessor<ClientUnlockUserAccountProcessor, UnlockUserAccountRequest>()
-				.TryAddStatusProcessor<ClientManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>()
-				.TryAddStatusProcessor<ClientAddUsertoRoleProcessor, AddUserToRoleRequest>()
-				.TryAddStatusProcessor<ClientRemoveUserFromRoleProcessor, RemoveUserFromRoleRequest>();
+				.TryAddStatusProcessor<ClientLockUserAccountProcessor, LockUserAccountRequest>(Client)
+				.TryAddStatusProcessor<ClientUnlockUserAccountProcessor, UnlockUserAccountRequest>(Client)
+				.TryAddStatusProcessor<ClientManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>(Client)
+				.TryAddStatusProcessor<ClientAddUsertoRoleProcessor, AddUserToRoleRequest>(Client)
+				.TryAddStatusProcessor<ClientRemoveUserFromRoleProcessor, RemoveUserFromRoleRequest>(Client);
 
 			s.ApplyDefaultConfiguration<SienarOptions>(
 				_configuration.GetSection("Sienar:Core"));
