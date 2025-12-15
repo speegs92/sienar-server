@@ -13,7 +13,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 	private readonly IStateValidationRunner<TRequest> _stateValidator;
 	private readonly IBeforeActionRunner<IBeforeGeneralAction<TRequest>, TRequest> _beforeHooks;
 	private readonly IAfterActionRunner<IAfterGeneralAction<TRequest>, TRequest> _afterHooks;
-	private readonly IProcessor<TRequest, TResult> _processor;
+	private readonly IGeneralProcessor<TRequest, TResult> _processor;
 	private readonly IOperationResultNotifier _notifier;
 
 	public DefaultGeneralActor(
@@ -23,7 +23,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 		IStateValidationRunner<TRequest> stateValidator,
 		IBeforeActionRunner<IBeforeGeneralAction<TRequest>, TRequest> beforeHooks,
 		IAfterActionRunner<IAfterGeneralAction<TRequest>, TRequest> afterHooks,
-		IProcessor<TRequest, TResult> processor,
+		IGeneralProcessor<TRequest, TResult> processor,
 		IOperationResultNotifier notifier)
 	{
 		_logger = logger;
@@ -80,7 +80,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 		}
 		catch (Exception e)
 		{
-			_logger.LogError(e, "{type} failed to process", typeof(IProcessor<TRequest, TResult>));
+			_logger.LogError(e, "{type} failed to process", typeof(IGeneralProcessor<TRequest, TResult>));
 			return _notifier.HandleOperationResult(new OperationResult<TResult>(OperationStatus.Unknown));
 		}
 

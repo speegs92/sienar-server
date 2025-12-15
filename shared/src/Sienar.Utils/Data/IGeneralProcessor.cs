@@ -6,7 +6,7 @@
 /// </summary>
 /// <typeparam name="TRequest">the type of the processor input</typeparam>
 /// <typeparam name="TResult">the type of the processor output</typeparam>
-public interface IProcessor<TRequest, TResult>
+public interface IGeneralProcessor<TRequest, TResult>
 	where TRequest : IRequest
 	where TResult : IResult
 {

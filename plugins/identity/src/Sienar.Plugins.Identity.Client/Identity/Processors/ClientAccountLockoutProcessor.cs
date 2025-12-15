@@ -1,6 +1,6 @@
 ﻿namespace Sienar.Identity.Processors;
 
-public class ClientAccountLockoutProcessor : IProcessor<AccountLockoutRequest, AccountLockoutResult>
+public class ClientAccountLockoutProcessor : IGeneralProcessor<AccountLockoutRequest, AccountLockoutResult>
 {
 	private readonly IRestClient _client;
 	private readonly IOperationResultNotifier _notifier;

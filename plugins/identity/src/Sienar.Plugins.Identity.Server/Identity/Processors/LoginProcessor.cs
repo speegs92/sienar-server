@@ -3,7 +3,7 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class LoginProcessor : IProcessor<LoginRequest, LoginResult>
+public class LoginProcessor : IGeneralProcessor<LoginRequest, LoginResult>
 {
 	private readonly ISienarDbContext _context;
 	private readonly IPasswordManager _passwordManager;

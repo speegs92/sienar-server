@@ -67,7 +67,7 @@ public class IdentityServerPlugin : IPlugin
 			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor>(Server)
 
 		// Security
-			.AddProcessor<LoginProcessor, LoginRequest, LoginResult>(Server)
+			.AddGeneralProcessor<LoginProcessor, LoginRequest, LoginResult>(Server)
 			.AddStatusProcessor<LogoutProcessor, LogoutRequest>(Server)
 			.AddResultProcessor<PersonalDataProcessor, PersonalDataResult>(Server)
 			.AddStatusProcessor<UserRoleChangeProcessor, AddUserToRoleRequest>(Server)
@@ -84,7 +84,7 @@ public class IdentityServerPlugin : IPlugin
 			.AddStatusProcessor<ForgotPasswordProcessor, ForgotPasswordRequest>(Server)
 			.AddStatusProcessor<ResetPasswordProcessor, ResetPasswordRequest>(Server)
 			.AddResultProcessor<GetAccountDataProcessor, AccountDataResult>(Server)
-			.AddProcessor<GetLockoutReasonsProcessor, AccountLockoutRequest, AccountLockoutResult>(Server)
+			.AddGeneralProcessor<GetLockoutReasonsProcessor, AccountLockoutRequest, AccountLockoutResult>(Server)
 
 		// Registration
 			.AddStateValidator<RegistrationOpenValidator, RegisterRequest>(Server)

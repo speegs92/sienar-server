@@ -4,7 +4,7 @@ namespace Sienar.Identity.Processors;
 
 /// <exclude />
 public class GetLockoutReasonsProcessor
-	: IProcessor<AccountLockoutRequest, AccountLockoutResult>
+	: IGeneralProcessor<AccountLockoutRequest, AccountLockoutResult>
 {
 	private readonly ISienarDbContext _context;
 	private readonly IVerificationCodeManager _vcManager;
