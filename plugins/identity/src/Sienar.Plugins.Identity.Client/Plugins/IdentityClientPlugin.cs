@@ -125,7 +125,7 @@ public class IdentityClientPlugin : IPlugin
 				.TryAddStatusProcessor<ClientForgotPasswordProcessor, ForgotPasswordRequest>(Client)
 				.TryAddStatusProcessor<ClientResetPasswordProcessor, ResetPasswordRequest>(Client)
 				.TryAddStatusProcessor<ClientDeleteAccountProcessor, DeleteAccountRequest>(Client)
-				.TryAddResultProcessor<LoadUserDataProcessor, AccountDataResult>()
+				.TryAddResultProcessor<LoadUserDataProcessor, AccountDataResult>(Client)
 
 				// Users
 				.TryAddStatusProcessor<ClientLockUserAccountProcessor, LockUserAccountRequest>(Client)

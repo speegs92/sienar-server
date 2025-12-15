@@ -381,17 +381,16 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// Adds a result processor (<c>IProcessor&lt;TRequest&gt;</c>)
 	/// </summary>
 	/// <param name="self">the service collection</param>
+	/// <param name="appType">the application type</param>
 	/// <typeparam name="TProcessor">the processor implementation</typeparam>
 	/// <typeparam name="TResult">the data type of the result</typeparam>
 	/// <returns>the service collection</returns>
 	public static IServiceCollection TryAddResultProcessor<TProcessor, TResult>(
-		this IServiceCollection self)
+		this IServiceCollection self,
+		ApplicationType appType)
 		where TProcessor : class, IResultProcessor<TResult>
 		where TResult : IResult
-	{
-		self.TryAddScoped<IResultProcessor<TResult>, TProcessor>();
-		return self;
-	}
+		=> TryAddScoped<IResultProcessor<TResult>, TProcessor>(self, appType);
 
 	/// <summary>
 	/// Adds a scoped service in a way that supports the application type of the app registering the service
