@@ -114,8 +114,8 @@ public class IdentityClientPlugin : IPlugin
 
 			s
 				// Account
-				.TryAddProcessor<ClientLoginProcessor, LoginRequest, LoginResult>()
-				.TryAddProcessor<ClientAccountLockoutProcessor, AccountLockoutRequest, AccountLockoutResult>()
+				.TryAddProcessor<ClientLoginProcessor, LoginRequest, LoginResult>(Client)
+				.TryAddProcessor<ClientAccountLockoutProcessor, AccountLockoutRequest, AccountLockoutResult>(Client)
 				.TryAddStatusProcessor<ClientLogoutProcessor, LogoutRequest>()
 				.TryAddStatusProcessor<ClientRegisterProcessor, RegisterRequest>()
 				.TryAddStatusProcessor<ClientConfirmAccountProcessor, ConfirmAccountRequest>()

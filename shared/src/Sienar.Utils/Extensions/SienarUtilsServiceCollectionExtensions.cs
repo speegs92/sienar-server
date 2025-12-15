@@ -319,18 +319,18 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// Adds a processor
 	/// </summary>
 	/// <param name="self">the service collection</param>
+	/// <param name="appType">the application type</param>
 	/// <typeparam name="TProcessor">the processor implementation</typeparam>
 	/// <typeparam name="TRequest">the data type of the request</typeparam>
 	/// <typeparam name="TResult">the data type of the result</typeparam>
 	/// <returns>the service collection</returns>
-	public static IServiceCollection TryAddProcessor<TProcessor, TRequest, TResult>(this IServiceCollection self)
+	public static IServiceCollection TryAddProcessor<TProcessor, TRequest, TResult>(
+		this IServiceCollection self,
+		ApplicationType appType)
 		where TProcessor : class, IProcessor<TRequest, TResult>
 		where TRequest : IRequest
 		where TResult : IResult
-	{
-		self.TryAddScoped<IProcessor<TRequest, TResult>, TProcessor>();
-		return self;
-	}
+		=> TryAddScoped<IProcessor<TRequest, TResult>, TProcessor>(self, appType);
 
 	/// <summary>
 	/// Adds a status processor (<c>IProcessor&lt;TRequest, bool&gt;</c>
