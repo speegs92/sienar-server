@@ -398,13 +398,13 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// <remarks>
 	/// This method inspects the <see cref="ApplicationType"/> and adds the given service in a way which is closest to the idea of a scoped-lifetime service for the given <see cref="ApplicationType"/>. An <see cref="ApplicationType.Client">ApplicationType.Client</see>, for example, will add such a service as <see cref="ServiceLifetime.Transient">ServiceLifetime.Transient</see> because Blazor WASM does not functionally distinguish between scoped- and singleton-lifetime services.
 	/// </remarks>
-	/// <param name="serviceCollection">The service collection</param>
+	/// <param name="self">The service collection</param>
 	/// <param name="appType">The application type</param>
 	/// <typeparam name="TService">The type of the service</typeparam>
 	/// <typeparam name="TImplementation">The type of the service's implementation</typeparam>
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddScoped<TService, TImplementation>(
-		IServiceCollection serviceCollection,
+		this IServiceCollection self,
 		ApplicationType appType)
 		where TImplementation : class, TService
 	{
@@ -415,9 +415,9 @@ public static class SienarUtilsServiceCollectionExtensions
 			typeof(TImplementation),
 			lifetime);
 
-		serviceCollection.Add(descriptor);
+		self.Add(descriptor);
 
-		return serviceCollection;
+		return self;
 	}
 
 	/// <summary>
@@ -426,13 +426,13 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// <remarks>
 	/// This method inspects the <see cref="ApplicationType"/> and adds the given service in a way which is closest to the idea of a scoped-lifetime service for the given <see cref="ApplicationType"/>. An <see cref="ApplicationType.Client">ApplicationType.Client</see>, for example, will add such a service as <see cref="ServiceLifetime.Transient">ServiceLifetime.Transient</see> because Blazor WASM does not functionally distinguish between scoped- and singleton-lifetime services.
 	/// </remarks>
-	/// <param name="serviceCollection">The service collection</param>
+	/// <param name="self">The service collection</param>
 	/// <param name="appType">The application type</param>
 	/// <typeparam name="TService">The type of the service</typeparam>
 	/// <typeparam name="TImplementation">The type of the service's implementation</typeparam>
 	/// <returns>The service collection</returns>
 	public static IServiceCollection TryAddScoped<TService, TImplementation>(
-		IServiceCollection serviceCollection,
+		this IServiceCollection self,
 		ApplicationType appType)
 	{
 		var lifetime = CreateTraditionallyScopedServiceLifetime(appType);
@@ -442,9 +442,9 @@ public static class SienarUtilsServiceCollectionExtensions
 			typeof(TImplementation),
 			lifetime);
 
-		serviceCollection.TryAdd(descriptor);
+		self.TryAdd(descriptor);
 
-		return serviceCollection;
+		return self;
 	}
 
 	private static ServiceLifetime CreateTraditionallyScopedServiceLifetime(ApplicationType appType)
