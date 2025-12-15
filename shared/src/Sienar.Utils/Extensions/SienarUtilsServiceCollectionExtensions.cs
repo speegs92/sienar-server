@@ -302,7 +302,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		=> AddScoped<IAfterResultAction<TResult>, THook>(self, appType);
 
 	/// <summary>
-	/// Adds a processor
+	/// Adds a general processor
 	/// </summary>
 	/// <param name="self">the service collection</param>
 	/// <param name="appType">the application type</param>
@@ -310,16 +310,16 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// <typeparam name="TRequest">the data type of the request</typeparam>
 	/// <typeparam name="TResult">the data type of the result</typeparam>
 	/// <returns>the service collection</returns>
-	public static IServiceCollection AddProcessor<TProcessor, TRequest, TResult>(
+	public static IServiceCollection AddGeneralProcessor<TProcessor, TRequest, TResult>(
 		this IServiceCollection self,
 		ApplicationType appType)
-		where TProcessor : class, IProcessor<TRequest, TResult>
+		where TProcessor : class, IGeneralProcessor<TRequest, TResult>
 		where TRequest : IRequest
 		where TResult : IResult
-		=> AddScoped<IProcessor<TRequest, TResult>, TProcessor>(self, appType);
+		=> AddScoped<IGeneralProcessor<TRequest, TResult>, TProcessor>(self, appType);
 
 	/// <summary>
-	/// Adds a processor
+	/// Adds a general processor
 	/// </summary>
 	/// <param name="self">the service collection</param>
 	/// <param name="appType">the application type</param>
@@ -327,13 +327,13 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// <typeparam name="TRequest">the data type of the request</typeparam>
 	/// <typeparam name="TResult">the data type of the result</typeparam>
 	/// <returns>the service collection</returns>
-	public static IServiceCollection TryAddProcessor<TProcessor, TRequest, TResult>(
+	public static IServiceCollection TryAddGeneralProcessor<TProcessor, TRequest, TResult>(
 		this IServiceCollection self,
 		ApplicationType appType)
-		where TProcessor : class, IProcessor<TRequest, TResult>
+		where TProcessor : class, IGeneralProcessor<TRequest, TResult>
 		where TRequest : IRequest
 		where TResult : IResult
-		=> TryAddScoped<IProcessor<TRequest, TResult>, TProcessor>(self, appType);
+		=> TryAddScoped<IGeneralProcessor<TRequest, TResult>, TProcessor>(self, appType);
 
 	/// <summary>
 	/// Adds a status processor (<c>IProcessor&lt;TRequest, bool&gt;</c>

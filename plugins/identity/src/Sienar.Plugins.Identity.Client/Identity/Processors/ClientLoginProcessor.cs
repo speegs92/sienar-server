@@ -3,7 +3,7 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class ClientLoginProcessor : IProcessor<LoginRequest, LoginResult>
+public class ClientLoginProcessor : IGeneralProcessor<LoginRequest, LoginResult>
 {
 	private readonly IRestClient _client;
 	private readonly IOperationResultNotifier _notifier;
