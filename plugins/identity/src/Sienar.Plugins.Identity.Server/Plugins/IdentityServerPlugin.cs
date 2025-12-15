@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Sienar.Identity.Processors;
+using static Sienar.Infrastructure.ApplicationType;
 
 namespace Sienar.Plugins;
 
@@ -58,47 +59,47 @@ public class IdentityServerPlugin : IPlugin
 
 		// CRUD
 		services
-			.AddEfEntity<ViewUserDto, ViewUserMapper, UpsertUserDto, UpsertUserMapper, UpsertUserDto, UpsertUserMapper, SienarUser, SienarUserFilterProcessor>()
-			.AddAccessValidator<UserIsAdminAccessValidator<SienarUser>, SienarUser>()
-			.AddBeforeDeleteActionHook<RemoveUserRelatedEntitiesHook, SienarUser>()
-			.AddStateValidator<EnsureAccountInfoUniqueValidator, SienarUser>()
-			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor>()
-			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor>()
+			.AddEfEntity<ViewUserDto, ViewUserMapper, UpsertUserDto, UpsertUserMapper, UpsertUserDto, UpsertUserMapper, SienarUser, SienarUserFilterProcessor>(Server)
+			.AddAccessValidator<UserIsAdminAccessValidator<SienarUser>, SienarUser>(Server)
+			.AddBeforeDeleteActionHook<RemoveUserRelatedEntitiesHook, SienarUser>(Server)
+			.AddStateValidator<EnsureAccountInfoUniqueValidator, SienarUser>(Server)
+			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor>(Server)
+			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor>(Server)
 
 		// Security
-			.AddProcessor<LoginProcessor, LoginRequest, LoginResult>()
-			.AddStatusProcessor<LogoutProcessor, LogoutRequest>()
-			.AddResultProcessor<PersonalDataProcessor, PersonalDataResult>()
-			.AddStatusProcessor<UserRoleChangeProcessor, AddUserToRoleRequest>()
-			.AddAccessValidator<UserIsAdminAccessValidator<AddUserToRoleRequest>, AddUserToRoleRequest>()
-			.AddStatusProcessor<UserRoleChangeProcessor, RemoveUserFromRoleRequest>()
-			.AddAccessValidator<UserIsAdminAccessValidator<RemoveUserFromRoleRequest>, RemoveUserFromRoleRequest>()
-			.AddStatusProcessor<LockUserAccountProcessor, LockUserAccountRequest>()
-			.AddAccessValidator<UserIsAdminAccessValidator<LockUserAccountRequest>, LockUserAccountRequest>()
-			.AddStatusProcessor<UnlockUserAccountProcessor, UnlockUserAccountRequest>()
-			.AddAccessValidator<UserIsAdminAccessValidator<UnlockUserAccountRequest>, UnlockUserAccountRequest>()
-			.AddStatusProcessor<ManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>()
-			.AddAccessValidator<UserIsAdminAccessValidator<ManuallyConfirmUserAccountRequest>, ManuallyConfirmUserAccountRequest>()
-			.AddStatusProcessor<ChangePasswordProcessor, ChangePasswordRequest>()
-			.AddStatusProcessor<ForgotPasswordProcessor, ForgotPasswordRequest>()
-			.AddStatusProcessor<ResetPasswordProcessor, ResetPasswordRequest>()
-			.AddResultProcessor<GetAccountDataProcessor, AccountDataResult>()
-			.AddProcessor<GetLockoutReasonsProcessor, AccountLockoutRequest, AccountLockoutResult>()
+			.AddProcessor<LoginProcessor, LoginRequest, LoginResult>(Server)
+			.AddStatusProcessor<LogoutProcessor, LogoutRequest>(Server)
+			.AddResultProcessor<PersonalDataProcessor, PersonalDataResult>(Server)
+			.AddStatusProcessor<UserRoleChangeProcessor, AddUserToRoleRequest>(Server)
+			.AddAccessValidator<UserIsAdminAccessValidator<AddUserToRoleRequest>, AddUserToRoleRequest>(Server)
+			.AddStatusProcessor<UserRoleChangeProcessor, RemoveUserFromRoleRequest>(Server)
+			.AddAccessValidator<UserIsAdminAccessValidator<RemoveUserFromRoleRequest>, RemoveUserFromRoleRequest>(Server)
+			.AddStatusProcessor<LockUserAccountProcessor, LockUserAccountRequest>(Server)
+			.AddAccessValidator<UserIsAdminAccessValidator<LockUserAccountRequest>, LockUserAccountRequest>(Server)
+			.AddStatusProcessor<UnlockUserAccountProcessor, UnlockUserAccountRequest>(Server)
+			.AddAccessValidator<UserIsAdminAccessValidator<UnlockUserAccountRequest>, UnlockUserAccountRequest>(Server)
+			.AddStatusProcessor<ManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>(Server)
+			.AddAccessValidator<UserIsAdminAccessValidator<ManuallyConfirmUserAccountRequest>, ManuallyConfirmUserAccountRequest>(Server)
+			.AddStatusProcessor<ChangePasswordProcessor, ChangePasswordRequest>(Server)
+			.AddStatusProcessor<ForgotPasswordProcessor, ForgotPasswordRequest>(Server)
+			.AddStatusProcessor<ResetPasswordProcessor, ResetPasswordRequest>(Server)
+			.AddResultProcessor<GetAccountDataProcessor, AccountDataResult>(Server)
+			.AddProcessor<GetLockoutReasonsProcessor, AccountLockoutRequest, AccountLockoutResult>(Server)
 
 		// Registration
-			.AddStateValidator<RegistrationOpenValidator, RegisterRequest>()
-			.AddStateValidator<AcceptTosValidator, RegisterRequest>()
-			.AddStateValidator<EnsureAccountInfoUniqueValidator, RegisterRequest>()
-			.AddStatusProcessor<RegisterProcessor, RegisterRequest>()
+			.AddStateValidator<RegistrationOpenValidator, RegisterRequest>(Server)
+			.AddStateValidator<AcceptTosValidator, RegisterRequest>(Server)
+			.AddStateValidator<EnsureAccountInfoUniqueValidator, RegisterRequest>(Server)
+			.AddStatusProcessor<RegisterProcessor, RegisterRequest>(Server)
 
 		// Email
-			.AddStatusProcessor<ConfirmAccountProcessor, ConfirmAccountRequest>()
-			.AddStatusProcessor<InitiateEmailChangeProcessor, InitiateEmailChangeRequest>()
-			.AddStatusProcessor<PerformEmailChangeProcessor, PerformEmailChangeRequest>()
+			.AddStatusProcessor<ConfirmAccountProcessor, ConfirmAccountRequest>(Server)
+			.AddStatusProcessor<InitiateEmailChangeProcessor, InitiateEmailChangeRequest>(Server)
+			.AddStatusProcessor<PerformEmailChangeProcessor, PerformEmailChangeRequest>(Server)
 
 		// Personal data
-			.AddBeforeStatusActionHook<RemoveUserRelatedEntitiesHook, DeleteAccountRequest>()
-			.AddStatusProcessor<DeleteAccountProcessor, DeleteAccountRequest>();
+			.AddBeforeStatusActionHook<RemoveUserRelatedEntitiesHook, DeleteAccountRequest>(Server)
+			.AddStatusProcessor<DeleteAccountProcessor, DeleteAccountRequest>(Server);
 
 
 		/********

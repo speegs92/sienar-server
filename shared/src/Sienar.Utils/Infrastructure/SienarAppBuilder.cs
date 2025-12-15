@@ -102,7 +102,7 @@ public sealed class SienarAppBuilder
 		}
 
 		_adapter.Create(_startupArgs, _startupServices);
-		_adapter.AddServices(s => s.AddSienarCoreUtilities());
+		_adapter.AddServices(s => s.AddSienarCoreUtilities(_adapter.ApplicationType));
 
 		var container = _startupServices.BuildServiceProvider();
 		using var scope = container.CreateScope();
