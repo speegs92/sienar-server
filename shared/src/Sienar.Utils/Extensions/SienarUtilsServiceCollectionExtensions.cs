@@ -197,14 +197,16 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// Adds an after-read-all hook for the given <c>TEntity</c>
 	/// </summary>
 	/// <param name="self">The service collection</param>
+	/// <param name="appType">the application type</param>
 	/// <typeparam name="THook">The hook implementation</typeparam>
 	/// <typeparam name="TEntity">The entity type</typeparam>
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddAfterReadAllActionHook<THook, TEntity>(
-		this IServiceCollection self)
+		this IServiceCollection self,
+		ApplicationType appType)
 		where THook : class, IAfterReadAllAction<TEntity>
 		where TEntity : EntityBase
-		=> self.AddScoped<IAfterReadAllAction<TEntity>, THook>();
+		=> AddScoped<IAfterReadAllAction<TEntity>, THook>(self, appType);
 
 	/// <summary>
 	/// Adds an after-create hook for the given <c>TEntity</c>
