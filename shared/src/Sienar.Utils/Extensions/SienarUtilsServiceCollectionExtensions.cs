@@ -9,23 +9,26 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// Adds universal Sienar utilities to the DI container
 	/// </summary>
 	/// <param name="self">the service collection</param>
+	/// <param name="appType">the application type</param>
 	/// <returns>the service collection</returns>
 	[ExcludeFromCodeCoverage]
-	public static IServiceCollection AddSienarCoreUtilities(this IServiceCollection self)
+	public static IServiceCollection AddSienarCoreUtilities(
+		this IServiceCollection self,
+		ApplicationType appType)
 	{
-		self.TryAddScoped(typeof(IStatusActor<>), typeof(DefaultStatusActor<>));
-		self.TryAddScoped(typeof(IGeneralActor<,>), typeof(DefaultGeneralActor<,>));
-		self.TryAddScoped(typeof(IResultActor<>), typeof(DefaultResultActor<>));
-		self.TryAddScoped(typeof(IAccessValidationRunner<>), typeof(DefaultAccessValidationRunner<>));
-		self.TryAddScoped(typeof(IStateValidationRunner<>), typeof(DefaultStateValidationRunner<>));
-		self.TryAddScoped(typeof(IBeforeActionRunner<,>), typeof(DefaultBeforeActionRunner<,>));
-		self.TryAddScoped(typeof(IAfterActionRunner<,>), typeof(DefaultAfterActionRunner<,>));
+		self.TryAddScoped(typeof(IStatusActor<>), typeof(DefaultStatusActor<>), appType);
+		self.TryAddScoped(typeof(IGeneralActor<,>), typeof(DefaultGeneralActor<,>), appType);
+		self.TryAddScoped(typeof(IResultActor<>), typeof(DefaultResultActor<>), appType);
+		self.TryAddScoped(typeof(IAccessValidationRunner<>), typeof(DefaultAccessValidationRunner<>), appType);
+		self.TryAddScoped(typeof(IStateValidationRunner<>), typeof(DefaultStateValidationRunner<>), appType);
+		self.TryAddScoped(typeof(IBeforeActionRunner<,>), typeof(DefaultBeforeActionRunner<,>), appType);
+		self.TryAddScoped(typeof(IAfterActionRunner<,>), typeof(DefaultAfterActionRunner<,>), appType);
 		self.TryAddScoped<IMenuGenerator, DefaultMenuGenerator>();
-		self.TryAddScoped<IBotDetector, DefaultBotDetector>();
+		self.TryAddScoped<IBotDetector, DefaultBotDetector>(appType);
 		self.TryAddScoped(typeof(IMapper<,>), typeof(DefaultMapper<,>));
 		self.TryAddScoped<IOperationResultNotifier, DefaultOperationResultNotifier>();
 
-		return self.AddStatusProcessor<StartupProcessor, Startup>();
+		return self.AddStatusProcessor<StartupProcessor, Startup>(appType);
 	}
 
 	/// <summary>
