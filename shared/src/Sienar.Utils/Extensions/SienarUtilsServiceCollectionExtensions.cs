@@ -287,14 +287,16 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// Adds an after result action hook for the given <c>TResult</c>
 	/// </summary>
 	/// <param name="self">The service collection</param>
+	/// <param name="appType">the application type</param>
 	/// <typeparam name="THook">The hook implementation</typeparam>
 	/// <typeparam name="TResult">The result type</typeparam>
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddAfterResultActionHook<THook, TResult>(
-		this IServiceCollection self)
+		this IServiceCollection self,
+		ApplicationType appType)
 		where THook : class, IAfterResultAction<TResult>
 		where TResult : IResult
-		=> self.AddScoped<IAfterResultAction<TResult>, THook>();
+		=> AddScoped<IAfterResultAction<TResult>, THook>(self, appType);
 
 	/// <summary>
 	/// Adds a processor
