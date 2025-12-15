@@ -410,11 +410,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		ApplicationType appType)
 		where TImplementation : class, TService
 	{
-		var lifetime = appType switch
-		{
-			ApplicationType.Client => ServiceLifetime.Transient,
-			_ => ServiceLifetime.Scoped
-		};
+		var lifetime = CreateTraditionallyScopedServiceLifetime(appType);
 
 		var descriptor = new ServiceDescriptor(
 			typeof(TService),
@@ -425,4 +421,11 @@ public static class SienarUtilsServiceCollectionExtensions
 
 		return serviceCollection;
 	}
+
+	private static ServiceLifetime CreateTraditionallyScopedServiceLifetime(ApplicationType appType)
+		=> appType switch
+		{
+			ApplicationType.Client => ServiceLifetime.Transient,
+			_ => ServiceLifetime.Scoped
+		};
 }
