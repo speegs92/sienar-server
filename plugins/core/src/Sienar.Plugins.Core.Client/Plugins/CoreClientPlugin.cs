@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Sienar.Configuration;
+using Sienar.Data;
 using Sienar.Extensions;
 using Sienar.Infrastructure;
 using Sienar.Security;
@@ -54,7 +55,11 @@ public class CoreClientPlugin : IPlugin
 				.AddCookieRestClient()
 				.AddRestfulEntities()
 				.AddBeforeStatusActionHook<AddCsrfTokenToHttpRequestHook, RestClientRequest<CookieRestClient>>(Client)
-				.AddBeforeStatusActionHook<InitializeCsrfTokenOnAppStartHook, Startup>(Client);
+				.AddBeforeStatusActionHook<InitializeCsrfTokenOnAppStartHook, Startup>(Client)
+				.AddScoped(
+					typeof(IGeneralProcessor<,>),
+					typeof(DefaultClientGeneralProcessor<,>),
+					Client);
 		});
 	}
 
