@@ -73,7 +73,7 @@ public static class SienarEfServiceCollectionExtensions
 		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 	{
 		self.AddBeforeCreateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>(appType);
-		self.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>();
+		self.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>(appType);
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 
@@ -150,7 +150,7 @@ public static class SienarEfServiceCollectionExtensions
 
 		self
 			.AddBeforeCreateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>(appType)
-			.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>();
+			.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>(appType);
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 
