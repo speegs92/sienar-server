@@ -264,7 +264,7 @@ public class CookieRestClient : IRestClient
 		_logger.LogError(e, "{}", logMessage);
 		return new(
 			OperationStatus.Unknown,
-			new WebResult<TResult?>(),
+			new WebResult<TResult>(),
 			errorMessage);
 	}
 
