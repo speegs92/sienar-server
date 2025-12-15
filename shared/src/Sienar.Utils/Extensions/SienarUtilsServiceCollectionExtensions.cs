@@ -212,14 +212,16 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// Adds an after-create hook for the given <c>TEntity</c>
 	/// </summary>
 	/// <param name="self">The service collection</param>
+	/// <param name="appType">the application type</param>
 	/// <typeparam name="THook">The hook implementation</typeparam>
 	/// <typeparam name="TEntity">The entity type</typeparam>
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddAfterCreateActionHook<THook, TEntity>(
-		this IServiceCollection self)
+		this IServiceCollection self,
+		ApplicationType appType)
 		where THook : class, IAfterCreateAction<TEntity>
 		where TEntity : EntityBase
-		=> self.AddScoped<IAfterCreateAction<TEntity>, THook>();
+		=> AddScoped<IAfterCreateAction<TEntity>, THook>(self, appType);
 
 	/// <summary>
 	/// Adds an after-update hook for the given <c>TEntity</c>
