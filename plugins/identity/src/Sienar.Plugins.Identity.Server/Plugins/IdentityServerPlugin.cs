@@ -69,7 +69,7 @@ public class IdentityServerPlugin : IPlugin
 		// Security
 			.AddProcessor<LoginProcessor, LoginRequest, LoginResult>(Server)
 			.AddStatusProcessor<LogoutProcessor, LogoutRequest>(Server)
-			.AddResultProcessor<PersonalDataProcessor, PersonalDataResult>()
+			.AddResultProcessor<PersonalDataProcessor, PersonalDataResult>(Server)
 			.AddStatusProcessor<UserRoleChangeProcessor, AddUserToRoleRequest>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<AddUserToRoleRequest>, AddUserToRoleRequest>(Server)
 			.AddStatusProcessor<UserRoleChangeProcessor, RemoveUserFromRoleRequest>(Server)
@@ -83,7 +83,7 @@ public class IdentityServerPlugin : IPlugin
 			.AddStatusProcessor<ChangePasswordProcessor, ChangePasswordRequest>(Server)
 			.AddStatusProcessor<ForgotPasswordProcessor, ForgotPasswordRequest>(Server)
 			.AddStatusProcessor<ResetPasswordProcessor, ResetPasswordRequest>(Server)
-			.AddResultProcessor<GetAccountDataProcessor, AccountDataResult>()
+			.AddResultProcessor<GetAccountDataProcessor, AccountDataResult>(Server)
 			.AddProcessor<GetLockoutReasonsProcessor, AccountLockoutRequest, AccountLockoutResult>(Server)
 
 		// Registration
