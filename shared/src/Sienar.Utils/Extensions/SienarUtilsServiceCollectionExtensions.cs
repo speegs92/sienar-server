@@ -152,14 +152,16 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// Adds an before general action hook for the given <c>TRequest</c>
 	/// </summary>
 	/// <param name="self">The service collection</param>
+	/// <param name="appType">the application type</param>
 	/// <typeparam name="THook">The hook implementation</typeparam>
 	/// <typeparam name="TRequest">The request type</typeparam>
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddBeforeGeneralActionHook<THook, TRequest>(
-		this IServiceCollection self)
+		this IServiceCollection self,
+		ApplicationType appType)
 		where THook : class, IBeforeGeneralAction<TRequest>
 		where TRequest : IRequest
-		=> self.AddScoped<IBeforeGeneralAction<TRequest>, THook>();
+		=> AddScoped<IBeforeGeneralAction<TRequest>, THook>(self, appType);
 
 	/// <summary>
 	/// Adds an before status action hook for the given <c>TRequest</c>
