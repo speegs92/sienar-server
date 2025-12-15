@@ -407,12 +407,30 @@ public static class SienarUtilsServiceCollectionExtensions
 		this IServiceCollection self,
 		ApplicationType appType)
 		where TImplementation : class, TService
+		=> AddScoped(self, typeof(TService), typeof(TImplementation), appType);
+
+	/// <summary>
+	/// Adds a scoped service in a way that supports the application type of the app registering the service
+	/// </summary>
+	/// <remarks>
+	/// This method inspects the <see cref="ApplicationType"/> and adds the given service in a way which is closest to the idea of a scoped-lifetime service for the given <see cref="ApplicationType"/>. An <see cref="ApplicationType.Client">ApplicationType.Client</see>, for example, will add such a service as <see cref="ServiceLifetime.Transient">ServiceLifetime.Transient</see> because Blazor WASM does not functionally distinguish between scoped- and singleton-lifetime services.
+	/// </remarks>
+	/// <param name="self">The service collection</param>
+	/// <param name="serviceType">The type of the service</param>
+	/// <param name="implementationType">The type of the service's implementation</param>
+	/// <param name="appType">The application type</param>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddScoped(
+		this IServiceCollection self,
+		Type serviceType,
+		Type implementationType,
+		ApplicationType appType)
 	{
 		var lifetime = CreateTraditionallyScopedServiceLifetime(appType);
 
 		var descriptor = new ServiceDescriptor(
-			typeof(TService),
-			typeof(TImplementation),
+			serviceType,
+			implementationType,
 			lifetime);
 
 		self.Add(descriptor);
