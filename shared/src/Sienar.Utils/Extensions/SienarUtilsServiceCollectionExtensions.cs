@@ -93,13 +93,15 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// Adds a state validator for the given <c>TRequest</c>
 	/// </summary>
 	/// <param name="self">the service collection</param>
+	/// <param name="appType">the application type</param>
 	/// <typeparam name="TValidator">the validator implementation</typeparam>
 	/// <typeparam name="TRequest">the data type of the request</typeparam>
 	/// <returns>the service collection</returns>
 	public static IServiceCollection AddStateValidator<TValidator, TRequest>(
-		this IServiceCollection self)
+		this IServiceCollection self,
+		ApplicationType appType)
 		where TValidator : class, IStateValidator<TRequest>
-		=> self.AddScoped<IStateValidator<TRequest>, TValidator>();
+		=> AddScoped<IStateValidator<TRequest>, TValidator>(self, appType);
 
 	/// <summary>
 	/// Adds an before-create hook for the given <c>TEntity</c>
