@@ -98,7 +98,7 @@ public class IdentityServerPlugin : IPlugin
 			.AddStatusProcessor<PerformEmailChangeProcessor, PerformEmailChangeRequest>()
 
 		// Personal data
-			.AddBeforeStatusActionHook<RemoveUserRelatedEntitiesHook, DeleteAccountRequest>()
+			.AddBeforeStatusActionHook<RemoveUserRelatedEntitiesHook, DeleteAccountRequest>(Server)
 			.AddStatusProcessor<DeleteAccountProcessor, DeleteAccountRequest>();
 
 

@@ -5,6 +5,7 @@ using Sienar.Configuration;
 using Sienar.Extensions;
 using Sienar.Infrastructure;
 using Sienar.Security;
+using static Sienar.Infrastructure.ApplicationType;
 
 namespace Sienar.Plugins;
 
@@ -40,7 +41,7 @@ public class CoreClientPlugin : IPlugin
 				.AddSingleton(_sp.GetRequiredService<ComponentProvider>())
 				.AddSingleton(_sp.GetRequiredService<RoutableAssemblyProvider>());
 
-			if (_adapter.ApplicationType is not ApplicationType.Client)
+			if (_adapter.ApplicationType is not Client)
 			{
 				return;
 			}
@@ -52,8 +53,8 @@ public class CoreClientPlugin : IPlugin
 				.AddSienarBlazorUtilities()
 				.AddCookieRestClient()
 				.AddRestfulEntities()
-				.AddBeforeStatusActionHook<AddCsrfTokenToHttpRequestHook, RestClientRequest<CookieRestClient>>()
-				.AddBeforeStatusActionHook<InitializeCsrfTokenOnAppStartHook, Startup>();
+				.AddBeforeStatusActionHook<AddCsrfTokenToHttpRequestHook, RestClientRequest<CookieRestClient>>(Client)
+				.AddBeforeStatusActionHook<InitializeCsrfTokenOnAppStartHook, Startup>(Client);
 		});
 	}
 

@@ -1,6 +1,7 @@
 ﻿using Sienar.Identity.Processors;
 using Sienar.Layouts;
 using Sienar.Ui.Views;
+using static Sienar.Infrastructure.ApplicationType;
 
 namespace Sienar.Plugins;
 
@@ -100,13 +101,13 @@ public class IdentityClientPlugin : IPlugin
 
 	private void SetupServices()
 	{
-		if (_adapter.ApplicationType is not ApplicationType.Client) return;
+		if (_adapter.ApplicationType is not Client) return;
 
 		_adapter.AddServices(s =>
 		{
 			// Infrastructure
 			s
-				.AddBeforeStatusActionHook<LoadUserDataProcessor, Startup>();
+				.AddBeforeStatusActionHook<LoadUserDataProcessor, Startup>(Client);
 
 			s.TryAddScoped<INotifier, DefaultNotifier>();
 			s.TryAddScoped<IUserClaimsFactory<ViewUserDto>, ClientUserClaimsFactory>();
