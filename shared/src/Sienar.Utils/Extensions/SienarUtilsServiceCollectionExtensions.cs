@@ -79,13 +79,15 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// Adds an access validator for the given <c>TRequest</c>
 	/// </summary>
 	/// <param name="self">the service collection</param>
+	/// <param name="appType">the application type</param>
 	/// <typeparam name="TValidator">the validator implementation</typeparam>
 	/// <typeparam name="TRequest">the data type of the request</typeparam>
 	/// <returns>the service collection</returns>
 	public static IServiceCollection AddAccessValidator<TValidator, TRequest>(
-		this IServiceCollection self)
+		this IServiceCollection self,
+		ApplicationType appType)
 		where TValidator : class, IAccessValidator<TRequest>
-		=> self.AddScoped<IAccessValidator<TRequest>, TValidator>();
+		=> AddScoped<IAccessValidator<TRequest>, TValidator>(self, appType);
 
 	/// <summary>
 	/// Adds a state validator for the given <c>TRequest</c>

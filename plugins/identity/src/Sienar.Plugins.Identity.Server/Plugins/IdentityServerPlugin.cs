@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Sienar.Identity.Processors;
+using static Sienar.Infrastructure.ApplicationType;
 
 namespace Sienar.Plugins;
 
@@ -59,7 +60,7 @@ public class IdentityServerPlugin : IPlugin
 		// CRUD
 		services
 			.AddEfEntity<ViewUserDto, ViewUserMapper, UpsertUserDto, UpsertUserMapper, UpsertUserDto, UpsertUserMapper, SienarUser, SienarUserFilterProcessor>()
-			.AddAccessValidator<UserIsAdminAccessValidator<SienarUser>, SienarUser>()
+			.AddAccessValidator<UserIsAdminAccessValidator<SienarUser>, SienarUser>(Server)
 			.AddBeforeDeleteActionHook<RemoveUserRelatedEntitiesHook, SienarUser>()
 			.AddStateValidator<EnsureAccountInfoUniqueValidator, SienarUser>()
 			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor>()
@@ -70,15 +71,15 @@ public class IdentityServerPlugin : IPlugin
 			.AddStatusProcessor<LogoutProcessor, LogoutRequest>()
 			.AddResultProcessor<PersonalDataProcessor, PersonalDataResult>()
 			.AddStatusProcessor<UserRoleChangeProcessor, AddUserToRoleRequest>()
-			.AddAccessValidator<UserIsAdminAccessValidator<AddUserToRoleRequest>, AddUserToRoleRequest>()
+			.AddAccessValidator<UserIsAdminAccessValidator<AddUserToRoleRequest>, AddUserToRoleRequest>(Server)
 			.AddStatusProcessor<UserRoleChangeProcessor, RemoveUserFromRoleRequest>()
-			.AddAccessValidator<UserIsAdminAccessValidator<RemoveUserFromRoleRequest>, RemoveUserFromRoleRequest>()
+			.AddAccessValidator<UserIsAdminAccessValidator<RemoveUserFromRoleRequest>, RemoveUserFromRoleRequest>(Server)
 			.AddStatusProcessor<LockUserAccountProcessor, LockUserAccountRequest>()
-			.AddAccessValidator<UserIsAdminAccessValidator<LockUserAccountRequest>, LockUserAccountRequest>()
+			.AddAccessValidator<UserIsAdminAccessValidator<LockUserAccountRequest>, LockUserAccountRequest>(Server)
 			.AddStatusProcessor<UnlockUserAccountProcessor, UnlockUserAccountRequest>()
-			.AddAccessValidator<UserIsAdminAccessValidator<UnlockUserAccountRequest>, UnlockUserAccountRequest>()
+			.AddAccessValidator<UserIsAdminAccessValidator<UnlockUserAccountRequest>, UnlockUserAccountRequest>(Server)
 			.AddStatusProcessor<ManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>()
-			.AddAccessValidator<UserIsAdminAccessValidator<ManuallyConfirmUserAccountRequest>, ManuallyConfirmUserAccountRequest>()
+			.AddAccessValidator<UserIsAdminAccessValidator<ManuallyConfirmUserAccountRequest>, ManuallyConfirmUserAccountRequest>(Server)
 			.AddStatusProcessor<ChangePasswordProcessor, ChangePasswordRequest>()
 			.AddStatusProcessor<ForgotPasswordProcessor, ForgotPasswordRequest>()
 			.AddStatusProcessor<ResetPasswordProcessor, ResetPasswordRequest>()
