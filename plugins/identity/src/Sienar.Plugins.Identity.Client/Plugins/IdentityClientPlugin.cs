@@ -120,7 +120,6 @@ public class IdentityClientPlugin : IPlugin
 				.TryAddStatusProcessor<ClientConfirmAccountProcessor, ConfirmAccountRequest>(Client)
 				.TryAddStatusProcessor<ClientInitiateEmailChangeProcessor, InitiateEmailChangeRequest>(Client)
 				.TryAddStatusProcessor<ClientPerformEmailChangeProcessor, PerformEmailChangeRequest>(Client)
-				.TryAddStatusProcessor<ClientChangePasswordProcessor, ChangePasswordRequest>(Client)
 				.TryAddStatusProcessor<ClientForgotPasswordProcessor, ForgotPasswordRequest>(Client)
 				.TryAddStatusProcessor<ClientResetPasswordProcessor, ResetPasswordRequest>(Client)
 				.TryAddStatusProcessor<ClientDeleteAccountProcessor, DeleteAccountRequest>(Client)
