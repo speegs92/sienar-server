@@ -124,7 +124,6 @@ public class IdentityClientPlugin : IPlugin
 
 				// Users
 				.TryAddStatusProcessor<ClientUnlockUserAccountProcessor, UnlockUserAccountRequest>(Client)
-				.TryAddStatusProcessor<ClientManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>(Client)
 				.TryAddStatusProcessor<ClientRemoveUserFromRoleProcessor, RemoveUserFromRoleRequest>(Client);
 
 			s.ApplyDefaultConfiguration<SienarOptions>(
