@@ -59,6 +59,10 @@ public class CoreClientPlugin : IPlugin
 				.AddScoped(
 					typeof(IGeneralProcessor<,>),
 					typeof(DefaultClientGeneralProcessor<,>),
+					Client)
+				.AddScoped(
+					typeof(IStatusProcessor<>),
+					typeof(DefaultClientStatusProcessor<>),
 					Client);
 		});
 	}
