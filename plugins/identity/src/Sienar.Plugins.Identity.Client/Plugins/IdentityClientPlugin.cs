@@ -117,7 +117,7 @@ public class IdentityClientPlugin : IPlugin
 				.TryAddGeneralProcessor<ClientLoginProcessor, LoginRequest, LoginResult>(Client)
 				.TryAddStatusProcessor<ClientLogoutProcessor, LogoutRequest>(Client)
 				.TryAddStatusProcessor<ClientRegisterProcessor, RegisterRequest>(Client)
-				.TryAddStatusProcessor<ClientDeleteAccountProcessor, DeleteAccountRequest>(Client)
+				.AddAfterStatusActionHook<LogOutAfterDeletingAccountHook, DeleteAccountRequest>(Client)
 				.TryAddResultProcessor<LoadUserDataProcessor, AccountDataResult>(Client);
 
 			s.ApplyDefaultConfiguration<SienarOptions>(
