@@ -130,7 +130,6 @@ public class IdentityClientPlugin : IPlugin
 				.TryAddStatusProcessor<ClientLockUserAccountProcessor, LockUserAccountRequest>(Client)
 				.TryAddStatusProcessor<ClientUnlockUserAccountProcessor, UnlockUserAccountRequest>(Client)
 				.TryAddStatusProcessor<ClientManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>(Client)
-				.TryAddStatusProcessor<ClientAddUsertoRoleProcessor, AddUserToRoleRequest>(Client)
 				.TryAddStatusProcessor<ClientRemoveUserFromRoleProcessor, RemoveUserFromRoleRequest>(Client);
 
 			s.ApplyDefaultConfiguration<SienarOptions>(
