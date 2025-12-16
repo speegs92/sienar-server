@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Sienar.Infrastructure;
 
 namespace Sienar.Data;
@@ -17,7 +16,6 @@ public class DefaultClientGeneralProcessor<TRequest, TResult>
 {
 	private readonly IRestClient _client;
 	private readonly IOperationResultNotifier _notifier;
-	private readonly ILogger<DefaultClientGeneralProcessor<TRequest, TResult>> _logger;
 
 	/// <summary>
 	/// Creates a new instance of <c>DefaultClientGeneralProcessor</c>
@@ -26,12 +24,10 @@ public class DefaultClientGeneralProcessor<TRequest, TResult>
 	/// <param name="notifier">The operation result notifier</param>
 	public DefaultClientGeneralProcessor(
 		IRestClient client,
-		IOperationResultNotifier notifier,
-		ILogger<DefaultClientGeneralProcessor<TRequest, TResult>> logger)
+		IOperationResultNotifier notifier)
 	{
 		_client = client;
 		_notifier = notifier;
-		_logger = logger;
 	}
 
 	/// <inheritdoc />
@@ -39,7 +35,6 @@ public class DefaultClientGeneralProcessor<TRequest, TResult>
 	{
 		var dtoType = request.GetType();
 		var restEndpoint = dtoType.GetCustomAttribute<RestEndpointAttribute>();
-		_logger.LogInformation("Rest endpoint is {endpoint}", dtoType.Assembly.FullName);
 
 		if (restEndpoint is null)
 		{
@@ -55,7 +50,6 @@ public class DefaultClientGeneralProcessor<TRequest, TResult>
 			restEndpoint.Endpoint,
 			request,
 			restEndpoint.Method);
-		_logger.LogInformation("Retrieved data from {dto}", typeof(TRequest).Name);
 
 		return _notifier.HandleWebResult(result);
 	}
