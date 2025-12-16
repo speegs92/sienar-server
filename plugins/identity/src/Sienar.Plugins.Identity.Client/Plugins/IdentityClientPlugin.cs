@@ -123,7 +123,6 @@ public class IdentityClientPlugin : IPlugin
 				.TryAddResultProcessor<LoadUserDataProcessor, AccountDataResult>(Client)
 
 				// Users
-				.TryAddStatusProcessor<ClientLockUserAccountProcessor, LockUserAccountRequest>(Client)
 				.TryAddStatusProcessor<ClientUnlockUserAccountProcessor, UnlockUserAccountRequest>(Client)
 				.TryAddStatusProcessor<ClientManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>(Client)
 				.TryAddStatusProcessor<ClientRemoveUserFromRoleProcessor, RemoveUserFromRoleRequest>(Client);
