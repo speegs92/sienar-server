@@ -55,7 +55,7 @@ public class CoreClientPlugin : IPlugin
 				.AddCookieRestClient()
 				.AddRestfulEntities()
 				.AddBeforeStatusActionHook<AddCsrfTokenToHttpRequestHook, RestClientRequest<CookieRestClient>>(Client)
-				.AddBeforeStatusActionHook<InitializeCsrfTokenOnAppStartHook, Startup>(Client)
+				.AddBeforeStatusActionHook<RefreshCsrfTokenOnStartup, Startup>(Client)
 				.AddScoped(
 					typeof(IGeneralProcessor<,>),
 					typeof(DefaultClientGeneralProcessor<,>),
