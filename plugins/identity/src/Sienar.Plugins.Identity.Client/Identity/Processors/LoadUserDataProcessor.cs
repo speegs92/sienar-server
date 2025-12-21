@@ -51,7 +51,7 @@ public class LoadUserDataProcessor
 		};
 
 		var userClaims = _claimsFactory.CreateClaims(user);
-		_authStateProvider.NotifyUserAuthentication(userClaims, true);
+		_authStateProvider.Login(userClaims);
 
 		return _notifier.HandleWebResult(result);
 	}

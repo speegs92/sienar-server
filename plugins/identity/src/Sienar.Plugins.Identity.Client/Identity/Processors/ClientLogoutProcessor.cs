@@ -25,7 +25,7 @@ public class ClientLogoutProcessor : IStatusProcessor<LogoutRequest>
 
 		if (loggedOutResult.Status is OperationStatus.Success)
 		{
-			_authStateProvider.NotifyUserAuthentication([], false);
+			_authStateProvider.Logout();
 			await _client.RefreshCsrfToken();
 		}
 

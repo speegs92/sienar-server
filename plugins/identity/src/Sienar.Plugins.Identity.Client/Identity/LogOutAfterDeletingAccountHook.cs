@@ -21,7 +21,7 @@ public class LogOutAfterDeletingAccountHook :
 	/// <inheritdoc />
 	public Task Handle(DeleteAccountRequest input)
 	{
-		_authProvider.NotifyUserAuthentication([], false);
+		_authProvider.Logout();
 		return Task.CompletedTask;
 	}
 }

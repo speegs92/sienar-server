@@ -14,15 +14,21 @@ public class SienarAuthenticationStateProvider : AuthenticationStateProvider
 		=> Task.FromResult(_authState);
 
 	/// <summary>
-	/// 
+	/// Logs a user in to the UI
 	/// </summary>
-	/// <param name="claims"></param>
-	/// <param name="isAuthenticated"></param>
-	public void NotifyUserAuthentication(
-		IEnumerable<Claim> claims,
-		bool isAuthenticated)
+	/// <param name="claims">The user's claims</param>
+	public void Login(IEnumerable<Claim> claims)
 	{
-		_authState = CreateAuthenticationState(claims, isAuthenticated);
+		_authState = CreateAuthenticationState(claims, true);
+		NotifyAuthenticationStateChanged(Task.FromResult(_authState));
+	}
+
+	/// <summary>
+	/// Logs a user out from the UI
+	/// </summary>
+	public void Logout()
+	{
+		_authState = CreateAuthenticationState([], false);
 		NotifyAuthenticationStateChanged(Task.FromResult(_authState));
 	}
 
