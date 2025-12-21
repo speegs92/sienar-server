@@ -116,7 +116,8 @@ public class IdentityClientPlugin : IPlugin
 				// Account
 				.AddAfterGeneralActionHook<LoadUserDataOnLogin, LoginRequest>(Client)
 				.AddAfterGeneralActionHook<RefreshCsrfTokenOnLogin, LoginRequest>(Client)
-				.TryAddStatusProcessor<ClientLogoutProcessor, LogoutRequest>(Client)
+				.AddAfterStatusActionHook<LogOutUiAfterLogout, LogoutRequest>(Client)
+				.AddAfterStatusActionHook<RefreshCsrfTokenOnLogout, LogoutRequest>(Client)
 				.TryAddStatusProcessor<ClientRegisterProcessor, RegisterRequest>(Client)
 				.AddAfterStatusActionHook<LogOutAfterDeletingAccount, DeleteAccountRequest>(Client);
 
