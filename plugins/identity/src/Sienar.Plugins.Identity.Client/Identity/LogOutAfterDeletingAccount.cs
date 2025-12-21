@@ -3,25 +3,19 @@
 /// <summary>
 /// Logs a user out after they have deleted their account
 /// </summary>
-public class LogOutAfterDeletingAccountHook :
+public class LogOutAfterDeletingAccount :
+	UiLogoutManager,
 	IAfterStatusAction<DeleteAccountRequest>
 {
-	private readonly SienarAuthenticationStateProvider _authProvider;
-
 	/// <summary>
-	/// Creates a new instance of <c>LogOutAfterDeletingAccountHook</c>
+	/// Creates a new instance of <c>LogOutAfterDeletingAccount</c>
 	/// </summary>
 	/// <param name="authProvider">The auth state provider</param>
-	public LogOutAfterDeletingAccountHook(
+	public LogOutAfterDeletingAccount(
 		SienarAuthenticationStateProvider authProvider)
-	{
-		_authProvider = authProvider;
-	}
+		: base(authProvider) {}
 
 	/// <inheritdoc />
 	public Task Handle(DeleteAccountRequest input)
-	{
-		_authProvider.Logout();
-		return Task.CompletedTask;
-	}
+		=> Logout();
 }
