@@ -7,16 +7,13 @@ public class ClientLoginProcessor : IGeneralProcessor<LoginRequest, LoginResult>
 {
 	private readonly IRestClient _client;
 	private readonly IOperationResultNotifier _notifier;
-	private readonly IResultProcessor<AccountDataResult> _loadUserDataProcessor;
 
 	public ClientLoginProcessor(
 		IRestClient client,
-		IOperationResultNotifier notifier,
-		IResultProcessor<AccountDataResult> loadUserDataProcessor)
+		IOperationResultNotifier notifier)
 	{
 		_client = client;
 		_notifier = notifier;
-		_loadUserDataProcessor = loadUserDataProcessor;
 	}
 
 	public async Task<OperationResult<LoginResult>> Process(LoginRequest request)
@@ -25,7 +22,6 @@ public class ClientLoginProcessor : IGeneralProcessor<LoginRequest, LoginResult>
 
 		if (result.Status == OperationStatus.Success)
 		{
-			await _loadUserDataProcessor.Process();
 			await _client.RefreshCsrfToken();
 		}
 

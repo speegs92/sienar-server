@@ -107,7 +107,7 @@ public class IdentityClientPlugin : IPlugin
 		{
 			// Infrastructure
 			s
-				.AddBeforeStatusActionHook<LoadUserDataProcessor, Startup>(Client);
+				.AddBeforeStatusActionHook<LoadUserDataOnStartup, Startup>(Client);
 
 			s.TryAddScoped<INotifier, DefaultNotifier>();
 			s.TryAddScoped<IUserClaimsFactory<ViewUserDto>, ClientUserClaimsFactory>();
@@ -118,7 +118,7 @@ public class IdentityClientPlugin : IPlugin
 				.TryAddStatusProcessor<ClientLogoutProcessor, LogoutRequest>(Client)
 				.TryAddStatusProcessor<ClientRegisterProcessor, RegisterRequest>(Client)
 				.AddAfterStatusActionHook<LogOutAfterDeletingAccountHook, DeleteAccountRequest>(Client)
-				.TryAddResultProcessor<LoadUserDataProcessor, AccountDataResult>(Client);
+				.AddAfterGeneralActionHook<LoadUserDataOnLogin, LoginRequest>(Client);
 
 			s.ApplyDefaultConfiguration<SienarOptions>(
 				_configuration.GetSection("Sienar:Core"));
