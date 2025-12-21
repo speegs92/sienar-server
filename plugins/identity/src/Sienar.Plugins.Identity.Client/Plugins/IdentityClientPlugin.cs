@@ -114,11 +114,11 @@ public class IdentityClientPlugin : IPlugin
 
 			s
 				// Account
-				.TryAddGeneralProcessor<ClientLoginProcessor, LoginRequest, LoginResult>(Client)
+				.AddAfterGeneralActionHook<LoadUserDataOnLogin, LoginRequest>(Client)
+				.AddAfterGeneralActionHook<RefreshCsrfTokenOnLogin, LoginRequest>(Client)
 				.TryAddStatusProcessor<ClientLogoutProcessor, LogoutRequest>(Client)
 				.TryAddStatusProcessor<ClientRegisterProcessor, RegisterRequest>(Client)
-				.AddAfterStatusActionHook<LogOutAfterDeletingAccountHook, DeleteAccountRequest>(Client)
-				.AddAfterGeneralActionHook<LoadUserDataOnLogin, LoginRequest>(Client);
+				.AddAfterStatusActionHook<LogOutAfterDeletingAccountHook, DeleteAccountRequest>(Client);
 
 			s.ApplyDefaultConfiguration<SienarOptions>(
 				_configuration.GetSection("Sienar:Core"));
