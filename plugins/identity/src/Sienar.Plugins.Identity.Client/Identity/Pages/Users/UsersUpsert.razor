@@ -1,6 +1,8 @@
 ﻿@attribute [Authorize(Roles = Roles.Admin)]
 @attribute [Route(DashboardUrls.Users.Add)]
 @attribute [Route($"{DashboardUrls.Users.Index}/{{id:int}}")]
+@* ReSharper disable once CollectionNeverUpdated.Local *@
+@inject RoleProvider RoleProvider
 
 <DocTitle Title="@Title"/>
 
@@ -32,6 +34,15 @@
 			For="() => context.ConfirmPassword"
 			InputType="InputType.Password"
 			Label="Confirm password"/>
+
+		@foreach (var role in RoleProvider.Order())
+		{
+			<Checkbox
+				T="bool"
+				Value="@context.Roles.Contains(role)"
+				ValueChanged="inRole => UpdateRole(inRole, role, context)"
+				Label="@role"/>
+		}
 	</Fields>
 
 	<MoreActions>
@@ -71,6 +82,18 @@
 	private static void OnSuccess(NavigationManager navManager)
 	{
 		navManager.NavigateTo(DashboardUrls.Users.Index);
+	}
+
+	private static void UpdateRole(bool inRole, string role, UpsertUserDto user)
+	{
+		if (inRole)
+		{
+			user.Roles.Add(role);
+		}
+		else
+		{
+			user.Roles.Remove(role);
+		}
 	}
 
 }
