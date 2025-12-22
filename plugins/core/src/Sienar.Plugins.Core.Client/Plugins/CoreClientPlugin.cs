@@ -17,24 +17,30 @@ namespace Sienar.Plugins;
 public class CoreClientPlugin : IPlugin
 {
 	private readonly IApplicationAdapter _adapter;
+	private readonly RoleProvider _roleProvider;
 	private readonly IServiceProvider _sp;
 
 	/// <summary>
 	/// Creates a new instance of <c>CoreClientPlugin</c>
 	/// </summary>
 	/// <param name="adapter">The application adapter</param>
+	/// <param name="roleProvider">The role provider</param>
 	/// <param name="sp">The startup services</param>
 	public CoreClientPlugin(
 		IApplicationAdapter adapter,
+		RoleProvider roleProvider,
 		IServiceProvider sp)
 	{
 		_adapter = adapter;
+		_roleProvider = roleProvider;
 		_sp = sp;
 	}
 
 	/// <inheritdoc />
 	public void Configure()
 	{
+		_roleProvider.Add(Roles.Admin);
+
 		_adapter.AddServices(services =>
 		{
 			services
