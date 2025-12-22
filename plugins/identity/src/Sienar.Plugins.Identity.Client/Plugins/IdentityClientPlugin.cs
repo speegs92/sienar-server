@@ -1,5 +1,4 @@
-﻿using Sienar.Identity.Processors;
-using Sienar.Layouts;
+﻿using Sienar.Layouts;
 using Sienar.Ui.Views;
 using static Sienar.Infrastructure.ApplicationType;
 
@@ -118,7 +117,7 @@ public class IdentityClientPlugin : IPlugin
 				.AddAfterGeneralActionHook<RefreshCsrfTokenOnLogin, LoginRequest>(Client)
 				.AddAfterStatusActionHook<LogOutUiAfterLogout, LogoutRequest>(Client)
 				.AddAfterStatusActionHook<RefreshCsrfTokenOnLogout, LogoutRequest>(Client)
-				.TryAddStatusProcessor<ClientRegisterProcessor, RegisterRequest>(Client)
+				.AddStateValidator<EnsureTosAccepted, RegisterRequest>(Client)
 				.AddAfterStatusActionHook<LogOutAfterDeletingAccount, DeleteAccountRequest>(Client);
 
 			s.ApplyDefaultConfiguration<SienarOptions>(
