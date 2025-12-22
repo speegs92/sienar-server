@@ -35,7 +35,6 @@ public class LoginProcessor : IGeneralProcessor<LoginRequest, LoginResult>
 	{
 		var normalizedAccountName = request.AccountName.ToNormalized();
 		var user = await _context.Users
-			.Include(u => u.Roles)
 			.FirstOrDefaultAsync(
 				u => u.NormalizedUsername == normalizedAccountName ||
 				u.NormalizedEmail == normalizedAccountName);

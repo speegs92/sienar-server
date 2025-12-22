@@ -13,9 +13,6 @@ public class SienarDbContext : DbContext, ISienarDbContext
 	public DbSet<SienarUser> Users { get; set; }
 
 	/// <inheritdoc />
-	public DbSet<SienarRole> Roles { get; set; }
-
-	/// <inheritdoc />
 	public DbSet<LockoutReason> LockoutReasons { get; set; }
 
 	/// <inheritdoc />

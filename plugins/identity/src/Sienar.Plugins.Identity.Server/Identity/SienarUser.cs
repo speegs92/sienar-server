@@ -36,7 +36,10 @@ public class SienarUser : EntityBase
 	/// </summary>
 	public List<VerificationCode> VerificationCodes { get; set; } = [];
 
-	public List<SienarRole> Roles { get; set; } = [];
+	/// <summary>
+	/// The user's roles
+	/// </summary>
+	public List<string> Roles { get; set; } = [];
 
 	public List<LockoutReason> LockoutReasons { get; set; } = [];
 

@@ -36,11 +36,6 @@ public abstract class UserDataLoader
 		{
 			Username = userResult.Username,
 			Roles = userResult.Roles
-				.Select(r => new RoleDto
-				{
-					Name = r
-				})
-				.ToList()
 		};
 
 		var userClaims = _claimsFactory.CreateClaims(user);

@@ -19,7 +19,7 @@ public class ClientUserClaimsFactory : IUserClaimsFactory<ViewUserDto>
 
 		if (user.Roles.Count > 0)
 		{
-			claims.AddRange(user.Roles.Select(r => new Claim(ClaimTypes.Role, r.Name)));
+			claims.AddRange(user.Roles.Select(r => new Claim(ClaimTypes.Role, r)));
 		}
 
 		return claims;

@@ -25,7 +25,8 @@ public sealed class SienarAppBuilder
 			.AddSingleton<MenuProvider>()
 			.AddSingleton<PluginDataProvider>()
 			.AddSingleton<ScriptProvider>()
-			.AddSingleton<StyleProvider>();
+			.AddSingleton<StyleProvider>()
+			.AddSingleton<RoleProvider>();
 	}
 
 	/// <summary>
@@ -120,7 +121,8 @@ public sealed class SienarAppBuilder
 				.AddSingleton(sp.GetRequiredService<MenuProvider>())
 				.AddSingleton(sp.GetRequiredService<PluginDataProvider>())
 				.AddSingleton(sp.GetRequiredService<ScriptProvider>())
-				.AddSingleton(sp.GetRequiredService<StyleProvider>());
+				.AddSingleton(sp.GetRequiredService<StyleProvider>())
+				.AddSingleton(sp.GetRequiredService<RoleProvider>());
 		});
 
 		return await _adapter.Build<TApp>(sp);

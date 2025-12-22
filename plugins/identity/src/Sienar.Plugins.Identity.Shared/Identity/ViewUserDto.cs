@@ -31,5 +31,5 @@ public class ViewUserDto : EntityBase
 	/// <summary>
 	/// The user's roles
 	/// </summary>
-	public List<RoleDto> Roles { get; set; } = [];
+	public List<string> Roles { get; set; } = [];
 }

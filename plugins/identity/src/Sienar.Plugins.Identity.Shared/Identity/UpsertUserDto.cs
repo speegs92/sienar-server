@@ -38,4 +38,9 @@ public class UpsertUserDto : EntityBase
 	[DataType(DataType.Password)]
 	[Compare(nameof(Password), ErrorMessage = "The passwords do not match")]
 	public string? ConfirmPassword { get; set; } = string.Empty;
+
+	/// <summary>
+	/// The user's roles
+	/// </summary>
+	public List<string> Roles { get; set; } = [];
 }

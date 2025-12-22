@@ -27,11 +27,6 @@ public class SienarUserFilterProcessor : IEfFilterProcessor<SienarUser>
 			return dataset;
 		}
 
-		if (filter.Includes.Contains(nameof(SienarUser.Roles)))
-		{
-			dataset = dataset.Include(u => u.Roles);
-		}
-
 		if (filter.Includes.Contains(nameof(SienarUser.LockoutReasons)))
 		{
 			dataset = dataset.Include(u => u.LockoutReasons);
@@ -47,11 +42,4 @@ public class SienarUserFilterProcessor : IEfFilterProcessor<SienarUser>
 		nameof(SienarUser.PendingEmail) => u => u.PendingEmail!,
 		_ => u => u.Username
 	};
-
-	public Filter ModifyFilter(Filter? filter, ActionType action)
-	{
-		if (filter is null) return new Filter { Includes = ["Roles"] };
-		if (!filter.Includes.Contains("Roles")) filter.Includes.Add("Roles");
-		return filter;
-	}
 }

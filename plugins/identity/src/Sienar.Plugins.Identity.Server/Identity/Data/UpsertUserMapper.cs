@@ -26,6 +26,7 @@ public class UpsertUserMapper : IMapper<UpsertUserDto, SienarUser>
 		target.Email = source.Email;
 		target.NormalizedEmail = source.Email.ToNormalized();
 		target.ConcurrencyStamp = source.ConcurrencyStamp;
+		target.Roles = source.Roles;
 
 		if (!string.IsNullOrEmpty(source.Password))
 		{
