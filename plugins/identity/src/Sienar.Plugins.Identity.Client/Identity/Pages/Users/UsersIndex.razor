@@ -51,11 +51,6 @@
 					Href="@($"{DashboardUrls.Users.Index}/{context.Id}")"
                 	Icon="@Icons.Material.Filled.RemoveRedEye"
 					title="@($"View user {context.Username}")"/>
-				<MudIconButton
-					Color="Color.Primary"
-					Href="@($"{DashboardUrls.Users.Index}/{context.Id}/roles")"
-					Icon="@Icons.Material.Filled.AdminPanelSettings"
-					title="@($"Edit {context.Username}'s roles")"/>
 				@if (context.IsLockedOut())
 				{
 					<MudIconButton
