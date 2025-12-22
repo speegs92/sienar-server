@@ -13,5 +13,5 @@ public class AccountDataResult : IResult
 	/// <summary>
 	/// The roles of the currently logged in account
 	/// </summary>
-	public required string[] Roles { get; set; }
+	public required List<string> Roles { get; set; }
 }

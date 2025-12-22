@@ -24,7 +24,7 @@ public class GetAccountDataProcessor : IResultProcessor<AccountDataResult>
 		var roles = (await _userAccessor.GetUserClaimsPrincipal()).Claims
 			.Where(c => c.Type == ClaimTypes.Role)
 			.Select(c => c.Value)
-			.ToArray();
+			.ToList();
 
 		var result = new AccountDataResult
 		{

@@ -64,15 +64,12 @@ public class IdentityServerPlugin : IPlugin
 			.AddBeforeDeleteActionHook<RemoveUserRelatedEntitiesHook, SienarUser>(Server)
 			.AddStateValidator<EnsureAccountInfoUniqueValidator, SienarUser>(Server)
 			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper, LockoutReasonToDtoMapper, LockoutReason, LockoutReasonFilterProcessor>(Server)
-			.AddEfEntity<RoleDto, RoleToEntityMapper, RoleToDtoMapper, SienarRole, SienarRoleFilterProcessor>(Server)
 
 		// Security
 			.AddGeneralProcessor<LoginProcessor, LoginRequest, LoginResult>(Server)
 			.AddStatusProcessor<LogoutProcessor, LogoutRequest>(Server)
 			.AddResultProcessor<PersonalDataProcessor, PersonalDataResult>(Server)
-			.AddStatusProcessor<UserRoleChangeProcessor, AddUserToRoleRequest>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<AddUserToRoleRequest>, AddUserToRoleRequest>(Server)
-			.AddStatusProcessor<UserRoleChangeProcessor, RemoveUserFromRoleRequest>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<RemoveUserFromRoleRequest>, RemoveUserFromRoleRequest>(Server)
 			.AddStatusProcessor<LockUserAccountProcessor, LockUserAccountRequest>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<LockUserAccountRequest>, LockUserAccountRequest>(Server)
