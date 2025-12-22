@@ -1,5 +1,4 @@
-﻿using Sienar.Identity.Processors;
-using Sienar.Layouts;
+﻿using Sienar.Layouts;
 using Sienar.Ui.Views;
 using static Sienar.Infrastructure.ApplicationType;
 
@@ -107,32 +106,19 @@ public class IdentityClientPlugin : IPlugin
 		{
 			// Infrastructure
 			s
-				.AddBeforeStatusActionHook<LoadUserDataProcessor, Startup>(Client);
+				.AddBeforeStatusActionHook<LoadUserDataOnStartup, Startup>(Client);
 
 			s.TryAddScoped<INotifier, DefaultNotifier>();
 			s.TryAddScoped<IUserClaimsFactory<ViewUserDto>, ClientUserClaimsFactory>();
 
 			s
 				// Account
-				.TryAddGeneralProcessor<ClientLoginProcessor, LoginRequest, LoginResult>(Client)
-				.TryAddGeneralProcessor<ClientAccountLockoutProcessor, AccountLockoutRequest, AccountLockoutResult>(Client)
-				.TryAddStatusProcessor<ClientLogoutProcessor, LogoutRequest>(Client)
-				.TryAddStatusProcessor<ClientRegisterProcessor, RegisterRequest>(Client)
-				.TryAddStatusProcessor<ClientConfirmAccountProcessor, ConfirmAccountRequest>(Client)
-				.TryAddStatusProcessor<ClientInitiateEmailChangeProcessor, InitiateEmailChangeRequest>(Client)
-				.TryAddStatusProcessor<ClientPerformEmailChangeProcessor, PerformEmailChangeRequest>(Client)
-				.TryAddStatusProcessor<ClientChangePasswordProcessor, ChangePasswordRequest>(Client)
-				.TryAddStatusProcessor<ClientForgotPasswordProcessor, ForgotPasswordRequest>(Client)
-				.TryAddStatusProcessor<ClientResetPasswordProcessor, ResetPasswordRequest>(Client)
-				.TryAddStatusProcessor<ClientDeleteAccountProcessor, DeleteAccountRequest>(Client)
-				.TryAddResultProcessor<LoadUserDataProcessor, AccountDataResult>(Client)
-
-				// Users
-				.TryAddStatusProcessor<ClientLockUserAccountProcessor, LockUserAccountRequest>(Client)
-				.TryAddStatusProcessor<ClientUnlockUserAccountProcessor, UnlockUserAccountRequest>(Client)
-				.TryAddStatusProcessor<ClientManuallyConfirmUserAccountProcessor, ManuallyConfirmUserAccountRequest>(Client)
-				.TryAddStatusProcessor<ClientAddUsertoRoleProcessor, AddUserToRoleRequest>(Client)
-				.TryAddStatusProcessor<ClientRemoveUserFromRoleProcessor, RemoveUserFromRoleRequest>(Client);
+				.AddAfterGeneralActionHook<LoadUserDataOnLogin, LoginRequest>(Client)
+				.AddAfterGeneralActionHook<RefreshCsrfTokenOnLogin, LoginRequest>(Client)
+				.AddAfterStatusActionHook<LogOutUiAfterLogout, LogoutRequest>(Client)
+				.AddAfterStatusActionHook<RefreshCsrfTokenOnLogout, LogoutRequest>(Client)
+				.AddStateValidator<EnsureTosAccepted, RegisterRequest>(Client)
+				.AddAfterStatusActionHook<LogOutAfterDeletingAccount, DeleteAccountRequest>(Client);
 
 			s.ApplyDefaultConfiguration<SienarOptions>(
 				_configuration.GetSection("Sienar:Core"));

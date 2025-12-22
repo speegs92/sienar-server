@@ -1,17 +1,16 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
-namespace Sienar.Identity.Processors;
+namespace Sienar.Identity;
 
 /// <exclude />
-public class LoadUserDataProcessor
-	: IResultProcessor<AccountDataResult>, IBeforeStatusAction<Startup>
+public abstract class UserDataLoader
 {
 	private readonly IRestClient _client;
 	private readonly IOperationResultNotifier _notifier;
 	private readonly IUserClaimsFactory<ViewUserDto> _claimsFactory;
 	private readonly SienarAuthenticationStateProvider _authStateProvider;
 
-	public LoadUserDataProcessor(
+	protected UserDataLoader(
 		IRestClient client,
 		IOperationResultNotifier notifier,
 		IUserClaimsFactory<ViewUserDto> claimsFactory,
@@ -23,13 +22,7 @@ public class LoadUserDataProcessor
 		_authStateProvider = authStateProvider;
 	}
 
-	Task<OperationResult<AccountDataResult>> IResultProcessor<AccountDataResult>.Process()
-		=> LoadUserData();
-
-	public Task Handle(Startup a)
-		=> LoadUserData();
-
-	private async Task<OperationResult<AccountDataResult>> LoadUserData()
+	protected async Task<OperationResult<AccountDataResult>> LoadUserData()
 	{
 		var result = await _client.Get<AccountDataResult>("account");
 
@@ -51,7 +44,7 @@ public class LoadUserDataProcessor
 		};
 
 		var userClaims = _claimsFactory.CreateClaims(user);
-		_authStateProvider.NotifyUserAuthentication(userClaims, true);
+		_authStateProvider.Login(userClaims);
 
 		return _notifier.HandleWebResult(result);
 	}

@@ -1,5 +1,6 @@
 namespace Sienar.Identity.Requests;
 
+[RestEndpoint("account/change-password", HttpMethods.Patch)]
 public class ChangePasswordRequest : IRequest
 {
 	[Required]

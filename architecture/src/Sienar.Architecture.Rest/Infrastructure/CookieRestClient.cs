@@ -108,15 +108,8 @@ public class CookieRestClient : IRestClient
 
 #endregion
 
-	/// <summary>
-	/// Sends an HTTP request and parses the response
-	/// </summary>
-	/// <param name="endpoint">the destination URL</param>
-	/// <param name="input">the request payload, if any</param>
-	/// <param name="method">the HTTP method</param>
-	/// <typeparam name="TResult">the type of the response</typeparam>
-	/// <returns>an operation result wrapping around the result</returns>
-	protected async Task<OperationResult<WebResult<TResult>>> SendRequest<TResult>(
+	/// <inheritdoc />
+	public async Task<OperationResult<WebResult<TResult>>> SendRequest<TResult>(
 		string endpoint,
 		object? input = null,
 		HttpMethod? method = null)
@@ -271,7 +264,7 @@ public class CookieRestClient : IRestClient
 		_logger.LogError(e, "{}", logMessage);
 		return new(
 			OperationStatus.Unknown,
-			new WebResult<TResult?>(),
+			new WebResult<TResult>(),
 			errorMessage);
 	}
 
