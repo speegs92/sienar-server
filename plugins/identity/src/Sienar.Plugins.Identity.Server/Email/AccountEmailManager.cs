@@ -4,11 +4,12 @@ using System.Net.Mime;
 namespace Sienar.Email;
 
 /// <ignore/>
-public class AccountEmailManager : IAccountEmailManager
+public class AccountEmailManager<T> : IAccountEmailManager<T>
+	where T : class, ISienarIdentityUser<T>
 {
 	private readonly EmailSenderOptions _senderOptions;
 	private readonly IdentityEmailSubjectOptions _identitySubjectOptions;
-	private readonly IVerificationCodeManager _vcManager;
+	private readonly IVerificationCodeManager<T> _vcManager;
 	private readonly IAccountEmailMessageFactory _factory;
 	private readonly IEmailSender _sender;
 
@@ -16,7 +17,7 @@ public class AccountEmailManager : IAccountEmailManager
 	public AccountEmailManager(
 		IOptions<EmailSenderOptions> options,
 		IOptions<IdentityEmailSubjectOptions> identityOptions,
-		IVerificationCodeManager vcManager,
+		IVerificationCodeManager<T> vcManager,
 		IAccountEmailMessageFactory factory,
 		IEmailSender sender)
 	{
@@ -29,7 +30,7 @@ public class AccountEmailManager : IAccountEmailManager
 
 	/// <inheritdoc />
 	public async Task<bool> SendWelcomeEmail(
-		SienarUser user,
+		T user,
 		VerificationCode? code = null)
 	{
 		code ??= await _vcManager.CreateCode(
@@ -47,7 +48,7 @@ public class AccountEmailManager : IAccountEmailManager
 
 	/// <inheritdoc />
 	public async Task<bool> SendEmailChangeConfirmationEmail(
-		SienarUser user,
+		T user,
 		VerificationCode? code = null)
 	{
 		if (string.IsNullOrEmpty(user.PendingEmail))
@@ -71,7 +72,7 @@ public class AccountEmailManager : IAccountEmailManager
 
 	/// <inheritdoc />
 	public async Task<bool> SendPasswordResetEmail(
-		SienarUser user,
+		T user,
 		VerificationCode? code = null)
 	{
 		code ??= await _vcManager.CreateCode(
@@ -88,13 +89,17 @@ public class AccountEmailManager : IAccountEmailManager
 	}
 
 	/// <inheritdoc />
-	public async Task<bool> SendAccountLockedEmail(SienarUser user)
+	public async Task<bool> SendAccountLockedEmail(T user)
 	{
+		var reasons = user.LockoutReasons
+			.Select(r => r.Reason)
+			.ToList();
+
 		var message = CreateMessage(
 			user,
 			_identitySubjectOptions.AccountLocked,
-			await _factory.AccountLockedHtml(user.Username, user.LockoutEnd!.Value, user.LockoutReasons),
-			await _factory.AccountLockedText(user.Username, user.LockoutEnd!.Value, user.LockoutReasons));
+			await _factory.AccountLockedHtml(user.Username, user.LockoutEnd!.Value, reasons),
+			await _factory.AccountLockedText(user.Username, user.LockoutEnd!.Value, reasons));
 
 		return await _sender.Send(message);
 	}
@@ -108,7 +113,7 @@ public class AccountEmailManager : IAccountEmailManager
 	/// <param name="textBody">The email's text version</param>
 	/// <returns>the <see cref="MailMessage"/></returns>
 	private MailMessage CreateMessage(
-		SienarUser user,
+		T user,
 		string subject,
 		string htmlBody,
 		string textBody)

@@ -3,21 +3,22 @@
 namespace Sienar.Identity.Hooks;
 
 /// <exclude />
-public class EnsureAccountInfoUniqueValidator
-	: IStateValidator<SienarUser>, IStateValidator<RegisterRequest>
+public class EnsureAccountInfoUniqueValidator<T>
+	: IStateValidator<T>, IStateValidator<RegisterRequest>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
+	private readonly ISienarDbContext<T> _context;
 	private readonly INotifier _notifier;
 
 	public EnsureAccountInfoUniqueValidator(
-		ISienarDbContext context,
+		ISienarDbContext<T> context,
 		INotifier notifier)
 	{
 		_context = context;
 		_notifier = notifier;
 	}
 
-	Task<OperationStatus> IStateValidator<SienarUser>.Validate(SienarUser request, ActionType type)
+	Task<OperationStatus> IStateValidator<T>.Validate(T request, ActionType type)
 		=> UserIsUnique(
 			request.Username,
 			request.Email,

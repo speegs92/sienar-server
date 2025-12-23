@@ -2,10 +2,11 @@
 
 namespace Sienar.Identity.Data;
 
-internal class LockoutReasonEntityConfigurer : IEntityTypeConfiguration<LockoutReason>
+internal class LockoutReasonEntityConfigurer<T> : IEntityTypeConfiguration<LockoutReason<T>>
+	where T : class, ISienarIdentityUser<T>
 {
 	/// <inheritdoc />
-	public void Configure(EntityTypeBuilder<LockoutReason> builder)
+	public void Configure(EntityTypeBuilder<LockoutReason<T>> builder)
 	{
 		builder
 			.HasIndex(l => l.NormalizedReason)

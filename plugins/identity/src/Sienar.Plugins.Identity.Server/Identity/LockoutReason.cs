@@ -4,7 +4,8 @@
 /// A reason why a user might be locked out
 /// </summary>
 [EntityName(Singular = "lockout reason", Plural = "lockout reasons")]
-public class LockoutReason : IEntity
+public class LockoutReason<T> : IEntity
+	where T : class, ISienarIdentityUser<T>
 {
 	/// <inheritdoc />
 	public int Id { get; set; }
@@ -25,7 +26,7 @@ public class LockoutReason : IEntity
 	/// <summary>
 	/// The users who are locked out for this reason
 	/// </summary>
-	public List<SienarUser> Users { get; set; } = [];
+	public List<T> Users { get; set; } = [];
 
 	/// <inheritdoc />
 	public override string ToString() => Reason;

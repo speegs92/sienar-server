@@ -3,13 +3,14 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class LogoutProcessor : IStatusProcessor<LogoutRequest>
+public class LogoutProcessor<T> : IStatusProcessor<LogoutRequest>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISignInManager _signInManager;
+	private readonly ISignInManager<T> _signInManager;
 	private readonly INotifier _notifier;
 
 	public LogoutProcessor(
-		ISignInManager signInManager,
+		ISignInManager<T> signInManager,
 		INotifier notifier)
 	{
 		_signInManager = signInManager;

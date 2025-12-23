@@ -3,22 +3,23 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class LoginProcessor : IGeneralProcessor<LoginRequest, LoginResult>
+public class LoginProcessor<T> : IGeneralProcessor<LoginRequest, LoginResult>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
-	private readonly IPasswordManager _passwordManager;
-	private readonly ISignInManager _signInManager;
-	private readonly IAccountEmailManager _emailManager;
-	private readonly IVerificationCodeManager _vcManager;
+	private readonly ISienarDbContext<T> _context;
+	private readonly IPasswordManager<T> _passwordManager;
+	private readonly ISignInManager<T> _signInManager;
+	private readonly IAccountEmailManager<T> _emailManager;
+	private readonly IVerificationCodeManager<T> _vcManager;
 	private readonly LoginOptions _loginOptions;
 	private readonly SienarOptions _appOptions;
 
 	public LoginProcessor(
-		ISienarDbContext context,
-		IPasswordManager passwordManager,
-		ISignInManager signInManager,
-		IAccountEmailManager emailManager,
-		IVerificationCodeManager vcManager,
+		ISienarDbContext<T> context,
+		IPasswordManager<T> passwordManager,
+		ISignInManager<T> signInManager,
+		IAccountEmailManager<T> emailManager,
+		IVerificationCodeManager<T> vcManager,
 		IOptions<LoginOptions> loginOptions,
 		IOptions<SienarOptions> appOptions)
 	{

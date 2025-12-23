@@ -1,7 +1,8 @@
 ﻿namespace Sienar.Data;
 
 // ReSharper disable NotNullOrRequiredMemberIsNotInitialized
-public class SienarDbContext : DbContext, ISienarDbContext
+public class SienarDbContext<TUser> : DbContext, ISienarDbContext<TUser>
+	where TUser : class, ISienarIdentityUser<TUser>
 {
 	/// <inheritdoc />
 	public SienarDbContext() {}
@@ -10,16 +11,16 @@ public class SienarDbContext : DbContext, ISienarDbContext
 	public SienarDbContext(DbContextOptions options) : base(options) {}
 
 	/// <inheritdoc />
-	public DbSet<SienarUser> Users { get; set; }
+	public DbSet<TUser> Users { get; set; }
 
 	/// <inheritdoc />
-	public DbSet<LockoutReason> LockoutReasons { get; set; }
+	public DbSet<LockoutReason<TUser>> LockoutReasons { get; set; }
 
 	/// <inheritdoc />
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
 		builder
-			.ApplyConfiguration(new SienarUserEntityConfigurer())
-			.ApplyConfiguration(new LockoutReasonEntityConfigurer());
+			.ApplyConfiguration(new SienarUserEntityConfigurer<TUser>())
+			.ApplyConfiguration(new LockoutReasonEntityConfigurer<TUser>());
 	}
 }

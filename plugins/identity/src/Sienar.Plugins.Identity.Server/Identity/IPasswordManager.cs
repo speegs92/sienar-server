@@ -1,6 +1,7 @@
 ﻿namespace Sienar.Identity;
 
-public interface IPasswordManager
+public interface IPasswordManager<T>
+	where T : class, ISienarIdentityUser<T>
 {
 	/// <summary>
 	/// Sets a new password for a user
@@ -8,7 +9,7 @@ public interface IPasswordManager
 	/// <param name="user">The user for whom to update the password</param>
 	/// <param name="newPassword">The new password to set</param>
 	Task UpdatePassword(
-		SienarUser user,
+		T user,
 		string newPassword);
 
 	/// <summary>
@@ -17,5 +18,5 @@ public interface IPasswordManager
 	/// <param name="user">The user whose password to verify</param>
 	/// <param name="password">The password to test</param>
 	/// <returns></returns>
-	Task<bool> VerifyPassword(SienarUser user, string password);
+	Task<bool> VerifyPassword(T user, string password);
 }

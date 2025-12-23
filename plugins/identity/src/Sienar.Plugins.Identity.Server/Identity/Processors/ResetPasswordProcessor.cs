@@ -3,19 +3,20 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class ResetPasswordProcessor : IStatusProcessor<ResetPasswordRequest>
+public class ResetPasswordProcessor<T> : IStatusProcessor<ResetPasswordRequest>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
-	private readonly IPasswordManager _passwordManager;
-	private readonly IVerificationCodeManager _vcManager;
-	private readonly IAccountEmailManager _emailManager;
+	private readonly ISienarDbContext<T> _context;
+	private readonly IPasswordManager<T> _passwordManager;
+	private readonly IVerificationCodeManager<T> _vcManager;
+	private readonly IAccountEmailManager<T> _emailManager;
 	private readonly SienarOptions _options;
 
 	public ResetPasswordProcessor(
-		ISienarDbContext context,
-		IPasswordManager passwordManager,
-		IVerificationCodeManager vcManager,
-		IAccountEmailManager emailManager,
+		ISienarDbContext<T> context,
+		IPasswordManager<T> passwordManager,
+		IVerificationCodeManager<T> vcManager,
+		IAccountEmailManager<T> emailManager,
 		IOptions<SienarOptions> options)
 	{
 		_context = context;

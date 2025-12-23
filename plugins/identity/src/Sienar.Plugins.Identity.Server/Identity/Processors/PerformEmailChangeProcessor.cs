@@ -3,20 +3,21 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class PerformEmailChangeProcessor
+public class PerformEmailChangeProcessor<T>
 	: IStatusProcessor<PerformEmailChangeRequest>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
+	private readonly ISienarDbContext<T> _context;
 	private readonly IUserAccessor _userAccessor;
-	private readonly IVerificationCodeManager _vcManager;
-	private readonly IAccountEmailManager _emailManager;
+	private readonly IVerificationCodeManager<T> _vcManager;
+	private readonly IAccountEmailManager<T> _emailManager;
 	private readonly SienarOptions _sienarOptions;
 
 	public PerformEmailChangeProcessor(
-		ISienarDbContext context,
+		ISienarDbContext<T> context,
 		IUserAccessor userAccessor,
-		IVerificationCodeManager vcManager,
-		IAccountEmailManager emailManager,
+		IVerificationCodeManager<T> vcManager,
+		IAccountEmailManager<T> emailManager,
 		IOptions<SienarOptions> sienarOptions)
 	{
 		_context = context;

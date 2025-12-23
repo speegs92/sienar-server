@@ -3,22 +3,23 @@
 namespace Sienar.Identity.Hooks;
 
 /// <exclude />
-public class RemoveUserRelatedEntitiesHook :
-	IBeforeDeleteAction<SienarUser>,
+public class RemoveUserRelatedEntitiesHook<T> :
+	IBeforeDeleteAction<T>,
 	IBeforeStatusAction<DeleteAccountRequest>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
+	private readonly ISienarDbContext<T> _context;
 	private readonly IUserAccessor _userAccessor;
 
 	public RemoveUserRelatedEntitiesHook(
-		ISienarDbContext context,
+		ISienarDbContext<T> context,
 		IUserAccessor userAccessor)
 	{
 		_context = context;
 		_userAccessor = userAccessor;
 	}
 
-	public Task Handle(SienarUser user)
+	public Task Handle(T user)
 		=> HandleCore(user);
 
 	public async Task Handle(DeleteAccountRequest request)
@@ -28,7 +29,7 @@ public class RemoveUserRelatedEntitiesHook :
 		await HandleCore(user);
 	}
 
-	private async Task HandleCore(SienarUser user)
+	private async Task HandleCore(T user)
 	{
 		await _context
 			.Entry(user)

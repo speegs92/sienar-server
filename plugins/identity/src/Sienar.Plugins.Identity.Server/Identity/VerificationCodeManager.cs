@@ -1,17 +1,18 @@
 ﻿namespace Sienar.Identity;
 
-public class VerificationCodeManager : IVerificationCodeManager
+public class VerificationCodeManager<T> : IVerificationCodeManager<T>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
+	private readonly ISienarDbContext<T> _context;
 
-	public VerificationCodeManager(ISienarDbContext context)
+	public VerificationCodeManager(ISienarDbContext<T> context)
 	{
 		_context = context;
 	}
 
 	/// <inheritdoc/>
 	public async Task<VerificationCode> CreateCode(
-		SienarUser user,
+		T user,
 		string type)
 	{
 		await _context.Users
@@ -37,12 +38,12 @@ public class VerificationCodeManager : IVerificationCodeManager
 
 	/// <inheritdoc/>
 	public Task DeleteCode(
-		SienarUser user,
+		T user,
 		string type)
 		=> DeleteVerificationCode(user, type, true);
 
 	private async Task DeleteVerificationCode(
-		SienarUser user,
+		T user,
 		string type,
 		bool saveChanges)
 	{
@@ -68,7 +69,7 @@ public class VerificationCodeManager : IVerificationCodeManager
 
 	/// <inheritdoc/>
 	public async Task<VerificationCode?> GetCode(
-		SienarUser user,
+		T user,
 		string type)
 	{
 		await _context.Users
@@ -98,7 +99,7 @@ public class VerificationCodeManager : IVerificationCodeManager
 	}
 
 	public async Task<VerificationCodeStatus> GetCodeStatus(
-		SienarUser user,
+		T user,
 		string type,
 		Guid suppliedCode)
 	{
@@ -107,7 +108,7 @@ public class VerificationCodeManager : IVerificationCodeManager
 	}
 
 	public async Task<VerificationCodeStatus> VerifyCode(
-		SienarUser user,
+		T user,
 		string type,
 		Guid suppliedCode,
 		bool deleteIfValid)

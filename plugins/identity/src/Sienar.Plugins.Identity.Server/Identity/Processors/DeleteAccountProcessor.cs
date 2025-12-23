@@ -3,18 +3,19 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class DeleteAccountProcessor : IStatusProcessor<DeleteAccountRequest>
+public class DeleteAccountProcessor<T> : IStatusProcessor<DeleteAccountRequest>
+	where T : class, ISienarIdentityUser<T>
 {
 	private readonly IUserAccessor _userAccessor;
-	private readonly ISienarDbContext _context;
-	private readonly IPasswordManager _passwordManager;
-	private readonly ISignInManager _signInManager;
+	private readonly ISienarDbContext<T> _context;
+	private readonly IPasswordManager<T> _passwordManager;
+	private readonly ISignInManager<T> _signInManager;
 
 	public DeleteAccountProcessor(
 		IUserAccessor userAccessor,
-		ISienarDbContext context,
-		IPasswordManager passwordManager,
-		ISignInManager signInManager)
+		ISienarDbContext<T> context,
+		IPasswordManager<T> passwordManager,
+		ISignInManager<T> signInManager)
 	{
 		_userAccessor = userAccessor;
 		_context = context;
