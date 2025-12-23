@@ -7,8 +7,8 @@
 /// <typeparam name="TEntity">The type of the entity</typeparam>
 // ReSharper disable once TypeParameterCanBeVariant
 public interface IUpdateActionOrchestrator<TDto, TEntity>
-	where TDto : EntityBase
-	where TEntity : EntityBase, new()
+	where TDto : IEntity
+	where TEntity : IEntity, new()
 {
 	/// <summary>
 	/// Executes the orchestrated action

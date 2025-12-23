@@ -6,8 +6,14 @@
 [EntityName(Singular = "user", Plural = "users")]
 [RestEndpoint("users")]
 [DisplayProperty(nameof(Username))]
-public class ViewUserDto : EntityBase
+public class ViewUserDto : IEntity
 {
+	/// <inheritdoc />
+	public int Id { get; set; }
+
+	/// <inheritdoc />
+	public Guid ConcurrencyStamp { get; set; }
+
 	/// <summary>
 	/// The user's password
 	/// </summary>

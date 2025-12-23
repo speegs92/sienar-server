@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="T">The type of the entity to create</typeparam>
 public class EfEntityCreateActor<T> : IEntityCreateActor<T>
-	where T : EntityBase
+	where T : class, IEntity
 {
 	private readonly IDbContext _context;
 	private readonly ILogger<EfEntityCreateActor<T>> _logger;

@@ -4,8 +4,14 @@
 /// A reason why a user might be locked out
 /// </summary>
 [EntityName(Singular = "lockout reason", Plural = "lockout reasons")]
-public class LockoutReason : EntityBase
+public class LockoutReason : IEntity
 {
+	/// <inheritdoc />
+	public int Id { get; set; }
+
+	/// <inheritdoc />
+	public Guid ConcurrencyStamp { get; set; }
+
 	/// <summary>
 	/// The reason why a user might be locked out
 	/// </summary>

@@ -1,8 +1,14 @@
 ﻿namespace Sienar.Identity;
 
 [EntityName(Singular = "verification code", Plural = "verification codes")]
-public class VerificationCode : EntityBase
+public class VerificationCode : IEntity
 {
+	/// <inheritdoc />
+	public int Id { get; set; }
+
+	/// <inheritdoc />
+	public Guid ConcurrencyStamp { get; set; }
+
 	/// <summary>
 	/// The unique verification code
 	/// </summary>

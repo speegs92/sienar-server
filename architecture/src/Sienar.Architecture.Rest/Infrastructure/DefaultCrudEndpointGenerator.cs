@@ -6,7 +6,7 @@ namespace Sienar.Infrastructure;
 /// Generates endpoints for a given CRUD DTO by locating its <see cref="RestEndpointAttribute"/>
 /// </summary>
 public class DefaultCrudEndpointGenerator<T> : ICrudEndpointGenerator<T>
-	where T : EntityBase
+	where T : IEntity
 {
 	/// <inheritdoc />
 	public string GenerateReadUrl(int id)

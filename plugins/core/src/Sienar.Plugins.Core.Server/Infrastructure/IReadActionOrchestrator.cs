@@ -6,8 +6,8 @@
 /// <typeparam name="TDto">The type of the DTO</typeparam>
 /// <typeparam name="TEntity">The type of the entity</typeparam>
 public interface IReadActionOrchestrator<TDto, TEntity>
-	where TDto : EntityBase, new()
-	where TEntity : EntityBase
+	where TDto : IEntity, new()
+	where TEntity : IEntity
 {
 	/// <summary>
 	/// Executes the orchestrated action

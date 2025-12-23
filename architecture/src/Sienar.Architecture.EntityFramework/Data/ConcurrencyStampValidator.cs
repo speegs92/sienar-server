@@ -4,7 +4,7 @@ namespace Sienar.Data;
 
 /// <exclude />
 public class ConcurrencyStampValidator<TEntity> : IStateValidator<TEntity>
-	where TEntity : EntityBase
+	where TEntity : class, IEntity
 {
 	private readonly IDbContext _context;
 	private readonly INotifier _notifier;

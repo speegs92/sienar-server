@@ -7,8 +7,6 @@
 /// <typeparam name="TTarget">The type of the target class</typeparam>
 // ReSharper disable TypeParameterCanBeVariant
 public interface IMapper<TSource, TTarget>
-	where TSource : class
-	where TTarget : class
 {
 	/// <summary>
 	/// Maps a source class to a target class

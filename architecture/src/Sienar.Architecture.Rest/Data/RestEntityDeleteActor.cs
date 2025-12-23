@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="T">The type of the entity to write</typeparam>
 public class RestEntityDeleteActor<T> : IEntityDeleteActor<T>
-	where T : EntityBase
+	where T : IEntity
 {
 	private readonly IRestClient _client;
 	private readonly IOperationResultNotifier _notifier;

@@ -8,4 +8,4 @@
 /// </remarks>
 /// <typeparam name="T">The type of the entity</typeparam>
 public interface IAfterUpdateAction<T> : IAfterActionBase<T>
-	where T : EntityBase;
+	where T : IEntity;

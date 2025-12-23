@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="TEntity">The type of the entity</typeparam>
 public interface IDeleteActionOrchestrator<TEntity>
-	where TEntity : EntityBase
+	where TEntity : IEntity
 {
 	/// <summary>
 	/// Executes the orchestrated action

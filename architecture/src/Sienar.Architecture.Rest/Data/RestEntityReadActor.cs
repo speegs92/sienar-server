@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="T">The type of the DTO to read</typeparam>
 public class RestEntityReadActor<T> : IEntityReadActor<T>
-	where T : EntityBase
+	where T : class, IEntity
 {
 	private readonly IRestClient _client;
 	private readonly ICrudEndpointGenerator<T> _endpointGenerator;

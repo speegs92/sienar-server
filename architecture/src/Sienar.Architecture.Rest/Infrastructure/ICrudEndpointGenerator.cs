@@ -5,7 +5,7 @@
 /// </summary>
 // ReSharper disable once TypeParameterCanBeVariant
 public interface ICrudEndpointGenerator<T>
-	where T : EntityBase
+	where T : IEntity
 {
 	/// <summary>
 	/// Generates a URL to perform a read operation on a single DTO

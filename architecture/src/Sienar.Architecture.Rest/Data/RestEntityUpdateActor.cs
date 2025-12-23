@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="T">The type of the DTO to update</typeparam>
 public class RestEntityUpdateActor<T> : IEntityUpdateActor<T>
-	where T : EntityBase
+	where T : IEntity
 {
 	private readonly IRestClient _client;
 	private readonly ICrudEndpointGenerator<T> _endpointGenerator;

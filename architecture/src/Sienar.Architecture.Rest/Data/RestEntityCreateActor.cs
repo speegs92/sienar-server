@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="T">The type of the DTO to create</typeparam>
 public class RestEntityCreateActor<T> : IEntityCreateActor<T>
-	where T : EntityBase
+	where T : IEntity
 {
 	private readonly IRestClient _client;
 	private readonly ICrudEndpointGenerator<T> _endpointGenerator;

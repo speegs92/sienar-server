@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="T">The type of the entity to update</typeparam>
 public class EfEntityUpdateActor<T> : IEntityUpdateActor<T>
-	where T : EntityBase
+	where T : class, IEntity
 {
 	private readonly IDbContext _context;
 	private readonly ILogger<EfEntityUpdateActor<T>> _logger;
