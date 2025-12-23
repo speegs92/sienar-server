@@ -26,7 +26,7 @@ public class TestProjectServerPlugin : IPlugin
 	{
 		public void Configure(SienarAppBuilder builder)
 		{
-			builder.AddPlugin<IdentityServerPlugin>();
+			builder.AddPlugin<IdentityServerPlugin<AppUser>>();
 		}
 	}
 }
