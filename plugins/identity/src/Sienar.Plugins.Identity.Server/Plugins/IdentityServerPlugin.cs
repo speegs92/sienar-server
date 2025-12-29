@@ -62,7 +62,7 @@ public class IdentityServerPlugin<TUser> : IPlugin
 		services
 			.AddEfEntity<ViewUserDto, ViewUserMapper<TUser>, UpsertUserDto, UpsertUserMapper<TUser>, UpsertUserDto, UpsertUserMapper<TUser>, TUser, SienarUserFilterProcessor<TUser>>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<TUser>, TUser>(Server)
-			.AddBeforeDeleteActionHook<RemoveUserRelatedEntitiesHook<TUser>, TUser>(Server)
+			.AddBeforeDeleteActionHook<RemoveIdentityRelationsOnUserDeleted<TUser>, TUser>(Server)
 			.AddStateValidator<EnsureAccountInfoUniqueValidator<TUser>, TUser>(Server)
 			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper<TUser>, LockoutReasonToDtoMapper<TUser>, LockoutReason<TUser>, LockoutReasonFilterProcessor<TUser>>(Server)
 
@@ -96,7 +96,7 @@ public class IdentityServerPlugin<TUser> : IPlugin
 			.AddStatusProcessor<PerformEmailChangeProcessor<TUser>, PerformEmailChangeRequest>(Server)
 
 		// Personal data
-			.AddBeforeStatusActionHook<RemoveUserRelatedEntitiesHook<TUser>, DeleteAccountRequest>(Server)
+			.AddBeforeStatusActionHook<RemoveIdentityRelationsOnOwnAccountDeleted<TUser>, DeleteAccountRequest>(Server)
 			.AddStatusProcessor<DeleteAccountProcessor<TUser>, DeleteAccountRequest>(Server);
 
 
