@@ -63,7 +63,8 @@ public class IdentityServerPlugin<TUser> : IPlugin
 			.AddEfEntity<ViewUserDto, ViewUserMapper<TUser>, UpsertUserDto, UpsertUserMapper<TUser>, UpsertUserDto, UpsertUserMapper<TUser>, TUser, SienarUserFilterProcessor<TUser>>(Server)
 			.AddAccessValidator<UserIsAdminAccessValidator<TUser>, TUser>(Server)
 			.AddBeforeDeleteActionHook<RemoveIdentityRelationsOnUserDeleted<TUser>, TUser>(Server)
-			.AddStateValidator<EnsureAccountInfoUniqueValidator<TUser>, TUser>(Server)
+			.AddStateValidator<EnsureUsernameUniqueOnUpsert<TUser>, TUser>(Server)
+			.AddStateValidator<EnsureEmailUniqueOnUpsert<TUser>, TUser>(Server)
 			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper<TUser>, LockoutReasonToDtoMapper<TUser>, LockoutReason<TUser>, LockoutReasonFilterProcessor<TUser>>(Server)
 
 		// Security
@@ -87,7 +88,8 @@ public class IdentityServerPlugin<TUser> : IPlugin
 		// Registration
 			.AddStateValidator<RegistrationOpenValidator, RegisterRequest>(Server)
 			.AddStateValidator<AcceptTosValidator, RegisterRequest>(Server)
-			.AddStateValidator<EnsureAccountInfoUniqueValidator<TUser>, RegisterRequest>(Server)
+			.AddStateValidator<EnsureUsernameUniqueOnRegister<TUser>, RegisterRequest>(Server)
+			.AddStateValidator<EnsureEmailUniqueOnRegister<TUser>, RegisterRequest>(Server)
 			.AddStatusProcessor<RegisterProcessor<TUser>, RegisterRequest>(Server)
 
 		// Email
