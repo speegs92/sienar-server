@@ -1,7 +1,8 @@
 ﻿namespace Sienar.Data;
 
-public interface ISienarDbContext : IDbContext
+public interface ISienarDbContext<TUser> : IDbContext
+	where TUser : class, ISienarIdentityUser<TUser>
 {
-	DbSet<SienarUser> Users { get; set; }
-	DbSet<LockoutReason> LockoutReasons { get; set; }
+	DbSet<TUser> Users { get; set; }
+	DbSet<LockoutReason<TUser>> LockoutReasons { get; set; }
 }

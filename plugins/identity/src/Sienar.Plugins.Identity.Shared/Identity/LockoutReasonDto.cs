@@ -5,8 +5,14 @@
 /// </summary>
 [EntityName(Singular = "lockout reason", Plural = "lockout reasons")]
 [RestEndpoint("lockout-reasons")]
-public class LockoutReasonDto : EntityBase
+public class LockoutReasonDto : IEntity
 {
+	/// <inheritdoc />
+	public int Id { get; set; }
+
+	/// <inheritdoc />
+	public Guid ConcurrencyStamp { get; set; }
+
 	/// <summary>
 	/// The reason why a user might be locked out
 	/// </summary>

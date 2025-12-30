@@ -3,7 +3,8 @@
 /// <summary>
 /// Manages the sending of account-related emails
 /// </summary>
-public interface IAccountEmailManager
+public interface IAccountEmailManager<T>
+	where T : class, ISienarIdentityUser<T>
 {
 	/// <summary>
 	/// Sends a user an email to confirm their new account
@@ -12,7 +13,7 @@ public interface IAccountEmailManager
 	/// <param name="code">the verification code to send. If not provided, it will be generated</param>
 	/// <returns>whether the operation was successful</returns>
 	Task<bool> SendWelcomeEmail(
-		SienarUser user,
+		T user,
 		VerificationCode? code = null);
 
 	/// <summary>
@@ -22,7 +23,7 @@ public interface IAccountEmailManager
 	/// <param name="code">the verification code to send. If not provided, it will be generated</param>
 	/// <returns>whether the operation was successful</returns>
 	Task<bool> SendEmailChangeConfirmationEmail(
-		SienarUser user,
+		T user,
 		VerificationCode? code = null);
 
 	/// <summary>
@@ -32,7 +33,7 @@ public interface IAccountEmailManager
 	/// <param name="code">the verification code to send. If not provided, it will be generated</param>
 	/// <returns>whether the operation was successful</returns>
 	Task<bool> SendPasswordResetEmail(
-		SienarUser user,
+		T user,
 		VerificationCode? code = null);
 
 	/// <summary>
@@ -40,5 +41,5 @@ public interface IAccountEmailManager
 	/// </summary>
 	/// <param name="user">the user who should receive the account locked email</param>
 	/// <returns>whether the operation was successful</returns>
-	Task<bool> SendAccountLockedEmail(SienarUser user);
+	Task<bool> SendAccountLockedEmail(T user);
 }

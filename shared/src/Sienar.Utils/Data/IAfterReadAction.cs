@@ -5,4 +5,4 @@
 /// </summary>
 /// <typeparam name="T">The type of the entity</typeparam>
 public interface IAfterReadAction<T> : IAfterActionBase<T>
-	where T : EntityBase;
+	where T : IEntity;

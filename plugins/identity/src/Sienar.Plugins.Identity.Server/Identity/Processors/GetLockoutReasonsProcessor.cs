@@ -3,17 +3,18 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class GetLockoutReasonsProcessor
+public class GetLockoutReasonsProcessor<T>
 	: IGeneralProcessor<AccountLockoutRequest, AccountLockoutResult>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
-	private readonly IVerificationCodeManager _vcManager;
-	private readonly IMapper<LockoutReason, LockoutReasonDto> _lockoutReasonMapper;
+	private readonly ISienarDbContext<T> _context;
+	private readonly IVerificationCodeManager<T> _vcManager;
+	private readonly IMapper<LockoutReason<T>, LockoutReasonDto> _lockoutReasonMapper;
 
 	public GetLockoutReasonsProcessor(
-		ISienarDbContext context,
-		IVerificationCodeManager vcManager,
-		IMapper<LockoutReason, LockoutReasonDto> lockoutReasonMapper)
+		ISienarDbContext<T> context,
+		IVerificationCodeManager<T> vcManager,
+		IMapper<LockoutReason<T>, LockoutReasonDto> lockoutReasonMapper)
 	{
 		_context = context;
 		_vcManager = vcManager;
@@ -32,7 +33,7 @@ public class GetLockoutReasonsProcessor
 		{
 			return new(
 				OperationStatus.NotFound,
-				message: StatusMessages.Crud<SienarUser>.NotFound(request.UserId));
+				message: StatusMessages.Crud<T>.NotFound(request.UserId));
 		}
 
 		var status = await _vcManager.VerifyCode(

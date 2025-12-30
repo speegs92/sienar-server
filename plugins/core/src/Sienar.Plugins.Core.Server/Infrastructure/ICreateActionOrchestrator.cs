@@ -8,7 +8,7 @@
 // ReSharper disable once TypeParameterCanBeVariant
 public interface ICreateActionOrchestrator<TDto, TEntity>
 	where TDto : class
-	where TEntity : EntityBase, new()
+	where TEntity : IEntity, new()
 {
 	/// <summary>
 	/// Executes the orchestrated action

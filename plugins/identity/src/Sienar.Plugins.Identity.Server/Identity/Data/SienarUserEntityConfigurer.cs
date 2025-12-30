@@ -2,10 +2,11 @@
 
 namespace Sienar.Identity.Data;
 
-internal class SienarUserEntityConfigurer : IEntityTypeConfiguration<SienarUser>
+internal class SienarUserEntityConfigurer<T> : IEntityTypeConfiguration<T>
+	where T : class, ISienarIdentityUser<T>
 {
 	/// <inheritdoc />
-	public void Configure(EntityTypeBuilder<SienarUser> builder)
+	public void Configure(EntityTypeBuilder<T> builder)
 	{
 		builder.Property(u => u.Username)
 			.HasMaxLength(50)

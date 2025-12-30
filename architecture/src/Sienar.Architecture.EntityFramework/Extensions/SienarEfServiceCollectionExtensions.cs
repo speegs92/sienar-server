@@ -69,7 +69,7 @@ public static class SienarEfServiceCollectionExtensions
 	public static IServiceCollection AddEfEntity<TEntity, TFilterProcessor>(
 		this IServiceCollection self,
 		ApplicationType appType)
-		where TEntity : EntityBase
+		where TEntity : class, IEntity
 		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 	{
 		self.AddBeforeCreateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>(appType);
@@ -102,7 +102,7 @@ public static class SienarEfServiceCollectionExtensions
 		where TDto : class, new()
 		where TDtoToEntityMapper : class, IMapper<TDto, TEntity>
 		where TEntityToDtoMapper : class, IMapper<TEntity, TDto>
-		where TEntity : EntityBase, new()
+		where TEntity : class, IEntity, new()
 		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 		=> AddEfEntity<TDto, TEntityToDtoMapper, TDto, TDtoToEntityMapper, TDto, TDtoToEntityMapper, TEntity, TFilterProcessor>(self, appType);
 
@@ -137,7 +137,7 @@ public static class SienarEfServiceCollectionExtensions
 		where TAddDtoToEntityMapper : class, IMapper<TAddDto, TEntity>
 		where TEditDto : class, new()
 		where TEditDtoToEntityMapper : class, IMapper<TEditDto, TEntity>
-		where TEntity : EntityBase, new()
+		where TEntity : class, IEntity, new()
 		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 	{
 		self.TryAddScoped<IMapper<TEntity, TViewDto>, TEntityToViewDtoMapper>();

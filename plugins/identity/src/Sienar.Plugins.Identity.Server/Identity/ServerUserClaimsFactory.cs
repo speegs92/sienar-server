@@ -5,10 +5,11 @@ namespace Sienar.Identity;
 /// <summary>
 /// Creates user claims for use by the server application
 /// </summary>
-public class ServerUserClaimsFactory : IUserClaimsFactory<SienarUser>
+public class ServerUserClaimsFactory<T> : IUserClaimsFactory<T>
+	where T : class, ISienarIdentityUser<T>
 {
 	/// <inheritdoc />
-	public IEnumerable<Claim> CreateClaims(SienarUser user)
+	public IEnumerable<Claim> CreateClaims(T user)
 	{
 		var claims = new List<Claim>
 		{

@@ -2,8 +2,8 @@
 
 /// <inheritdoc />
 public class DefaultReadAllActionOrchestrator<TDto, TEntity> : IReadAllActionOrchestrator<TDto, TEntity>
-	where TDto : EntityBase, new()
-	where TEntity : EntityBase
+	where TDto : IEntity, new()
+	where TEntity : IEntity
 {
 	private readonly IMapper<TEntity, TDto> _entityToDtoMapper;
 	private readonly IEntityReadAllActor<TEntity> _entityReader;

@@ -4,8 +4,8 @@ namespace Sienar.Infrastructure;
 
 /// <inheritdoc />
 public class DefaultUpdateActionOrchestrator<TDto, TEntity> : IUpdateActionOrchestrator<TDto, TEntity>
-	where TDto : EntityBase
-	where TEntity : EntityBase, new()
+	where TDto : class, IEntity
+	where TEntity : class, IEntity, new()
 {
 	private readonly IDbContext _context;
 	private readonly IMapper<TDto, TEntity> _dtoToEntityMapper;

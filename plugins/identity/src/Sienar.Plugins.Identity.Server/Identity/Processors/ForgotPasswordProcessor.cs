@@ -3,15 +3,16 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class ForgotPasswordProcessor : IStatusProcessor<ForgotPasswordRequest>
+public class ForgotPasswordProcessor<T> : IStatusProcessor<ForgotPasswordRequest>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
-	private readonly IAccountEmailManager _emailManager;
+	private readonly ISienarDbContext<T> _context;
+	private readonly IAccountEmailManager<T> _emailManager;
 	private readonly SienarOptions _options;
 
 	public ForgotPasswordProcessor(
-		ISienarDbContext context,
-		IAccountEmailManager emailManager,
+		ISienarDbContext<T> context,
+		IAccountEmailManager<T> emailManager,
 		IOptions<SienarOptions> options)
 	{
 		_context = context;

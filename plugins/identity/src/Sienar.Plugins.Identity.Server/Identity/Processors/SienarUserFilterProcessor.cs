@@ -3,9 +3,10 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class SienarUserFilterProcessor : IEfFilterProcessor<SienarUser>
+public class SienarUserFilterProcessor<T> : IEfFilterProcessor<T>
+	where T : class, ISienarIdentityUser<T>
 {
-	public IQueryable<SienarUser> Search(IQueryable<SienarUser> dataset, Filter filter)
+	public IQueryable<T> Search(IQueryable<T> dataset, Filter filter)
 	{
 		if (string.IsNullOrEmpty(filter.SearchTerm))
 		{
@@ -20,14 +21,14 @@ public class SienarUserFilterProcessor : IEfFilterProcessor<SienarUser>
 			|| !string.IsNullOrEmpty(s.NormalizedPendingEmail) && s.NormalizedPendingEmail.Contains(searchTerm));
 	}
 
-	public IQueryable<SienarUser> ProcessIncludes(IQueryable<SienarUser> dataset, Filter filter)
+	public IQueryable<T> ProcessIncludes(IQueryable<T> dataset, Filter filter)
 	{
 		if (filter.Includes.Count == 0)
 		{
 			return dataset;
 		}
 
-		if (filter.Includes.Contains(nameof(SienarUser.LockoutReasons)))
+		if (filter.Includes.Contains(nameof(ISienarIdentityUser<T>.LockoutReasons)))
 		{
 			dataset = dataset.Include(u => u.LockoutReasons);
 		}
@@ -35,11 +36,11 @@ public class SienarUserFilterProcessor : IEfFilterProcessor<SienarUser>
 		return dataset;
 	}
 
-	public Expression<Func<SienarUser, object>> GetSortPredicate(string? sortName) => sortName switch
+	public Expression<Func<T, object>> GetSortPredicate(string? sortName) => sortName switch
 	{
-		nameof(SienarUser.Username) => u => u.Username,
-		nameof(SienarUser.Email) => u => u.Email,
-		nameof(SienarUser.PendingEmail) => u => u.PendingEmail!,
+		nameof(ISienarIdentityUser<T>.Username) => u => u.Username,
+		nameof(ISienarIdentityUser<T>.Email) => u => u.Email,
+		nameof(ISienarIdentityUser<T>.PendingEmail) => u => u.PendingEmail!,
 		_ => u => u.Username
 	};
 }

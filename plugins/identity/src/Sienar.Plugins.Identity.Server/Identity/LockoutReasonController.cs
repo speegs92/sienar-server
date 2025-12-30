@@ -10,13 +10,14 @@ namespace Sienar.Identity;
 [ApiController]
 [Route("/api/lockout-reasons")]
 [Authorize(Roles = Roles.Admin)]
-public class LockoutReasonController
+public class LockoutReasonController<T>
+	where T : class, ISienarIdentityUser<T>
 {
 	[HttpGet]
 	[UsedImplicitly]
 	public Task<IActionResult> Read(
 		[FromQuery] Filter? filter,
-		[FromServices] IReadAllActionOrchestrator<LockoutReasonDto, LockoutReason> orchestrator)
+		[FromServices] IReadAllActionOrchestrator<LockoutReasonDto, LockoutReason<T>> orchestrator)
 		=> orchestrator.Execute(filter);
 
 	[HttpGet("{id:int}")]
@@ -24,27 +25,27 @@ public class LockoutReasonController
 	public Task<IActionResult> Read(
 		int id,
 		[FromQuery] Filter? filter,
-		[FromServices] IReadActionOrchestrator<LockoutReasonDto, LockoutReason> orchestrator)
+		[FromServices] IReadActionOrchestrator<LockoutReasonDto, LockoutReason<T>> orchestrator)
 		=> orchestrator.Execute(id, filter);
 
 	[HttpPost]
 	[UsedImplicitly]
 	public Task<IActionResult> Create(
 		LockoutReasonDto lockoutReason,
-		[FromServices] ICreateActionOrchestrator<LockoutReasonDto, LockoutReason> orchestrator)
+		[FromServices] ICreateActionOrchestrator<LockoutReasonDto, LockoutReason<T>> orchestrator)
 		=> orchestrator.Execute(lockoutReason);
 
 	[HttpPut]
 	[UsedImplicitly]
 	public Task<IActionResult> Update(
 		LockoutReasonDto lockoutReason,
-		[FromServices] IUpdateActionOrchestrator<LockoutReasonDto, LockoutReason> orchestrator)
+		[FromServices] IUpdateActionOrchestrator<LockoutReasonDto, LockoutReason<T>> orchestrator)
 		=> orchestrator.Execute(lockoutReason);
 
 	[HttpDelete("{id:int}")]
 	[UsedImplicitly]
 	public Task<IActionResult> Delete(
 		int id,
-		[FromServices] IDeleteActionOrchestrator<LockoutReason> orchestrator)
+		[FromServices] IDeleteActionOrchestrator<LockoutReason<T>> orchestrator)
 		=> orchestrator.Execute(id);
 }

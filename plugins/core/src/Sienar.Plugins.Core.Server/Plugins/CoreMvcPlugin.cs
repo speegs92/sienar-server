@@ -9,7 +9,7 @@ public class CoreMvcPlugin : IPlugin
 {
 	private readonly WebApplicationBuilder _builder;
 	private readonly MiddlewareProvider _middlewareProvider;
-	private readonly IConfigurer<MvcOptions>? _mvcConfigurer;
+	private readonly IEnumerable<IConfigurer<MvcOptions>> _mvcConfigurers;
 	private readonly IEnumerable<IConfigurer<IMvcBuilder>> _additionalMvcConfigurers;
 
 	/// <summary>
@@ -17,13 +17,13 @@ public class CoreMvcPlugin : IPlugin
 	/// </summary>
 	public CoreMvcPlugin(
 		WebApplicationBuilder builder,
-		MiddlewareProvider middlewareProvider,
-		IEnumerable<IConfigurer<IMvcBuilder>> additionalMvcConfigurers, 
-		IConfigurer<MvcOptions>? mvcConfigurer = null)
+		MiddlewareProvider middlewareProvider, 
+		IEnumerable<IConfigurer<MvcOptions>> mvcConfigurers,
+		IEnumerable<IConfigurer<IMvcBuilder>> additionalMvcConfigurers)
 	{
 		_builder = builder;
 		_middlewareProvider = middlewareProvider;
-		_mvcConfigurer = mvcConfigurer;
+		_mvcConfigurers = mvcConfigurers;
 		_additionalMvcConfigurers = additionalMvcConfigurers;
 	}
 
@@ -49,8 +49,13 @@ public class CoreMvcPlugin : IPlugin
 			.AddScoped(typeof(IResultActionOrchestrator<>), typeof(DefaultResultActionOrchestrator<>));
 
 		// Add and configure MVC
-		var mvcbuilder = _builder.Services.AddMvc(
-			o => _mvcConfigurer?.Configure(o));
+		var mvcbuilder = _builder.Services.AddMvc(o =>
+		{
+			foreach (var configurer in _mvcConfigurers)
+			{
+				configurer.Configure(o);
+			}
+		});
 
 		foreach (var configurer in _additionalMvcConfigurers)
 		{

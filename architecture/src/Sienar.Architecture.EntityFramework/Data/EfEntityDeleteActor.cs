@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="T">The type of the entity to delete</typeparam>
 public class EfEntityDeleteActor<T> : IEntityDeleteActor<T>
-	where T : EntityBase
+	where T : class, IEntity
 {
 	private readonly IDbContext _context;
 	private readonly ILogger<EfEntityDeleteActor<T>> _logger;

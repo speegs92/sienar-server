@@ -4,8 +4,14 @@ namespace Sienar.Security;
 /// Represents a DTO that has honeypot capabilities
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class Honeypot : EntityBase
+public class Honeypot : IEntity
 {
+	/// <inheritdoc />
+	public int Id { get; set; }
+
+	/// <inheritdoc />
+	public Guid ConcurrencyStamp { get; set; }
+
 	/// <summary>
 	/// Used to detect spambot submissions
 	/// </summary>

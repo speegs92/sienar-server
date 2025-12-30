@@ -5,14 +5,15 @@ using Microsoft.AspNetCore.Identity;
 namespace Sienar.Identity;
 
 /// <exclude />
-public class PasswordManager : IPasswordManager
+public class PasswordManager<T> : IPasswordManager<T>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly IPasswordHasher<SienarUser> _passwordHasher;
-	private readonly ISienarDbContext _context;
+	private readonly IPasswordHasher<T> _passwordHasher;
+	private readonly ISienarDbContext<T> _context;
 
 	public PasswordManager(
-		IPasswordHasher<SienarUser> passwordHasher,
-		ISienarDbContext context)
+		IPasswordHasher<T> passwordHasher,
+		ISienarDbContext<T> context)
 	{
 		_passwordHasher = passwordHasher;
 		_context = context;
@@ -20,7 +21,7 @@ public class PasswordManager : IPasswordManager
 
 	/// <inheritdoc />
 	public async Task UpdatePassword(
-		SienarUser user,
+		T user,
 		string newPassword)
 	{
 		user.PasswordHash = _passwordHasher.HashPassword(user, newPassword);
@@ -29,7 +30,7 @@ public class PasswordManager : IPasswordManager
 	}
 
 	/// <inheritdoc />
-	public async Task<bool> VerifyPassword(SienarUser user, string password)
+	public async Task<bool> VerifyPassword(T user, string password)
 	{
 		var verification = _passwordHasher.VerifyHashedPassword(
 			user,

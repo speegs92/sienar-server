@@ -3,13 +3,14 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class ManuallyConfirmUserAccountProcessor
+public class ManuallyConfirmUserAccountProcessor<T>
 	: IStatusProcessor<ManuallyConfirmUserAccountRequest>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
+	private readonly ISienarDbContext<T> _context;
 
 	public ManuallyConfirmUserAccountProcessor(
-		ISienarDbContext context)
+		ISienarDbContext<T> context)
 	{
 		_context = context;
 	}

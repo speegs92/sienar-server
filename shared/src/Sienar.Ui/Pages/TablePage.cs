@@ -1,7 +1,7 @@
 ﻿namespace Sienar.Pages;
 
 public class TablePage<TEntity> : ComponentBase
-	where TEntity : EntityBase
+	where TEntity : IEntity
 {
 	[Inject]
 	protected IEntityReadAllActor<TEntity> Reader { get; set; } = null!;

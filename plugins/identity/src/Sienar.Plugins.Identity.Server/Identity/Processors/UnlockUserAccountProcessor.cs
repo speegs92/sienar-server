@@ -3,11 +3,12 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class UnlockUserAccountProcessor : IStatusProcessor<UnlockUserAccountRequest>
+public class UnlockUserAccountProcessor<T> : IStatusProcessor<UnlockUserAccountRequest>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
+	private readonly ISienarDbContext<T> _context;
 
-	public UnlockUserAccountProcessor(ISienarDbContext context)
+	public UnlockUserAccountProcessor(ISienarDbContext<T> context)
 	{
 		_context = context;
 	}

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Sienar.Configuration;
 using Sienar.Extensions;
 using Sienar.Infrastructure;
@@ -26,7 +27,12 @@ public class TestProjectServerPlugin : IPlugin
 	{
 		public void Configure(SienarAppBuilder builder)
 		{
-			builder.AddPlugin<IdentityServerPlugin>();
+			builder
+				.AddPlugin<IdentityServerPlugin<AppUser>>()
+				.AddStartupServices(sp =>
+				{
+					sp.AddConfigurer<TestProjectMvcBuilderConfigurer, IMvcBuilder>();
+				});
 		}
 	}
 }

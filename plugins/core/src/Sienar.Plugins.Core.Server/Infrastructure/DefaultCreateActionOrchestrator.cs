@@ -4,7 +4,7 @@
 public class DefaultCreateActionOrchestrator<TDto, TEntity>
 	: ICreateActionOrchestrator<TDto, TEntity>
 	where TDto : class
-	where TEntity : EntityBase, new()
+	where TEntity : IEntity, new()
 {
 	private readonly IMapper<TDto, TEntity> _dtoToEntityMapper;
 	private readonly IEntityCreateActor<TEntity> _entityCreator;

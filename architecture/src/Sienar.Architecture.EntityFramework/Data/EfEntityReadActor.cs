@@ -5,7 +5,7 @@
 /// </summary>
 /// <typeparam name="T">The type of the entity to read</typeparam>
 public class EfEntityReadActor<T> : IEntityReadActor<T>
-	where T : EntityBase
+	where T : class, IEntity
 {
 	private readonly IDbContext _context;
 	private readonly IEfFilterProcessor<T> _filterProcessor;

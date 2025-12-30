@@ -91,9 +91,9 @@ public class AccountEmailMessageFactory : IAccountEmailMessageFactory
 	public Task<string> AccountLockedHtml(
 		string username,
 		DateTime lockoutEnd,
-		List<LockoutReason> lockoutReasons)
+		IEnumerable<string> lockoutReasons)
 	{
-		var message = $"<!DOCTYPE html><html><head><title>Account locked</title></head><body><p>Hello {{username}},</p><p>Your account has been locked for the following reason{(lockoutReasons.Count > 1 ? "s" : "")}:<p><ul>{lockoutReasons.Select(r => $"<li>{r.Reason}</li></ul><p>Regards,</p><p>{_senderOptions.Signature}</p></body></html>")}";
+		var message = $"<!DOCTYPE html><html><head><title>Account locked</title></head><body><p>Hello {{username}},</p><p>Your account has been locked for the following reason(s):<p><ul>{lockoutReasons.Select(r => $"<li>{r}</li></ul><p>Regards,</p><p>{_senderOptions.Signature}</p></body></html>")}";
 
 		return Task.FromResult(message);
 	}
@@ -102,11 +102,11 @@ public class AccountEmailMessageFactory : IAccountEmailMessageFactory
 	public Task<string> AccountLockedText(
 		string username,
 		DateTime lockoutEnd,
-		List<LockoutReason> lockoutReasons)
+		IEnumerable<string> lockoutReasons)
 	{
 		var message = $"Hello {username},\n\n" +
-			$"Your account has been locked for the following reason{(lockoutReasons.Count > 1 ? "s" : "")}:\n\n" +
-			string.Join("\n\n", lockoutReasons.Select(r => r.Reason)) +
+			$"Your account has been locked for the following reason(s):\n\n" +
+			string.Join("\n\n", lockoutReasons) +
 			"\n\nRegards,\n\n" +
 			_senderOptions.Signature;
 

@@ -3,7 +3,7 @@
 namespace Sienar.Extensions;
 
 /// <summary>
-/// Contains utilities that work on <see cref="EntityBase"/> instances or <c>typeof(TEntity)</c> instances
+/// Contains utilities that work on <see cref="IEntity"/> instances or <c>typeof(TEntity)</c> instances
 /// </summary>
 public static class EntityExtensions
 {
@@ -12,7 +12,7 @@ public static class EntityExtensions
 	/// </summary>
 	/// <param name="self">the entity</param>
 	/// <returns>the entity's name</returns>
-	public static string GetEntityName(this EntityBase self)
+	public static string GetEntityName(this IEntity self)
 		=> GetEntityName(self.GetType());
 
 	/// <summary>
@@ -34,7 +34,7 @@ public static class EntityExtensions
 	/// </summary>
 	/// <param name="self">the entity</param>
 	/// <returns>the entity's plural name</returns>
-	public static string GetEntityPluralName(this EntityBase self)
+	public static string GetEntityPluralName(this IEntity self)
 		=> GetEntityPluralName(self.GetType());
 
 	/// <summary>

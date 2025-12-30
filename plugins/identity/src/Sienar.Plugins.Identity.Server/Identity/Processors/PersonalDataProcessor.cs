@@ -5,16 +5,17 @@ using System.Text.Json;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class PersonalDataProcessor : IResultProcessor<PersonalDataResult>
+public class PersonalDataProcessor<T> : IResultProcessor<PersonalDataResult>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
+	private readonly ISienarDbContext<T> _context;
 	private readonly IUserAccessor _userAccessor;
-	private readonly IEnumerable<IUserPersonalDataRetriever> _personalDataRetrievers;
+	private readonly IEnumerable<IUserPersonalDataRetriever<T>> _personalDataRetrievers;
 
 	public PersonalDataProcessor(
-		ISienarDbContext context,
+		ISienarDbContext<T> context,
 		IUserAccessor userAccessor,
-		IEnumerable<IUserPersonalDataRetriever> personalDataRetrievers)
+		IEnumerable<IUserPersonalDataRetriever<T>> personalDataRetrievers)
 	{
 		_context = context;
 		_userAccessor = userAccessor;

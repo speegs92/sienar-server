@@ -1,12 +1,13 @@
 ﻿namespace Sienar.Identity.Data;
 
 /// <summary>
-/// Maps from <see cref="LockoutReason"/> to <see cref="LockoutReasonDto"/>
+/// Maps from <see cref="LockoutReason{T}"/> to <see cref="LockoutReasonDto"/>
 /// </summary>
-public class LockoutReasonToDtoMapper : IMapper<LockoutReason, LockoutReasonDto>
+public class LockoutReasonToDtoMapper<T> : IMapper<LockoutReason<T>, LockoutReasonDto>
+	where T : class, ISienarIdentityUser<T>
 {
 	/// <inheritdoc />
-	public void Map(LockoutReason source, LockoutReasonDto target)
+	public void Map(LockoutReason<T> source, LockoutReasonDto target)
 	{
 		target.Id = source.Id;
 		target.ConcurrencyStamp = source.ConcurrencyStamp;

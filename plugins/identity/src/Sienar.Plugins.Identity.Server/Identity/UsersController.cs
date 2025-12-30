@@ -10,13 +10,14 @@ namespace Sienar.Identity;
 [ApiController]
 [Route("/api/users")]
 [Authorize(Roles = Roles.Admin)]
-public class UsersController
+public class UsersController<T>
+	where T : class, ISienarIdentityUser<T>, new()
 {
 	[HttpGet]
 	[UsedImplicitly]
 	public Task<IActionResult> Read(
 		[FromQuery] Filter? filter,
-		[FromServices] IReadAllActionOrchestrator<ViewUserDto, SienarUser> orchestrator)
+		[FromServices] IReadAllActionOrchestrator<ViewUserDto, T> orchestrator)
 		=> orchestrator.Execute(filter);
 
 	[HttpGet("{id:int}")]
@@ -24,28 +25,28 @@ public class UsersController
 	public Task<IActionResult> Read(
 		int id,
 		[FromQuery] Filter? filter,
-		[FromServices] IReadActionOrchestrator<ViewUserDto, SienarUser> orchestrator)
+		[FromServices] IReadActionOrchestrator<ViewUserDto, T> orchestrator)
 		=> orchestrator.Execute(id, filter);
 
 	[HttpPost]
 	[UsedImplicitly]
 	public Task<IActionResult> Create(
 		UpsertUserDto user,
-		[FromServices] ICreateActionOrchestrator<UpsertUserDto, SienarUser> orchestrator)
+		[FromServices] ICreateActionOrchestrator<UpsertUserDto, T> orchestrator)
 		=> orchestrator.Execute(user);
 
 	[HttpPut]
 	[UsedImplicitly]
 	public Task<IActionResult> Update(
 		UpsertUserDto user,
-		[FromServices] IUpdateActionOrchestrator<UpsertUserDto, SienarUser> orchestrator)
+		[FromServices] IUpdateActionOrchestrator<UpsertUserDto, T> orchestrator)
 		=> orchestrator.Execute(user);
 
 	[HttpDelete("{id:int}")]
 	[UsedImplicitly]
 	public Task<IActionResult> Delete(
 		int id,
-		[FromServices] IDeleteActionOrchestrator<SienarUser> orchestrator)
+		[FromServices] IDeleteActionOrchestrator<T> orchestrator)
 		=> orchestrator.Execute(id);
 
 	[HttpPost("roles")]

@@ -5,8 +5,14 @@
 /// </summary>
 [EntityName(Singular = "user", Plural = "users")]
 [RestEndpoint("users")]
-public class UpsertUserDto : EntityBase
+public class UpsertUserDto : IEntity
 {
+	/// <inheritdoc />
+	public int Id { get; set; }
+
+	/// <inheritdoc />
+	public Guid ConcurrencyStamp { get; set; }
+
 	/// <summary>
 	/// The user's username
 	/// </summary>

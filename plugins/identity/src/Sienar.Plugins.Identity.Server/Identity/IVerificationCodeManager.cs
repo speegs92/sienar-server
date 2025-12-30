@@ -1,17 +1,18 @@
 ﻿namespace Sienar.Identity;
 
-public interface IVerificationCodeManager
+public interface IVerificationCodeManager<T>
+	where T : class, ISienarIdentityUser<T>
 {
 	Task<VerificationCode> CreateCode(
-		SienarUser user,
+		T user,
 		string type);
 
 	Task DeleteCode(
-		SienarUser user,
+		T user,
 		string type);
 
 	Task<VerificationCode?> GetCode(
-		SienarUser user,
+		T user,
 		string type);
 
 	VerificationCodeStatus GetCodeStatus(
@@ -19,12 +20,12 @@ public interface IVerificationCodeManager
 		Guid suppliedCode);
 
 	Task<VerificationCodeStatus> GetCodeStatus(
-		SienarUser user,
+		T user,
 		string type,
 		Guid suppliedCode);
 
 	Task<VerificationCodeStatus> VerifyCode(
-		SienarUser user,
+		T user,
 		string type,
 		Guid suppliedCode,
 		bool deleteIfValid);

@@ -3,16 +3,17 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class ChangePasswordProcessor : IStatusProcessor<ChangePasswordRequest>
+public class ChangePasswordProcessor<T> : IStatusProcessor<ChangePasswordRequest>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
+	private readonly ISienarDbContext<T> _context;
 	private readonly IUserAccessor _userAccessor;
-	private readonly IPasswordManager _passwordManager;
+	private readonly IPasswordManager<T> _passwordManager;
 
 	public ChangePasswordProcessor(
-		ISienarDbContext context,
+		ISienarDbContext<T> context,
 		IUserAccessor userAccessor,
-		IPasswordManager passwordManager)
+		IPasswordManager<T> passwordManager)
 	{
 		_context = context;
 		_userAccessor = userAccessor;

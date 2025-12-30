@@ -6,7 +6,7 @@ namespace Sienar.Data;
 public class ConcurrencyStampUpdater<TEntity> :
 	IBeforeCreateAction<TEntity>,
 	IBeforeUpdateAction<TEntity>
-	where TEntity : EntityBase
+	where TEntity : IEntity
 {
 	public Task Handle(TEntity entity)
 	{

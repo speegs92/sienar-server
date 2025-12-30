@@ -5,18 +5,19 @@ using Microsoft.AspNetCore.Identity;
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class RegisterProcessor : IStatusProcessor<RegisterRequest>
+public class RegisterProcessor<T> : IStatusProcessor<RegisterRequest>
+	where T : class, ISienarIdentityUser<T>, new()
 {
-	private readonly ISienarDbContext _context;
-	private readonly IAccountEmailManager _emailManager;
-	private readonly IPasswordHasher<SienarUser> _passwordHasher;
+	private readonly ISienarDbContext<T> _context;
+	private readonly IAccountEmailManager<T> _emailManager;
+	private readonly IPasswordHasher<T> _passwordHasher;
 	private readonly LoginOptions _loginOptions;
 	private readonly SienarOptions _appOptions;
 
 	public RegisterProcessor(
-		ISienarDbContext context,
-		IAccountEmailManager emailManager,
-		IPasswordHasher<SienarUser> passwordHasher,
+		ISienarDbContext<T> context,
+		IAccountEmailManager<T> emailManager,
+		IPasswordHasher<T> passwordHasher,
 		IOptions<LoginOptions> loginOptions,
 		IOptions<SienarOptions> appOptions)
 	{
@@ -30,7 +31,7 @@ public class RegisterProcessor : IStatusProcessor<RegisterRequest>
 	public async Task<OperationResult<bool>> Process(RegisterRequest request)
 	{
 		// Checks passed. Make a new user
-		var user = new SienarUser
+		var user = new T
 		{
 			Username = request.Username,
 			NormalizedUsername = request.Username.ToNormalized(),

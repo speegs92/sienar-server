@@ -84,7 +84,7 @@ public interface IAccountEmailMessageFactory
 	Task<string> AccountLockedHtml(
 		string username,
 		DateTime lockoutEnd,
-		List<LockoutReason> lockoutReasons);
+		IEnumerable<string> lockoutReasons);
 
 	/// <summary>
 	/// Creates an HTML version of the account locked email
@@ -96,5 +96,5 @@ public interface IAccountEmailMessageFactory
 	Task<string> AccountLockedText(
 		string username,
 		DateTime lockoutEnd,
-		List<LockoutReason> lockoutReasons);
+		IEnumerable<string> lockoutReasons);
 }

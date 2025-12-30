@@ -5,16 +5,17 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Sienar.Identity;
 
-public class CookieSignInManager : ISignInManager
+public class CookieSignInManager<T> : ISignInManager<T>
+	where T : class, ISienarIdentityUser<T>
 {
 	private readonly IHttpContextAccessor _contextAccessor;
 	private readonly LoginOptions _loginOptions;
-	private readonly IUserClaimsPrincipalFactory<SienarUser> _principalFactory;
+	private readonly IUserClaimsPrincipalFactory<T> _principalFactory;
 
 	public CookieSignInManager(
 		IHttpContextAccessor contextAccessor,
 		IOptions<LoginOptions> loginOptions,
-		IUserClaimsPrincipalFactory<SienarUser> principalFactory)
+		IUserClaimsPrincipalFactory<T> principalFactory)
 	{
 		_contextAccessor = contextAccessor;
 		_loginOptions = loginOptions.Value;
@@ -22,7 +23,7 @@ public class CookieSignInManager : ISignInManager
 	}
 
 	/// <inheritdoc />
-	public async Task SignIn(SienarUser user, bool isPersistent)
+	public async Task SignIn(T user, bool isPersistent)
 	{
 		var authProperties = new AuthenticationProperties
 		{

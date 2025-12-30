@@ -118,7 +118,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		this IServiceCollection self,
 		ApplicationType appType)
 		where THook : class, IBeforeCreateAction<TEntity>
-		where TEntity : EntityBase
+		where TEntity : IEntity
 		=> AddScoped<IBeforeCreateAction<TEntity>, THook>(self, appType);
 
 	/// <summary>
@@ -133,7 +133,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		this IServiceCollection self,
 		ApplicationType appType)
 		where THook : class, IBeforeUpdateAction<TEntity>
-		where TEntity : EntityBase
+		where TEntity : IEntity
 		=> AddScoped<IBeforeUpdateAction<TEntity>, THook>(self, appType);
 
 	/// <summary>
@@ -148,7 +148,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		this IServiceCollection self,
 		ApplicationType appType)
 		where THook : class, IBeforeDeleteAction<TEntity>
-		where TEntity : EntityBase
+		where TEntity : IEntity
 		=> AddScoped<IBeforeDeleteAction<TEntity>, THook>(self, appType);
 
 	/// <summary>
@@ -193,7 +193,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		this IServiceCollection self,
 		ApplicationType appType)
 		where THook : class, IAfterReadAction<TEntity>
-		where TEntity : EntityBase
+		where TEntity : IEntity
 		=> AddScoped<IAfterReadAction<TEntity>, THook>(self, appType);
 
 	/// <summary>
@@ -208,7 +208,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		this IServiceCollection self,
 		ApplicationType appType)
 		where THook : class, IAfterReadAllAction<TEntity>
-		where TEntity : EntityBase
+		where TEntity : IEntity
 		=> AddScoped<IAfterReadAllAction<TEntity>, THook>(self, appType);
 
 	/// <summary>
@@ -223,7 +223,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		this IServiceCollection self,
 		ApplicationType appType)
 		where THook : class, IAfterCreateAction<TEntity>
-		where TEntity : EntityBase
+		where TEntity : IEntity
 		=> AddScoped<IAfterCreateAction<TEntity>, THook>(self, appType);
 
 	/// <summary>
@@ -238,7 +238,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		this IServiceCollection self,
 		ApplicationType appType)
 		where THook : class, IAfterUpdateAction<TEntity>
-		where TEntity : EntityBase
+		where TEntity : IEntity
 		=> AddScoped<IAfterUpdateAction<TEntity>, THook>(self, appType);
 
 	/// <summary>
@@ -253,7 +253,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		this IServiceCollection self,
 		ApplicationType appType)
 		where THook : class, IAfterDeleteAction<TEntity>
-		where TEntity : EntityBase
+		where TEntity : IEntity
 		=> AddScoped<IAfterDeleteAction<TEntity>, THook>(self, appType);
 
 	/// <summary>

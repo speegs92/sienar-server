@@ -2,7 +2,7 @@
 
 /// <inheritdoc />
 public class DefaultDeleteActionOrchestrator<T> : IDeleteActionOrchestrator<T>
-	where T : EntityBase
+	where T : IEntity
 {
 	private readonly IEntityDeleteActor<T> _entityDeleter;
 	private readonly IOperationResultMapper _resultMapper;

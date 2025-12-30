@@ -3,17 +3,18 @@
 namespace Sienar.Identity.Processors;
 
 /// <exclude />
-public class ConfirmAccountProcessor : IStatusProcessor<ConfirmAccountRequest>
+public class ConfirmAccountProcessor<T> : IStatusProcessor<ConfirmAccountRequest>
+	where T : class, ISienarIdentityUser<T>
 {
-	private readonly ISienarDbContext _context;
-	private readonly IVerificationCodeManager _vcManager;
-	private readonly IAccountEmailManager _emailManager;
+	private readonly ISienarDbContext<T> _context;
+	private readonly IVerificationCodeManager<T> _vcManager;
+	private readonly IAccountEmailManager<T> _emailManager;
 	private readonly SienarOptions _options;
 
 	public ConfirmAccountProcessor(
-		ISienarDbContext context,
-		IVerificationCodeManager vcManager,
-		IAccountEmailManager emailManager,
+		ISienarDbContext<T> context,
+		IVerificationCodeManager<T> vcManager,
+		IAccountEmailManager<T> emailManager,
 		IOptions<SienarOptions> options)
 	{
 		_context = context;

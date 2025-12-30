@@ -23,7 +23,7 @@ public static class StatusMessages
 		public const string BeforeHookFailure = "One or more plugins failed to execute. Your operation could not be completed";
 	}
 
-	public static class Crud<TEntity> where TEntity : EntityBase
+	public static class Crud<TEntity> where TEntity : IEntity
 	{
 		public static string CreateFailed() => $"Unable to create new {typeof(TEntity).GetEntityName()}";
 		public static string CreateSuccessful() => $"{typeof(TEntity).GetEntityName()} created successfully";
