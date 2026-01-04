@@ -3,5 +3,5 @@ using TestProject;
 
 await SienarAppBuilder
 	.Create(args)
-	.AddPlugin<TestProjectServerPlugin>()
+	.AddPlugin<TestProjectPlugin>()
 	.Run();

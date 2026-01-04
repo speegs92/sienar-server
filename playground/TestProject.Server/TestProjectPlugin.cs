@@ -9,11 +9,11 @@ using TestProject.Data;
 namespace TestProject;
 
 [AppConfigurer(typeof(SienarAppConfigurer))]
-public class TestProjectServerPlugin : IPlugin
+public class TestProjectPlugin : IPlugin
 {
 	private readonly WebApplicationBuilder _builder;
 
-	public TestProjectServerPlugin(WebApplicationBuilder builder)
+	public TestProjectPlugin(WebApplicationBuilder builder)
 	{
 		_builder = builder;
 	}
@@ -28,7 +28,7 @@ public class TestProjectServerPlugin : IPlugin
 		public void Configure(SienarAppBuilder builder)
 		{
 			builder
-				.AddPlugin<IdentityServerPlugin<AppUser>>()
+				.AddPlugin<IdentityPlugin<AppUser>>()
 				.AddStartupServices(sp =>
 				{
 					sp.AddConfigurer<TestProjectMvcBuilderConfigurer, IMvcBuilder>();

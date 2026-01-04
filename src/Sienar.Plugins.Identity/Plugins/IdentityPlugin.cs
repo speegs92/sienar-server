@@ -8,14 +8,14 @@ using static Sienar.Infrastructure.ApplicationType;
 namespace Sienar.Plugins;
 
 /// <exclude />
-[AppConfigurer(typeof(IdentityServerAppConfigurer))]
-public class IdentityServerPlugin<TUser> : IPlugin
+[AppConfigurer(typeof(IdentityAppConfigurer))]
+public class IdentityPlugin<TUser> : IPlugin
 	where TUser : class, ISienarIdentityUser<TUser>, new()
 {
 	private readonly WebApplicationBuilder _builder;
 	private readonly PluginDataProvider _pluginDataProvider;
 
-	public IdentityServerPlugin(
+	public IdentityPlugin(
 		WebApplicationBuilder builder,
 		PluginDataProvider pluginDataProvider)
 	{

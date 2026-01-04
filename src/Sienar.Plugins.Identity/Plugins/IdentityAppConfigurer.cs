@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Authorization;
 namespace Sienar.Plugins;
 
 /// <exclude />
-public class IdentityServerAppConfigurer : IConfigurer<SienarAppBuilder>
+public class IdentityAppConfigurer : IConfigurer<SienarAppBuilder>
 {
 	/// <exclude />
 	public void Configure(SienarAppBuilder builder)
 	{
-		builder.AddPlugin<CoreServerPlugin>();
+		builder.AddPlugin<CorePlugin>();
 
 		builder.AddStartupServices(sp =>
 		{

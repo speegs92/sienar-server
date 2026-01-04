@@ -4,7 +4,7 @@
 /// Configures the Sienar app to run as a web application with auth, CORS, and other core web-based services
 /// </summary>
 [AppConfigurer(typeof(SienarAppConfigurer))]
-public class CoreServerPlugin : IPlugin
+public class CorePlugin : IPlugin
 {
 	private readonly WebApplicationBuilder _builder;
 
@@ -12,7 +12,7 @@ public class CoreServerPlugin : IPlugin
 	/// Creates a new instance of <c>CoreServerPlugin</c>
 	/// </summary>
 	/// <param name="builder">The application adapter</param>
-	public CoreServerPlugin(WebApplicationBuilder builder)
+	public CorePlugin(WebApplicationBuilder builder)
 	{
 		_builder = builder;
 	}
