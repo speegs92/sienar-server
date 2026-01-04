@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.AspNetCore.Builder;
 
 namespace Sienar.Infrastructure;
 
@@ -9,8 +10,7 @@ public sealed class SienarAppBuilder
 {
 	private readonly List<Type> _plugins = [];
 	private readonly IServiceCollection _startupServices;
-	private IApplicationAdapter? _adapter;
-	private readonly string[] _startupArgs;
+	private readonly WebApplicationBuilder _builder;
 
 	/// <summary>
 	/// Creates a new <see cref="SienarAppBuilder"/> and registers core Sienar services on its startup service collection
@@ -19,9 +19,12 @@ public sealed class SienarAppBuilder
 	private SienarAppBuilder(string[]? args = null)
 	{
 		_startupServices = new ServiceCollection();
-		_startupArgs = args ?? Environment.GetCommandLineArgs();
+		_builder = WebApplication.CreateBuilder(args ?? Environment.GetCommandLineArgs());
 
 		_startupServices
+			.AddSingleton(_builder)
+			.AddSingleton(_builder.Environment)
+			.AddSingleton<IConfiguration>(_builder.Configuration)
 			.AddSingleton<MenuProvider>()
 			.AddSingleton<PluginDataProvider>()
 			.AddSingleton<ScriptProvider>()
@@ -80,30 +83,11 @@ public sealed class SienarAppBuilder
 	}
 
 	/// <summary>
-	/// Sets the application adapter
+	/// Builds and runs the final application
 	/// </summary>
-	/// <param name="adapter">The application adapter</param>
-	/// <returns>The Sienar app builder</returns>
-	public SienarAppBuilder SetApplicationAdapter(IApplicationAdapter adapter)
+	public async Task Run()
 	{
-		_adapter = adapter;
-		return this;
-	}
-
-	/// <summary>
-	/// Builds the final application and returns it
-	/// </summary>
-	/// <returns>The new application</returns>
-	public async Task<TApp> Build<TApp>()
-		where TApp : class
-	{
-		if (_adapter is null)
-		{
-			throw new InvalidOperationException($"You must register an {nameof(IApplicationAdapter)} before calling {nameof(Build)}.");
-		}
-
-		_adapter.Create(_startupArgs, _startupServices);
-		_adapter.AddServices(s => s.AddSienarCoreUtilities(_adapter.ApplicationType));
+		_builder.Services.AddSienarCoreUtilities(ApplicationType.Server);
 
 		var container = _startupServices.BuildServiceProvider();
 		using var scope = container.CreateScope();
@@ -115,16 +99,27 @@ public sealed class SienarAppBuilder
 			plugin.Configure();
 		}
 
-		_adapter.AddServices(services =>
-		{
-			services
-				.AddSingleton(sp.GetRequiredService<MenuProvider>())
-				.AddSingleton(sp.GetRequiredService<PluginDataProvider>())
-				.AddSingleton(sp.GetRequiredService<ScriptProvider>())
-				.AddSingleton(sp.GetRequiredService<StyleProvider>())
-				.AddSingleton(sp.GetRequiredService<RoleProvider>());
-		});
+		_builder.Services
+			.AddSingleton(sp.GetRequiredService<MenuProvider>())
+			.AddSingleton(sp.GetRequiredService<PluginDataProvider>())
+			.AddSingleton(sp.GetRequiredService<ScriptProvider>())
+			.AddSingleton(sp.GetRequiredService<StyleProvider>())
+			.AddSingleton(sp.GetRequiredService<RoleProvider>());
 
-		return await _adapter.Build<TApp>(sp);
+		var app = _builder.Build();
+
+		var middlewareProvider = sp.GetRequiredService<MiddlewareProvider>();
+
+		foreach (var middleware in middlewareProvider.AggregatePrioritized())
+		{
+			middleware(app);
+		}
+
+		await using var runtimeServiceScope = app.Services.CreateAsyncScope();
+
+		var startupActor = runtimeServiceScope.ServiceProvider.GetRequiredService<IStatusActor<Startup>>();
+		await startupActor.Execute(new Startup());
+
+		await app.RunAsync();
 	}
 }
