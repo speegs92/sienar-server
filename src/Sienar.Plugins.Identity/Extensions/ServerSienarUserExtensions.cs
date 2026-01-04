@@ -1,7 +1,7 @@
 ﻿namespace Sienar.Extensions;
 
 /// <summary>
-/// Contains user extension methods for the <c>Sienar.Plugins.Identity.Server</c> assembly
+/// Contains user extension methods for the <c>Sienar.Plugins.Identity</c> assembly
 /// </summary>
 public static class ServerSienarUserExtensions
 {

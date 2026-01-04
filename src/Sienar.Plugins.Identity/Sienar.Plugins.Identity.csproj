@@ -3,21 +3,22 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<RootNamespace>Sienar.Email</RootNamespace>
+		<RootNamespace>Sienar</RootNamespace>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-		<PackageId>Sienar.Plugins.MailKit</PackageId>
-		<Title>Sienar.Plugins.MailKit</Title>
-		<PackageVersion>0.1.0</PackageVersion>
+		<PackageId>Sienar.Plugins.Identity</PackageId>
+		<Title>Sienar.Plugins.Identity</Title>
+		<PackageVersion>0.1.1</PackageVersion>
 		<PackageReleaseNotes>Initial release</PackageReleaseNotes>
 		<Authors>Christian LeVesque</Authors>
-		<Description>A Sienar plugin to facilitate sending SMTP email via MailKit</Description>
+		<Description>The core Sienar application</Description>
 		<Copyright>Copyright 2024 Christian LeVesque</Copyright>
 		<PackageProjectUrl>https://sienar.io</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/christianlevesque/sienar</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>sienar framework utilities email mailkit</PackageTags>
+		<PackageTags>sienar framework utilities blazor plugin</PackageTags>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
@@ -26,16 +27,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MailKit" Version="4.1.0" />
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference
-			Condition=" '$(Configuration)' != 'Release' "
-			Include="..\..\..\..\plugins\core\src\Sienar.Plugins.Core.Server\Sienar.Plugins.Core.Server.csproj" />
+		<PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
+		<PackageReference Include="MimeMapping" Version="2.0.0" />
+
+		<ProjectReference Condition=" '$(Configuration)' != 'Release' " Include="..\Sienar.Plugins.Core\Sienar.Plugins.Core.csproj" />
 		<PackageReference
 			Condition=" '$(Configuration)' == 'Release' "
-			Include="Sienar.Architecture.Web" Version="0.1.1"/>
+			Include="Sienar.Plugins.Core" Version="0.1.1"/>
 	</ItemGroup>
 
 </Project>
