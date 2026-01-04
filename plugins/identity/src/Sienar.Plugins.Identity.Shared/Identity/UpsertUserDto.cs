@@ -4,7 +4,6 @@
 /// Creates or updates user in the database
 /// </summary>
 [EntityName(Singular = "user", Plural = "users")]
-[RestEndpoint("users")]
 public class UpsertUserDto : IEntity
 {
 	/// <inheritdoc />

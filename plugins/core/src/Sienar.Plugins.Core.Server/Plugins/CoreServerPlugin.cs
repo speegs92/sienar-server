@@ -35,7 +35,6 @@ public class CoreServerPlugin : IPlugin
 			builder
 				.AddPlugin<CoreSecurityPlugin>()
 				.AddPlugin<CoreMvcPlugin>()
-				.AddPlugin<CoreBlazorPlugin>()
 				.AddStartupServices(sp => sp.AddSingleton<MiddlewareProvider>());
 		}
 	}

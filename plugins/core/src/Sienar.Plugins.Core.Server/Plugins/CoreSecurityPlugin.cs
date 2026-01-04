@@ -12,6 +12,7 @@ public class CoreSecurityPlugin : IPlugin
 {
 	private readonly WebApplicationBuilder _builder;
 	private readonly MiddlewareProvider _middlewareProvider;
+	private readonly RoleProvider _roleProvider;
 	private readonly IConfigurer<AuthorizationOptions>? _authorizationConfigurer;
 	private readonly IConfigurer<AuthenticationOptions>? _authenticationConfigurer;
 	private readonly IConfigurer<AuthenticationBuilder>? _authenticationBuilderConfigurer;
@@ -25,6 +26,7 @@ public class CoreSecurityPlugin : IPlugin
 	public CoreSecurityPlugin(
 		WebApplicationBuilder builder,
 		MiddlewareProvider middlewareProvider,
+		RoleProvider roleProvider,
 		IConfigurer<AuthorizationOptions>? authorizationConfigurer = null,
 		IConfigurer<AuthenticationOptions>? authenticationConfigurer = null,
 		IConfigurer<AuthenticationBuilder>? authenticationBuilderConfigurer = null,
@@ -34,6 +36,7 @@ public class CoreSecurityPlugin : IPlugin
 	{
 		_builder = builder;
 		_middlewareProvider = middlewareProvider;
+		_roleProvider = roleProvider;
 		_authorizationConfigurer = authorizationConfigurer;
 		_authenticationConfigurer = authenticationConfigurer;
 		_authenticationBuilderConfigurer = authenticationBuilderConfigurer;
@@ -55,6 +58,8 @@ public class CoreSecurityPlugin : IPlugin
 		_middlewareProvider.AddWithNormalPriority(app => app.UseRouting());
 
 		ConfigureAntiforgery();
+
+		_roleProvider.Add(Roles.Admin);
 	}
 
 	private void ConfigureAuth()

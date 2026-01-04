@@ -1,6 +1,5 @@
 namespace Sienar.Identity.Requests;
 
-[RestEndpoint("account/login", HttpMethods.Post)]
 public class LoginRequest : Honeypot, IRequest
 {
 	[Required]

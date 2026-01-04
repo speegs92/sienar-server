@@ -4,7 +4,6 @@
 /// A reason why a user might be locked out
 /// </summary>
 [EntityName(Singular = "lockout reason", Plural = "lockout reasons")]
-[RestEndpoint("lockout-reasons")]
 public class LockoutReasonDto : IEntity
 {
 	/// <inheritdoc />

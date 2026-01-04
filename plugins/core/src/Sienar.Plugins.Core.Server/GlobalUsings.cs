@@ -11,4 +11,3 @@ global using Sienar.Data;
 global using Sienar.Extensions;
 global using Sienar.Infrastructure;
 global using Sienar.Security;
-global using Sienar.Ui;

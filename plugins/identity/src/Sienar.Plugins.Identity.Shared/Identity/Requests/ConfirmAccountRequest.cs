@@ -1,6 +1,5 @@
 namespace Sienar.Identity.Requests;
 
-[RestEndpoint("account/confirm", HttpMethods.Post)]
 public class ConfirmAccountRequest : IRequest
 {
 	[Required]

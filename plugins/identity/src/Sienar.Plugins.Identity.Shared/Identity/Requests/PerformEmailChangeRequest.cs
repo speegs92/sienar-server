@@ -1,6 +1,5 @@
 namespace Sienar.Identity.Requests;
 
-[RestEndpoint("account/email", HttpMethods.Patch)]
 public class PerformEmailChangeRequest : IRequest
 {
 	[Required]

@@ -1,6 +1,5 @@
 ﻿namespace Sienar.Identity.Requests;
 
-[RestEndpoint("account", HttpMethods.Delete)]
 public class DeleteAccountRequest : IRequest
 {
 	[Required]

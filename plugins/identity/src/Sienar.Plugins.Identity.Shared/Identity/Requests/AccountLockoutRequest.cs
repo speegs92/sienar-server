@@ -3,7 +3,6 @@
 /// <summary>
 /// Represents a request to view an account's lockout reasons
 /// </summary>
-[RestEndpoint("account/lockout-reasons", HttpMethods.Get)]
 public class AccountLockoutRequest : IRequest
 {
 	/// <summary>

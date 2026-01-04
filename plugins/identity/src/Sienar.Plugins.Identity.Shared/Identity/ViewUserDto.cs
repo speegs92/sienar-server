@@ -4,8 +4,6 @@
 /// Reads a user from the database
 /// </summary>
 [EntityName(Singular = "user", Plural = "users")]
-[RestEndpoint("users")]
-[DisplayProperty(nameof(Username))]
 public class ViewUserDto : IEntity
 {
 	/// <inheritdoc />
