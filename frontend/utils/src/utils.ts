@@ -38,3 +38,32 @@ export function getDateString(
 		? parsedString.replace(' at', '')
 		: parsedString;
 }
+
+/**
+ * Retrieves a JavaScript-accessible cookie value by name
+ *
+ * @param name The name of the cookie to retrieve
+ * @returns The value of the cookie if set, else <code>undefined</code>
+ */
+export function getCookie(name: string): string|undefined {
+	// The cookie string separates cookies by a semicolon
+	const cookies = document.cookie.split(';');
+
+	for (let cookie of cookies) {
+		// Cookies are stored as name=value pairs
+		const parts = cookie.split('=');
+
+		// The name is the first part, trimmed
+		const cookieName = parts.shift()!.trim();
+
+		if (cookieName === name) {
+			// The value is the rest of the parts joined by a '=' character, trimmed
+			// The join is performed in case a '=' character was found in the value of the cookie
+			// in which case the parts constant will have length > 1
+			return parts.join('=').trim();
+		}
+	}
+
+	// The cookie isn't set
+	return undefined;
+}
