@@ -67,3 +67,18 @@ export function getCookie(name: string): string|undefined {
 	// The cookie isn't set
 	return undefined;
 }
+
+/**
+ * A base type containing the fields required by all Sienar entities
+ */
+export type EntityBase = {
+	/**
+	 * The primary key of the entity
+	 */
+	id: number
+
+	/**
+	 * A unique value that ensures the entity is not modified concurrently
+	 */
+	concurrencyStamp: string
+}
