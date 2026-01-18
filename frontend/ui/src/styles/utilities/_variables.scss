@@ -1,6 +1,23 @@
 @use 'sass:color';
 @use 'sass:map';
 
+// region Spacing
+
+// Thanks, Bootstrap
+$breakpoints: (
+	sm: 576px,
+	md: 768px,
+	lg: 992px,
+	xl: 1200px,
+	xxl: 1400px
+) !default;
+
+// There are 16 spacers. This is non-negotiable, as changing this value dynamically can break layouts in plugins which rely on this value's stability
+$spacer-count: 16;
+$spacer-size: 4px !default;
+
+// endregion
+
 // region Colors
 
 $primary: rgb(89, 74, 226) !default;
