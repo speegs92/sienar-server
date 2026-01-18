@@ -1,0 +1,56 @@
+@use 'variables';
+
+$flex-direction-values: row, row-reverse, column, column-reverse;
+$justify-values: (
+	start: 'start',
+	end: 'end',
+	center: 'center',
+	between: 'space-between',
+	around: 'space-around',
+	evenly: 'space-evenly'
+);
+$align-values: start, end, center, baseline, stretch;
+$wrap-values: wrap, nowrap, wrap-reverse;
+
+@mixin create-flex-utilities($infix) {
+	@each $direction in $flex-direction-values {
+		.flex#{$infix}-#{$direction} {
+			flex-direction: #{$direction};
+		}
+	}
+
+	@each $key, $value in $justify-values {
+		.justify-content#{$infix}-#{$key} {
+			justify-content: #{$value};
+		}
+	}
+
+	@each $value in $align-values {
+		.align-items#{$infix}-#{$value}{
+			align-items: #{$value};
+		}
+		.align-self#{$infix}-#{$value} {
+			align-self: #{$value};
+		}
+	}
+
+	@each $value in $wrap-values {
+		.flex#{$infix}-#{$value} {
+			flex-wrap: #{$value};
+		}
+	}
+
+	@for $level from 0 through variables.$spacer-count {
+		.flex#{$infix}-gap-#{$level} {
+			gap: var(--spacer-#{$level});
+		}
+	}
+}
+
+@include create-flex-utilities('');
+
+@each $breakpoint, $width in variables.$breakpoints {
+	@media (min-width: #{$width}) {
+		@include create-flex-utilities('-#{$breakpoint}');
+	}
+}
