@@ -1,0 +1,38 @@
+@use 'sass:math';
+@use 'variables';
+
+$columns: 12;
+
+.row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 100%;
+	max-width: 100%;
+}
+
+@mixin create-columns($breakpoint-infix) {
+	.col#{$breakpoint-infix} {
+		flex: 1 0 0;
+	}
+
+	.col#{$breakpoint-infix}-auto {
+		flex: 0 0 auto;
+		width: auto;
+	}
+
+	@for $i from 0 through $columns {
+		.col#{$breakpoint-infix}-#{$i} {
+			flex: 0 0 auto;
+			width: #{math.div($i, $columns) * 100}#{'%'};
+		}
+	}
+}
+
+@include create-columns('');
+
+@each $breakpoint, $width in variables.$breakpoints {
+	@media (min-width: $width) {
+		@include create-columns('-#{$breakpoint}');
+	}
+}
