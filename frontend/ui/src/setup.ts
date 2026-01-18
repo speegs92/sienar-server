@@ -17,12 +17,14 @@ export default function sienarUiSetup() {
 function registerComponents(app: App<Element>) {
 	app
 		.component('Container', components.Container)
-		.component('Icon', components.Icon);
+		.component('Icon', components.Icon)
+		.component('Stack', components.Stack);
 }
 
 declare module 'vue' {
 	export interface GlobalComponents {
 		Container: typeof components.Container;
 		Icon: typeof components.Icon;
+		Stack: typeof components.Stack;
 	}
 }
