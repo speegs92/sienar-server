@@ -19,6 +19,7 @@ function registerComponents(app: App<Element>) {
 		.component('Column', components.Column)
 		.component('Container', components.Container)
 		.component('Icon', components.Icon)
+		.component('Row', components.Row)
 		.component('Stack', components.Stack);
 }
 
@@ -27,6 +28,7 @@ declare module 'vue' {
 		Column: typeof components.Column;
 		Container: typeof components.Container;
 		Icon: typeof components.Icon;
+		Row: typeof components.Row;
 		Stack: typeof components.Stack;
 	}
 }
