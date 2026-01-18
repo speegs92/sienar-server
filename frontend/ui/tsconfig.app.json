@@ -14,18 +14,14 @@
 		"noUncheckedSideEffectImports": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"],
+			"@ui/*": ["./src/*"],
 			"@sienar/utils": ["../utils/src/index.ts"],
-			"@utils/*": ["../utils/src/*"],
-			"@sienar/ui": ["../ui/src/index.ts"],
-			"@ui/*": ["../ui/src/*"]
+			"@utils/*": ["../utils/src/*"]
 		}
 	},
 	"include": [
 		"src/**/*.ts",
 		"src/**/*.vue",
-		"../ui/src/**/*.ts",
-		"../ui/src/**/*.vue",
 		"../utils/src/**/*.ts",
 		"../utils/src/**/*.vue"
 	]

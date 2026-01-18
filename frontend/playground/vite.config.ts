@@ -8,7 +8,9 @@ export default defineConfig({
 		alias: {
 			'@': resolve(__dirname, './src'),
 			'@sienar/utils': resolve(__dirname, '../utils/src'),
-			'@utils': resolve(__dirname, '../utils/src')
+			'@utils': resolve(__dirname, '../utils/src'),
+			'@sienar/ui': resolve(__dirname, '../ui/src'),
+			'@ui': resolve(__dirname, '../ui/src')
 		}
 	},
 	plugins: [
