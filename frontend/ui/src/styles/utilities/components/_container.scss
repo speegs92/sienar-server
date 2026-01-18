@@ -1,0 +1,23 @@
+@use '../variables';
+
+.container {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+
+	&#{&}--left,
+	&#{&}--center {
+		margin-right: auto;
+	}
+
+	&#{&}--right,
+	&#{&}--center {
+		margin-left: auto;
+	}
+
+	@each $bp, $size in variables.$breakpoints {
+		&#{&}--#{$bp} {
+			width: $size;
+		}
+	}
+}
