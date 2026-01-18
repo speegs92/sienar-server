@@ -1,3 +1,5 @@
+export * from './Column.vue';
+export { default as Column } from './Column.vue';
 export * from './Container.vue';
 export { default as Container } from './Container.vue';
 export * from './Icon.vue';

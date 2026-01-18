@@ -16,6 +16,7 @@ export default function sienarUiSetup() {
 
 function registerComponents(app: App<Element>) {
 	app
+		.component('Column', components.Column)
 		.component('Container', components.Container)
 		.component('Icon', components.Icon)
 		.component('Stack', components.Stack);
@@ -23,6 +24,7 @@ function registerComponents(app: App<Element>) {
 
 declare module 'vue' {
 	export interface GlobalComponents {
+		Column: typeof components.Column;
 		Container: typeof components.Container;
 		Icon: typeof components.Icon;
 		Stack: typeof components.Stack;

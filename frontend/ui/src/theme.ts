@@ -67,6 +67,23 @@ export type Breakpoint =
 	| 'xxl';
 
 /**
+ * Column values
+ */
+export type ColumnSize =
+	| '1'
+	| '2'
+	| '3'
+	| '4'
+	| '5'
+	| '6'
+	| '7'
+	| '8'
+	| '9'
+	| '10'
+	| '11'
+	| '12'
+
+/**
  * HTML5 semantic block tag names
  *
  * This excludes standard HTML elements such as <code>&lt;ul&gt;</code> or <code>&lt;p&gt;</code>. <code>SemanticBlockContainer</code> is intended only to describe HTML tags which are functionally identical to <code>&lt;div&gt;</code> but which provide additional semantic meaning.
