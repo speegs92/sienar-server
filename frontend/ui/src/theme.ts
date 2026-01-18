@@ -1,5 +1,5 @@
 /**
- * Represents one of the theme colors supported by Sienar UI
+ * The theme colors supported by Sienar UI
  */
 export type Color =
 	| 'primary'
@@ -13,9 +13,27 @@ export type Color =
 	| 'dark';
 
 /**
- * Represents one of the color solidity variants supported by Sienar UI
+ * The color solidity variants supported by Sienar UI
  */
 export type Variant =
 	| 'solid'
 	| 'outlined'
 	| 'text';
+
+/**
+ * Horizontal aligment
+ */
+export type Alignment =
+	| 'left'
+	| 'right'
+	| 'center';
+
+/**
+ * Width breakpoints
+ */
+export type Breakpoint =
+	| 'sm'
+	| 'md'
+	| 'lg'
+	| 'xl'
+	| 'xxl';
