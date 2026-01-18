@@ -15,4 +15,15 @@
 			}
 		}
 	}
+
+	--spacer-size: #{variables.$spacer-size};
+
+	@for $i from 0 through variables.$spacer-count {
+		@if $i > 0 {
+			--spacer-#{$i}: calc(var(--spacer-size) * #{$i});
+			--spacer-n#{$i}: calc(var(--spacer-size) * -#{$i});
+		} @else {
+			--spacer-0: 0;
+		}
+	}
 }
