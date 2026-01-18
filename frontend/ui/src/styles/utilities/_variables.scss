@@ -94,3 +94,19 @@ $transparent-background-opacity: .25 !default;
 $flex-grow-shrink-levels: 5 !default;
 
 // endregion
+
+// region Sizing
+
+$width-height-percentages: () !default;
+
+$default-width-height-percentages: (
+	0: '0',
+	25: '25%',
+	50: '50%',
+	75: '75%',
+	100: '100%'
+);
+
+$width-height-percentages: map.merge($default-width-height-percentages, $width-height-percentages);
+
+// endregion
