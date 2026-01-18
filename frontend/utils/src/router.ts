@@ -68,35 +68,6 @@ export function createRouter(): Router {
 }
 
 /**
- * Converts Sienar {@link Route} objects into Vue Router {@link RouteRecordRaw} objects
- *
- * @param sienarRoutes
- */
-export function convertSienarRoutesToVueRoutes(
-	sienarRoutes: Route[]
-): RouteRecordRaw[] {
-	const vueRoutes: RouteRecordRaw[] = [];
-
-	for (let route of sienarRoutes) {
-		const vueRoute: RouteRecordRaw = {
-			path: typeof route.path === 'string'
-				? route.path
-				: inject(route.path),
-			component: typeof route.component === 'symbol'
-				? inject(route.component)
-				: route.component,
-			children: route.children
-				? convertSienarRoutesToVueRoutes(route.children)
-				: undefined
-		};
-
-		vueRoutes.push(vueRoute);
-	}
-
-	return vueRoutes;
-}
-
-/**
  * A custom composable that navigates to the given URL, whether it is a string URL or an injection key
  */
 export function useNavigate() {
