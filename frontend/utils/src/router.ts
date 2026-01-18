@@ -137,7 +137,7 @@ export type Route = {
 	/**
 	 * The component to render for the route
 	 */
-	component: Component | InjectionKey<Component>;
+	component?: Component | InjectionKey<Component>;
 
 	/**
 	 * The child routes of the route
