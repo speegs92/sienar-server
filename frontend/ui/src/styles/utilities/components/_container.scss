@@ -16,7 +16,7 @@
 
 	@each $bp, $size in variables.$breakpoints {
 		&#{&}--#{$bp} {
-			width: $size;
+			max-width: $size;
 		}
 	}
 }
