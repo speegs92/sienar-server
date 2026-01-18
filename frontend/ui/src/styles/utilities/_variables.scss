@@ -29,6 +29,8 @@ $warning: rgb(255, 152, 0) !default;
 $error: rgb(242, 28, 13) !default;
 $light: rgb(194, 194, 194) !default;
 $dark: rgb(66, 66, 66) !default;
+$white: rgb(255, 255, 255) !default;
+$black: rgb(0, 0, 0) !default;
 
 $theme-colors: () !default;
 
@@ -80,6 +82,12 @@ $default-theme-colors: (
 		default: $dark,
 		lighten: color.scale($dark, $lightness: $lighten-lightness),
 		darken: color.scale($dark, $lightness: $darken-lightness)
+	),
+	white: (
+		default: $white
+	),
+	black: (
+		default: $black
 	)
 );
 

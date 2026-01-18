@@ -10,7 +10,9 @@ export type Color =
 	| 'warning'
 	| 'error'
 	| 'light'
-	| 'dark';
+	| 'dark'
+	| 'white'
+	| 'black';
 
 /**
  * The color solidity variants supported by Sienar UI
