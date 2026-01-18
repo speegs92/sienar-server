@@ -1,0 +1,20 @@
+@use 'sass:map';
+@use 'variables';
+
+$display-utilities: block, inline, inline-block, flex, inline-flex, grid, inline-grid, none, contents !default;
+
+@mixin create-utilities($breakpoint-infix) {
+	@each $display in $display-utilities {
+		.d#{$breakpoint-infix}-#{$display} {
+			display: $display;
+		}
+	}
+}
+
+@include create-utilities('');
+
+@each $breakpoint, $width in variables.$breakpoints {
+	@media (min-width: #{$width}) {
+		@include create-utilities('-#{$breakpoint}');
+	}
+}
