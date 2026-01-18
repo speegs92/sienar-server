@@ -45,6 +45,16 @@ $wrap-values: wrap, nowrap, wrap-reverse;
 			gap: var(--spacer-#{$level});
 		}
 	}
+
+	@for $level from 0 through variables.$flex-grow-shrink-levels {
+		.flex#{$infix}-grow-#{$level} {
+			flex-grow: #{$level};
+		}
+
+		.flex-#{$infix}-shrink-#{$level} {
+			flex-shrink: #{$level};
+		}
+	}
 }
 
 @include create-flex-utilities('');

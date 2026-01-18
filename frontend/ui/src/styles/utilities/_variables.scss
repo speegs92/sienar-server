@@ -88,3 +88,9 @@ $theme-colors: map.merge($default-theme-colors, $theme-colors);
 $transparent-background-opacity: .25 !default;
 
 // endregion
+
+// region Flex
+
+$flex-grow-shrink-levels: 5 !default;
+
+// endregion
