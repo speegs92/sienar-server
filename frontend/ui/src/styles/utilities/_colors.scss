@@ -1,0 +1,24 @@
+@use 'sass:map';
+@use 'variables';
+
+@each $color, $shades in variables.$theme-colors {
+	@each $name in map.keys($shades) {
+		@if $name == 'default' {
+			.text-#{$color} {
+				color: var(--color-#{$color});
+			}
+
+			.bg-#{$color} {
+				background-color: var(--color-#{$color});
+			}
+		} @else {
+			.text-#{$color}-#{$name} {
+				color: var(--color-#{$color}-#{$name});
+			}
+
+			.bg-#{$color}-#{$name} {
+				background-color: var(--color-#{$color}-#{$name});
+			}
+		}
+	}
+}
