@@ -1,0 +1,73 @@
+@use 'sass:color';
+@use 'sass:map';
+
+// region Colors
+
+$primary: rgb(89, 74, 226) !default;
+$secondary: rgb(255, 64, 129) !default;
+$tertiary: rgb(30, 200, 165) !default;
+$success: rgb(0, 200, 83) !default;
+$info: rgb(33, 150, 243) !default;
+$warning: rgb(255, 152, 0) !default;
+$error: rgb(242, 28, 13) !default;
+$light: rgb(194, 194, 194) !default;
+$dark: rgb(66, 66, 66) !default;
+
+$theme-colors: () !default;
+
+$lighten-lightness: 30%;
+$darken-lightness: -20%;
+
+$default-theme-colors: (
+	primary: (
+		default: $primary,
+		lighten: color.scale($primary, $lightness: $lighten-lightness),
+		darken: color.scale($primary, $lightness: $darken-lightness)
+	),
+	secondary: (
+		default: $secondary,
+		lighten: color.scale($secondary, $lightness: $lighten-lightness),
+		darken: color.scale($secondary, $lightness: $darken-lightness)
+	),
+	tertiary: (
+		default: $tertiary,
+		lighten: color.scale($tertiary, $lightness: $lighten-lightness),
+		darken: color.scale($tertiary, $lightness: $darken-lightness)
+	),
+	success: (
+		default: $success,
+		lighten: color.scale($success, $lightness: $lighten-lightness),
+		darken: color.scale($success, $lightness: $darken-lightness)
+	),
+	info: (
+		default: $info,
+		lighten: color.scale($info, $lightness: $lighten-lightness),
+		darken: color.scale($info, $lightness: $darken-lightness)
+	),
+	warning: (
+		default: $warning,
+		lighten: color.scale($warning, $lightness: $lighten-lightness),
+		darken: color.scale($warning, $lightness: $darken-lightness)
+	),
+	error: (
+		default: $error,
+		lighten: color.scale($error, $lightness: $lighten-lightness),
+		darken: color.scale($error, $lightness: $darken-lightness)
+	),
+	light: (
+		default: $light,
+		lighten: color.scale($light, $lightness: $lighten-lightness),
+		darken: color.scale($light, $lightness: $darken-lightness)
+	),
+	dark: (
+		default: $dark,
+		lighten: color.scale($dark, $lightness: $lighten-lightness),
+		darken: color.scale($dark, $lightness: $darken-lightness)
+	)
+);
+
+$theme-colors: map.merge($default-theme-colors, $theme-colors);
+
+$transparent-background-opacity: .25 !default;
+
+// endregion

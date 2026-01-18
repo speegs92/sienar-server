@@ -1,0 +1,18 @@
+@use 'variables';
+
+:root {
+	@each $color, $shades in variables.$theme-colors {
+		@each $shadeName, $shadeValue in $shades {
+			$solid-value: $shadeValue;
+			$transparent-value: rgba($shadeValue, variables.$transparent-background-opacity);
+
+			@if $shadeName == 'default' {
+				--color-#{$color}: #{$shadeValue};
+				--color-#{$color}-transparent: #{$transparent-value};
+			} @else {
+				--color-#{$color}-#{$shadeName}: #{$shadeValue};
+				--color-#{$color}-#{$shadeName}-transparent: #{$transparent-value};
+			}
+		}
+	}
+}
