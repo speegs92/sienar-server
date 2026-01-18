@@ -21,8 +21,6 @@
 	},
 	"include": [
 		"src/**/*.ts",
-		"src/**/*.vue",
-		"../utils/src/**/*.ts",
-		"../utils/src/**/*.vue"
+		"src/**/*.vue"
 	]
 }
