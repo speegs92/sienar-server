@@ -1,6 +1,12 @@
 import { addAppConfigurator } from '@sienar/utils';
 import * as components from '@ui/components/index.ts';
+
 import '@ui/styles/utilities/index.scss';
+import '@mdi/font/fonts/materialdesignicons-webfont.eot'
+import '@mdi/font/fonts/materialdesignicons-webfont.ttf'
+import '@mdi/font/fonts/materialdesignicons-webfont.woff'
+import '@mdi/font/fonts/materialdesignicons-webfont.woff2'
+import '@mdi/font/css/materialdesignicons.min.css';
 
 import type { App } from 'vue';
 
