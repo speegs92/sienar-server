@@ -3,10 +3,18 @@
 
 $display-utilities: block, inline, inline-block, flex, inline-flex, grid, inline-grid, none, contents !default;
 
+$position-utilities: static, relative, absolute, fixed, sticky, inherit, initial, revert, revert-layer, unset;
+
 @mixin create-utilities($breakpoint-infix) {
 	@each $display in $display-utilities {
 		.d#{$breakpoint-infix}-#{$display} {
 			display: $display;
+		}
+	}
+
+	@each $position in $position-utilities {
+		.position#{$breakpoint-infix}-#{$position} {
+			position: #{$position};
 		}
 	}
 }
