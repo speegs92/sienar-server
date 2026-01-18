@@ -86,6 +86,28 @@ export type ColumnSize =
 	| '12'
 
 /**
+ * Spacer values
+ */
+export type Spacer =
+	| '0'
+	| '1'
+	| '2'
+	| '3'
+	| '4'
+	| '5'
+	| '6'
+	| '7'
+	| '8'
+	| '9'
+	| '10'
+	| '11'
+	| '12'
+	| '13'
+	| '14'
+	| '15'
+	| '16';
+
+/**
  * HTML5 semantic block tag names
  *
  * This excludes standard HTML elements such as <code>&lt;ul&gt;</code> or <code>&lt;p&gt;</code>. <code>SemanticBlockContainer</code> is intended only to describe HTML tags which are functionally identical to <code>&lt;div&gt;</code> but which provide additional semantic meaning.
