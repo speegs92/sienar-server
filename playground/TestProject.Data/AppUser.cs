@@ -28,7 +28,7 @@ public class AppUser : ISienarIdentityUser<AppUser>
 	public string NormalizedEmail { get; set; }
 
 	/// <inheritdoc />
-	public List<string> Roles { get; set; }
+	public List<string> Roles { get; set; } = [];
 
 	/// <inheritdoc />
 	public string PasswordHash { get; set; }
@@ -40,10 +40,10 @@ public class AppUser : ISienarIdentityUser<AppUser>
 	public DateTime? LockoutEnd { get; set; }
 
 	/// <inheritdoc />
-	public List<VerificationCode> VerificationCodes { get; set; }
+	public List<VerificationCode> VerificationCodes { get; set; } = [];
 
 	/// <inheritdoc />
-	public List<LockoutReason<AppUser>> LockoutReasons { get; set; }
+	public List<LockoutReason<AppUser>> LockoutReasons { get; set; } = [];
 
 	/// <inheritdoc />
 	public bool EmailConfirmed { get; set; }
