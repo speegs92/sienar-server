@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Sienar.Configuration;
 
@@ -37,6 +38,7 @@ public class DefaultMvcBuilderConfigurer : IConfigurer<IMvcBuilder>
 			.AddJsonOptions(o =>
 			{
 				o.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+				o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower));
 			});
 	}
 }
