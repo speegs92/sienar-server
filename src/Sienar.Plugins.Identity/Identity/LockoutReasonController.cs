@@ -31,14 +31,14 @@ public class LockoutReasonController<T>
 	[HttpPost]
 	[UsedImplicitly]
 	public Task<IActionResult> Create(
-		LockoutReasonDto lockoutReason,
+		[FromForm] LockoutReasonDto lockoutReason,
 		[FromServices] ICreateActionOrchestrator<LockoutReasonDto, LockoutReason<T>> orchestrator)
 		=> orchestrator.Execute(lockoutReason);
 
 	[HttpPut]
 	[UsedImplicitly]
 	public Task<IActionResult> Update(
-		LockoutReasonDto lockoutReason,
+		[FromForm] LockoutReasonDto lockoutReason,
 		[FromServices] IUpdateActionOrchestrator<LockoutReasonDto, LockoutReason<T>> orchestrator)
 		=> orchestrator.Execute(lockoutReason);
 

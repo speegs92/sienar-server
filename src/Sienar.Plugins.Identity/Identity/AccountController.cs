@@ -18,7 +18,7 @@ public class AccountController : ControllerBase
 	[AllowAnonymous]
 	[UsedImplicitly]
 	public Task<IActionResult> Register(
-		RegisterRequest data,
+		[FromForm] RegisterRequest data,
 		[FromServices] IStatusActionOrchestrator<RegisterRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
@@ -31,7 +31,7 @@ public class AccountController : ControllerBase
 	[HttpDelete]
 	[UsedImplicitly]
 	public Task<IActionResult> DeleteAccount(
-		DeleteAccountRequest data,
+		[FromForm] DeleteAccountRequest data,
 		[FromServices] IStatusActionOrchestrator<DeleteAccountRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
@@ -39,7 +39,7 @@ public class AccountController : ControllerBase
 	[AllowAnonymous]
 	[UsedImplicitly]
 	public Task<IActionResult> Confirm(
-		ConfirmAccountRequest data,
+		[FromForm] ConfirmAccountRequest data,
 		[FromServices] IStatusActionOrchestrator<ConfirmAccountRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
@@ -47,14 +47,14 @@ public class AccountController : ControllerBase
 	[AllowAnonymous]
 	[UsedImplicitly]
 	public Task<IActionResult> Login(
-		LoginRequest data,
+		[FromForm] LoginRequest data,
 		[FromServices] IGeneralActionOrchestrator<LoginRequest, LoginResult> orchestrator)
 		=> orchestrator.Execute(data);
 
 	[HttpDelete("login")]
 	[UsedImplicitly]
 	public Task<IActionResult> Logout(
-		LogoutRequest data,
+		[FromForm] LogoutRequest data,
 		[FromServices] IStatusActionOrchestrator<LogoutRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
@@ -62,7 +62,7 @@ public class AccountController : ControllerBase
 	[AllowAnonymous]
 	[UsedImplicitly]
 	public Task<IActionResult> RequestPasswordReset(
-		ForgotPasswordRequest data,
+		[FromForm] ForgotPasswordRequest data,
 		[FromServices] IStatusActionOrchestrator<ForgotPasswordRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
@@ -70,28 +70,28 @@ public class AccountController : ControllerBase
 	[AllowAnonymous]
 	[UsedImplicitly]
 	public Task<IActionResult> PerformPasswordReset(
-		ResetPasswordRequest data,
+		[FromForm] ResetPasswordRequest data,
 		[FromServices] IStatusActionOrchestrator<ResetPasswordRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
 	[HttpPatch("change-password")]
 	[UsedImplicitly]
 	public Task<IActionResult> ChangePassword(
-		ChangePasswordRequest data,
+		[FromForm] ChangePasswordRequest data,
 		[FromServices] IStatusActionOrchestrator<ChangePasswordRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
 	[HttpPost("change-email")]
 	[UsedImplicitly]
 	public Task<IActionResult> ChangeEmail(
-		InitiateEmailChangeRequest data,
+		[FromForm] InitiateEmailChangeRequest data,
 		[FromServices] IStatusActionOrchestrator<InitiateEmailChangeRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
 	[HttpPatch("email")]
 	[UsedImplicitly]
 	public Task<IActionResult> UpdateEmail(
-		PerformEmailChangeRequest data,
+		[FromForm] PerformEmailChangeRequest data,
 		[FromServices] IStatusActionOrchestrator<PerformEmailChangeRequest> orchestrator)
 		=> orchestrator.Execute(data);
 
