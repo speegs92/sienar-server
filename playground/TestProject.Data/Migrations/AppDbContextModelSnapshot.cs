@@ -17,7 +17,7 @@ namespace TestProject.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
 
-            modelBuilder.Entity("LockoutReasonSienarUser", b =>
+            modelBuilder.Entity("AppUserLockoutReason<AppUser>", b =>
                 {
                     b.Property<int>("LockoutReasonsId")
                         .HasColumnType("INTEGER");
@@ -29,10 +29,10 @@ namespace TestProject.Data.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("LockoutReasonSienarUser");
+                    b.ToTable("AppUserLockoutReason<AppUser>");
                 });
 
-            modelBuilder.Entity("Sienar.Identity.LockoutReason", b =>
+            modelBuilder.Entity("Sienar.Identity.LockoutReason<TestProject.Data.AppUser>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +59,37 @@ namespace TestProject.Data.Migrations
                     b.ToTable("LockoutReasons");
                 });
 
-            modelBuilder.Entity("Sienar.Identity.SienarUser", b =>
+            modelBuilder.Entity("Sienar.Identity.VerificationCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("Code")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ConcurrencyStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("VerificationCode");
+                });
+
+            modelBuilder.Entity("TestProject.Data.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -125,45 +155,15 @@ namespace TestProject.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Sienar.Identity.VerificationCode", b =>
+            modelBuilder.Entity("AppUserLockoutReason<AppUser>", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("Code")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ConcurrencyStamp")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("SienarUserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SienarUserId");
-
-                    b.ToTable("VerificationCode");
-                });
-
-            modelBuilder.Entity("LockoutReasonSienarUser", b =>
-                {
-                    b.HasOne("Sienar.Identity.LockoutReason", null)
+                    b.HasOne("Sienar.Identity.LockoutReason<TestProject.Data.AppUser>", null)
                         .WithMany()
                         .HasForeignKey("LockoutReasonsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Sienar.Identity.SienarUser", null)
+                    b.HasOne("TestProject.Data.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -172,12 +172,12 @@ namespace TestProject.Data.Migrations
 
             modelBuilder.Entity("Sienar.Identity.VerificationCode", b =>
                 {
-                    b.HasOne("Sienar.Identity.SienarUser", null)
+                    b.HasOne("TestProject.Data.AppUser", null)
                         .WithMany("VerificationCodes")
-                        .HasForeignKey("SienarUserId");
+                        .HasForeignKey("AppUserId");
                 });
 
-            modelBuilder.Entity("Sienar.Identity.SienarUser", b =>
+            modelBuilder.Entity("TestProject.Data.AppUser", b =>
                 {
                     b.Navigation("VerificationCodes");
                 });
