@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
+using System.Net;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -15,8 +16,21 @@ public class DefaultAuthenticationBuilderConfigurer
 			CookieAuthenticationDefaults.AuthenticationScheme,
 			o =>
 			{
-				o.LoginPath = DashboardUrls.Account.Login;
-				o.AccessDeniedPath = DashboardUrls.Account.Forbidden;
+				o.LoginPath = null;
+				o.AccessDeniedPath = null;
+				o.LogoutPath = null;
+
+				o.Events.OnRedirectToLogin = ctx =>
+				{
+					ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+					return Task.CompletedTask;
+				};
+
+				o.Events.OnRedirectToAccessDenied = ctx =>
+				{
+					ctx.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+					return Task.CompletedTask;
+				};
 			});
 	}
 }
