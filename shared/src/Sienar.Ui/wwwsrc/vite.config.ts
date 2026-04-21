@@ -21,5 +21,11 @@ export default defineConfig({
 	},
 	esbuild: {
 		minifyIdentifiers: false
+	},
+	resolve: {
+		alias: {
+			'@styles': resolve(__dirname, './styles'),
+			'@themes': resolve(__dirname, './styles/themes')
+		}
 	}
 });
