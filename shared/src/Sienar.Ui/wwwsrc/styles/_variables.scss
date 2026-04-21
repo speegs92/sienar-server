@@ -85,3 +85,9 @@ $default-theme-colors: (
 $theme-colors: map.merge($default-theme-colors, $theme-colors);
 
 // endregion
+
+// region Flex
+
+$flex-grow-shrink-levels: 5 !default;
+
+// endregion

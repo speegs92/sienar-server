@@ -1,20 +1,19 @@
 ﻿@use 'sass:map';
-@use '../variables';
+@use '@styles/mixins';
 
 $display-utilities: block, inline, inline-block, flex, inline-flex, grid, inline-grid, none, contents !default;
+$position-utilities: static, relative, absolute, fixed, sticky, inherit, initial, revert, revert-layer, unset !default;
 
-@mixin create-utilities($breakpoint-infix) {
+@include mixins.responsive-utility using ($infix) {
 	@each $display in $display-utilities {
-		.d#{$breakpoint-infix}-#{$display} {
+		.d#{$infix}-#{$display} {
 			display: $display;
 		}
 	}
-}
 
-@include create-utilities('');
-
-@each $breakpoint, $width in variables.$breakpoints {
-	@media (min-width: #{$width}) {
-		@include create-utilities('-#{$breakpoint}');
+	@each $position in $position-utilities {
+		.position#{$infix}-#{$position} {
+			position: #{$position};
+		}
 	}
 }

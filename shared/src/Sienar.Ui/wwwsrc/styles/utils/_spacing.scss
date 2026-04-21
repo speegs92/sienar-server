@@ -1,10 +1,8 @@
 ﻿@use 'sass:map';
-@use '../variables';
+@use '@styles/variables';
+@use '@styles/mixins';
 
-$breakpoints: ('': 0);
-$breakpoints: map.merge($breakpoints, variables.$breakpoints);
-
-@mixin create-sizing-utils($infix) {
+@include mixins.responsive-utility using ($infix) {
 	@for $level from 0 through variables.$spacer-count {
 		$size: var(--spacer-#{$level});
 		$negative-size: var(--spacer-n#{$level});
@@ -77,15 +75,5 @@ $breakpoints: map.merge($breakpoints, variables.$breakpoints);
 	}
 	.my#{$infix}-auto, .mb#{$infix}-auto {
 		margin-bottom: auto;
-	}
-}
-
-@each $breakpoint, $width in $breakpoints {
-	@if $breakpoint != '' {
-		@media (min-width: $width) {
-			@include create-sizing-utils('-#{$breakpoint}');
-		}
-	} @else {
-		@include create-sizing-utils('');
 	}
 }

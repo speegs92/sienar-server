@@ -1,0 +1,12 @@
+﻿@use 'variables';
+
+/// Outputs the given SCSS content as a breakpoint-aware utility
+@mixin responsive-utility {
+	@content('');
+
+	@each $breakpoint, $width in variables.$breakpoints {
+		@media (min-width: #{$width}) {
+			@content('-#{$breakpoint}');
+		}
+	}
+}
