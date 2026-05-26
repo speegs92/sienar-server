@@ -46,7 +46,8 @@ public class CoreClientPlugin : IPlugin
 			services
 				.AddSingleton(_sp.GetRequiredService<GlobalComponentProvider>())
 				.AddSingleton(_sp.GetRequiredService<ComponentProvider>())
-				.AddSingleton(_sp.GetRequiredService<RoutableAssemblyProvider>());
+				.AddSingleton(_sp.GetRequiredService<RoutableAssemblyProvider>())
+				.AddSingleton(_sp.GetRequiredService<LayoutProvider>());
 
 			if (_adapter.ApplicationType is not Client)
 			{
@@ -82,6 +83,7 @@ public class CoreClientPlugin : IPlugin
 				sp.TryAddSingleton<GlobalComponentProvider>();
 				sp.TryAddSingleton<ComponentProvider>();
 				sp.TryAddSingleton<RoutableAssemblyProvider>();
+				sp.TryAddSingleton<LayoutProvider>();
 			});
 		}
 	}
