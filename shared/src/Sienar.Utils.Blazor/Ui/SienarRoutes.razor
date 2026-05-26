@@ -10,13 +10,9 @@
 		AppAssembly="@_rootAssembly"
 		AdditionalAssemblies="@_assemblies">
 		<Found Context="routeData">
-			<AuthorizeRouteView
-				RouteData="@routeData"
-				DefaultLayout="@ComponentProvider.DefaultLayout">
-				<NotAuthorized>
-					<DynamicComponent Type="@ComponentProvider.UnauthorizedView"></DynamicComponent>
-				</NotAuthorized>
-			</AuthorizeRouteView>
+			<CascadingValue Value="@routeData">
+				<SienarFound/>
+			</CascadingValue>
 		</Found>
 		<NotFound>
 			<OptionalComponent Type="@ComponentProvider.NotFoundView"/>
@@ -24,11 +20,11 @@
 	</Router>
 </CascadingAuthenticationState>
 
-
 @code {
 
-	private Assembly? _rootAssembly;
-	private List<Assembly>? _assemblies;
+	private Assembly _rootAssembly = null!;
+	private List<Assembly> _assemblies = null!;
+	private Dictionary<Enum, Type> _layoutCache = new();
 
 	/// <inheritdoc />
 	protected override void OnInitialized()
