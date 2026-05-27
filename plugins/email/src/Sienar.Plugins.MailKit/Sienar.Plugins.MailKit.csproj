@@ -33,9 +33,6 @@
 		<ProjectReference
 			Condition=" '$(Configuration)' != 'Release' "
 			Include="..\..\..\..\plugins\core\src\Sienar.Plugins.Core.Server\Sienar.Plugins.Core.Server.csproj" />
-		<PackageReference
-			Condition=" '$(Configuration)' == 'Release' "
-			Include="Sienar.Architecture.Web" Version="0.1.1"/>
 	</ItemGroup>
 
 </Project>

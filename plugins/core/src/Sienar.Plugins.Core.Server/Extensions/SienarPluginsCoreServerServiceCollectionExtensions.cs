@@ -1,9 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Sienar.Extensions;
 
-public static class SienarEfServiceCollectionExtensions
+/// <summary>
+/// Contains <see cref="IServiceCollection"/> extension methods used by the <c>Sienar.Plugins.Core.Server</c> assembly
+/// </summary>
+public static class SienarPluginsCoreServerServiceCollectionExtensions
 {
 	/// <summary>
 	/// Registers a <see cref="DbContext"/> as an <see cref="IDbContext"/>

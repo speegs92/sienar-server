@@ -6,8 +6,8 @@
 		<RootNamespace>Sienar</RootNamespace>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-		<PackageId>Sienar.Architecture.Web</PackageId>
-		<Title>Sienar.Architecture.Web</Title>
+		<PackageId>Sienar.Plugins.Core.Server</PackageId>
+		<Title>Sienar.Plugins.Core.Server</Title>
 		<PackageVersion>0.1.1</PackageVersion>
 		<PackageReleaseNotes>Initial release</PackageReleaseNotes>
 		<Authors>Christian LeVesque</Authors>
@@ -32,6 +32,7 @@
 	<ItemGroup>
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
 
 		<ProjectReference
 			Condition=" '$(Configuration)' != 'Release' "
@@ -45,12 +46,6 @@
 		<PackageReference
 			Condition=" '$(Configuration)' == 'Release' "
 			Include="Sienar.Utils.Blazor" Version="0.1.0"/>
-		<ProjectReference
-			Condition=" '$(Configuration)' != 'Release' "
-			Include="..\..\..\..\architecture\src\Sienar.Architecture.EntityFramework\Sienar.Architecture.EntityFramework.csproj"/>
-		<PackageReference
-			Condition=" '$(Configuration)' == 'Release' "
-			Include="Sienar.Architecture.EntityFramework" Version="0.1.0"/>
 	</ItemGroup>
 
 </Project>
