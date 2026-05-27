@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Sienar.Extensions;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// Refreshes the application CSRF token

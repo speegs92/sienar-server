@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.JSInterop;
-using Sienar.Data;
+﻿using Microsoft.JSInterop;
 using Sienar.Extensions;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member

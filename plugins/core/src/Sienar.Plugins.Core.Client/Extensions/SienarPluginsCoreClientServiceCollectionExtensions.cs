@@ -1,11 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Sienar.Configuration;
 
 namespace Sienar.Extensions;
 
-public static class SienarRestServiceCollectionExtensions
+/// <summary>
+/// Contains <see cref="IServiceCollection"/> extension methods used by the <c>Sienar.Plugins.Core.Client</c> assembly
+/// </summary>
+public static class SienarPluginsCoreClientServiceCollectionExtensions
 {
 	/// <summary>
 	/// Adds the necessary services to use entities stored behind a REST API

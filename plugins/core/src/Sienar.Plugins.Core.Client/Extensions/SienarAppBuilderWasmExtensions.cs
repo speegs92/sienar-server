@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Sienar.Infrastructure;
 
 namespace Sienar.Extensions;
 

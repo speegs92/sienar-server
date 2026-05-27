@@ -28,6 +28,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0"/>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.0"/>
+		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
 
 		<ProjectReference
 			Condition=" '$(Configuration)' != 'Release' "
@@ -41,12 +42,6 @@
 		<PackageReference
 			Condition=" '$(Configuration)' == 'Release' "
 			Include="Sienar.Utils.Blazor" Version="0.1.0"/>
-		<ProjectReference
-			Condition=" '$(Configuration)' != 'Release' "
-			Include="..\..\..\..\architecture\src\Sienar.Architecture.Rest\Sienar.Architecture.Rest.csproj"/>
-		<PackageReference
-			Condition=" '$(Configuration)' == 'Release' "
-			Include="Sienar.Architecture.Rest" Version="0.1.0"/>
 	</ItemGroup>
 
 </Project>

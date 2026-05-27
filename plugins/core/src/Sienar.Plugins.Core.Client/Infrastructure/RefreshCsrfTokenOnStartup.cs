@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Sienar.Data;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// Ensures that the application has a valid CSRF token on startup by calling the CSRF endpoint in the Sienar REST API
