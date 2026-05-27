@@ -32,6 +32,22 @@ public static class SienarUtilsServiceCollectionExtensions
 	}
 
 	/// <summary>
+	/// Adds Sienar Blazor utilities to the DI contaziner
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddSienarBlazorUtilities(this IServiceCollection self)
+	{
+		self.TryAddScoped<SienarAuthenticationStateProvider>();
+		self.TryAddScoped<AuthenticationStateProvider>(
+			sp => sp.GetRequiredService<SienarAuthenticationStateProvider>());
+		self.TryAddScoped<IDelegateHandler, DefaultDelegateHandler>();
+		self.TryAddScoped<IScheduler, DefaultScheduler>();
+
+		return self;
+	}
+
+	/// <summary>
 	/// Checks if a <c>TOptions</c> has already been configured, and if not, adds the supplied default configuration
 	/// </summary>
 	/// <param name="self">the service collection</param>
