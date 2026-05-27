@@ -13,7 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\plugins\identity\src\Sienar.Plugins.Identity.Server\Sienar.Plugins.Identity.Server.csproj"/>
+		<ProjectReference Include="..\..\src\Sienar.Plugins.Identity.Server\Sienar.Plugins.Identity.Server.csproj"/>
 	</ItemGroup>
 
 </Project>
