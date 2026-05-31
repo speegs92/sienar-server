@@ -8,7 +8,7 @@ public partial class DashboardLayoutBase
 	/// <summary>
 	/// The menu names to render with this layout
 	/// </summary>
-	protected Enum[] MenuNames = [];
+	protected string[] MenuNames = [];
 
 	/// <summary>
 	/// The type of the current layout

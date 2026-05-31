@@ -5,8 +5,8 @@ public class DashboardLayout : DashboardLayoutBase
 	public DashboardLayout()
 	{
 		MenuNames = [
-			SienarMenus.Main,
-			SienarMenus.Info
+			IdentityMenus.Main,
+			IdentityMenus.Info
 		];
 		LayoutType = typeof(DashboardLayout);
 	}

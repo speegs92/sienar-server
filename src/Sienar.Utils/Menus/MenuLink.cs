@@ -49,7 +49,7 @@ public class MenuLink
 	/// <summary>
 	/// The name of a menu to render as a child menu of this menu, if any
 	/// </summary>
-	public Enum? ChildMenu { get; set; }
+	public string? ChildMenu { get; set; }
 
 	/// <summary>
 	/// A function to execute when the menu link is clicked

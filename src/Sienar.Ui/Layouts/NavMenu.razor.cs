@@ -41,7 +41,7 @@ public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 	/// the menu names the nav menu should render
 	/// </summary>
 	[Parameter]
-	public required IEnumerable<Enum> MenuNames { get; set; }
+	public required IEnumerable<string> MenuNames { get; set; }
 
 	[Inject]
 	private IBrowserViewportService BrowserViewportService { get; set; } = null!;
