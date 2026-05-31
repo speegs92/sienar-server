@@ -36,12 +36,11 @@ public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 		NotifyOnBreakpointOnly = true
 	};
 
-	// TODO: Notebook #1 
 	/// <summary>
 	/// The type of the layout
 	/// </summary>
-	[Parameter]
-	public required Type LayoutType { get; set; } = null!;
+	[CascadingParameter(Name = SienarFound.CascadingLayoutName)]
+	public Type LayoutType { get; set; } = null!;
 
 	[CascadingParameter]
 	private RouteData RouteData { get; set; } = null!;
@@ -67,7 +66,6 @@ public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 	/// <inheritdoc />
 	protected override async Task OnInitializedAsync()
 	{
-		// TODO: Notebook #1
 		_components = ComponentProvider.Access(LayoutType);
 
 		NavManager.LocationChanged += OnNavigate;
