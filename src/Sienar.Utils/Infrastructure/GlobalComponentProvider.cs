@@ -1,0 +1,22 @@
+﻿namespace Sienar.Infrastructure;
+
+/// <summary>
+/// A provider to contain references to various global components to render in the Sienar UI
+/// </summary>
+public class GlobalComponentProvider
+{
+	/// <summary>
+	/// The default layout component to use when no layout is specified
+	/// </summary>
+	public required Type DefaultLayout { get; set; }
+
+	/// <summary>
+	/// The component to render when no route is matched by the router
+	/// </summary>
+	public required Type NotFoundView { get; set; }
+
+	/// <summary>
+	/// The component to render when the user is fails an authorization check
+	/// </summary>
+	public required Type UnauthorizedView { get; set; }
+}

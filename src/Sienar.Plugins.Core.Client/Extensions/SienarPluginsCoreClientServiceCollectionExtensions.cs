@@ -1,0 +1,53 @@
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
+using Sienar.Configuration;
+
+namespace Sienar.Extensions;
+
+/// <summary>
+/// Contains <see cref="IServiceCollection"/> extension methods used by the <c>Sienar.Plugins.Core.Client</c> assembly
+/// </summary>
+public static class SienarPluginsCoreClientServiceCollectionExtensions
+{
+	/// <summary>
+	/// Adds the necessary services to use entities stored behind a REST API
+	/// </summary>
+	/// <param name="self">The service collection</param>
+	/// <returns>The service collection</returns>
+	public static IServiceCollection AddRestfulEntities(this IServiceCollection self)
+	{
+		self.TryAddScoped(typeof(ICrudEndpointGenerator<>), typeof(DefaultCrudEndpointGenerator<>));
+		self.TryAddScoped(typeof(IEntityReadActor<>), typeof(RestEntityReadActor<>));
+		self.TryAddScoped(typeof(IEntityReadAllActor<>), typeof(RestEntityReadAllActor<>));
+		self.TryAddScoped(typeof(IEntityCreateActor<>), typeof(RestEntityCreateActor<>));
+		self.TryAddScoped(typeof(IEntityUpdateActor<>), typeof(RestEntityUpdateActor<>));
+		self.TryAddScoped(typeof(IEntityDeleteActor<>), typeof(RestEntityDeleteActor<>));
+
+		return self;
+	}
+
+	/// <summary>
+	/// Adds the default <see cref="IRestClient"/> implementation to the DI container
+	/// </summary>
+	/// <param name="self">The <see cref="IServiceCollection"/></param>
+	/// <returns>The <see cref="IServiceCollection"/></returns>
+	public static IServiceCollection AddCookieRestClient(this IServiceCollection self)
+		=> self.AddRestClient<CookieRestClient>();
+
+	/// <summary>
+	/// Adds the specified <see cref="IRestClient"/> implementation to the DI container
+	/// </summary>
+	/// <param name="self">The <see cref="IServiceCollection"/></param>
+	/// <typeparam name="TClient">The type of the client</typeparam>
+	/// <returns>The <see cref="IServiceCollection"/></returns>
+	public static IServiceCollection AddRestClient<TClient>(this IServiceCollection self)
+		where TClient : class, IRestClient
+	{
+		self.AddHttpClient<IRestClient, TClient>((sp, client) =>
+		{
+			var siteSettings = sp.GetRequiredService<IOptions<SienarOptions>>().Value;
+			client.BaseAddress = new Uri($"{siteSettings.SiteUrl}/api/");
+		});
+		return self;
+	}
+}

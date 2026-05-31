@@ -1,0 +1,37 @@
+@using System.Reflection
+@inject GlobalComponentProvider ComponentProvider
+@* ReSharper disable once CollectionNeverUpdated.Local *@
+@inject RoutableAssemblyProvider AssemblyProvider
+
+<CascadingAuthenticationState>
+	<SienarStartupActor/>
+
+	<Router
+		AppAssembly="@_rootAssembly"
+		AdditionalAssemblies="@_assemblies">
+		<Found Context="routeData">
+			<CascadingValue Value="@routeData">
+				<SienarFound/>
+			</CascadingValue>
+		</Found>
+		<NotFound>
+			<OptionalComponent Type="@ComponentProvider.NotFoundView"/>
+		</NotFound>
+	</Router>
+</CascadingAuthenticationState>
+
+@code {
+
+	private Assembly _rootAssembly = null!;
+	private List<Assembly> _assemblies = null!;
+	private Dictionary<Enum, Type> _layoutCache = new();
+
+	/// <inheritdoc />
+	protected override void OnInitialized()
+	{
+		_assemblies = [..AssemblyProvider];
+		_rootAssembly = _assemblies[0];
+		_assemblies.RemoveAt(0);
+	}
+
+}

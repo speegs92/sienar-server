@@ -8,11 +8,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0"/>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0"/>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0"/>
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\plugins\identity\src\Sienar.Plugins.Identity.Server\Sienar.Plugins.Identity.Server.csproj"/>
-		<ProjectReference Include="..\..\shared\src\Sienar.Utils.Sqlite\Sienar.Utils.Sqlite.csproj"/>
+		<ProjectReference Include="..\..\src\Sienar.Plugins.Identity.Server\Sienar.Plugins.Identity.Server.csproj"/>
 	</ItemGroup>
 
 </Project>

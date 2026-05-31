@@ -1,0 +1,61 @@
+﻿@using System.Reflection
+@inject GlobalComponentProvider ComponentProvider
+@* ReSharper disable once CollectionNeverUpdated.Local *@
+@inject LayoutProvider LayoutProvider
+
+<AuthorizeRouteView
+	RouteData="RouteData"
+	DefaultLayout="_layout">
+	<NotAuthorized>
+		<DynamicComponent Type="ComponentProvider.UnauthorizedView"/>
+	</NotAuthorized>
+</AuthorizeRouteView>
+
+@code {
+
+	private readonly Dictionary<string, Type> _layoutCache = new();
+	private Type _layout = null!;
+	private Type _lastPageType = null!;
+
+	/// <summary>
+	/// The route data provided by Blazor
+	/// </summary>
+	[CascadingParameter]
+	public RouteData RouteData { get; set; } = null!;
+
+	/// <inheritdoc />
+	protected override void OnParametersSet()
+	{
+		var pageType = RouteData.PageType;
+		if (_lastPageType == pageType)
+		{
+			return;
+		}
+
+		_lastPageType = pageType;
+		var layoutKey = pageType.GetCustomAttribute<OverridableLayoutAttribute>()?.LayoutKey;
+
+		if (layoutKey is null)
+		{
+			_layout = ComponentProvider.DefaultLayout;
+			return;
+		}
+
+		if (_layoutCache.TryGetValue(layoutKey, out var cachedLayout))
+		{
+			_layout = cachedLayout;
+			return;
+		}
+
+		if (LayoutProvider.TryGetValue(layoutKey, out var providedLayout))
+		{
+			_layoutCache[layoutKey] = providedLayout;
+			_layout = providedLayout;
+			return;
+		}
+
+		_layoutCache[layoutKey] = ComponentProvider.DefaultLayout;
+		_layout = ComponentProvider.DefaultLayout;
+	}
+
+}
