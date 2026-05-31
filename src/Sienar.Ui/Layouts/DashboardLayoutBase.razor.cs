@@ -3,7 +3,7 @@
 /// <summary>
 /// A standard base layout for use with Sienar
 /// </summary>
-public abstract class StandardLayoutBase : LayoutComponentBase
+public partial class DashboardLayoutBase
 {
 	/// <summary>
 	/// The menu names to render with this layout
