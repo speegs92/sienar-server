@@ -45,4 +45,8 @@
 	  <AdditionalFiles Include="Ui\_Imports.razor" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Ui\" />
+	</ItemGroup>
+
 </Project>
