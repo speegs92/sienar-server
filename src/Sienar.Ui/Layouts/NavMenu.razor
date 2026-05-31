@@ -16,16 +16,16 @@
 
 		<MudNavMenu>
 			@for (var i = 0; i < _menus.Count; i++)
-				{
-			if (i > 0)
 			{
-			<MudDivider Class="my-3"/>
-			}
-
-			@foreach (var link in _menus[i])
+				if (i > 0)
 				{
-			<SidebarNavMenuLink Link="link"/>
-			}
+					<MudDivider Class="my-3"/>
+				}
+
+				@foreach (var link in _menus[i])
+				{
+					<SidebarNavMenuLink Link="link"/>
+				}
 			}
 		</MudNavMenu>
 	</div>
