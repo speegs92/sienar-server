@@ -3,15 +3,24 @@
 @* ReSharper disable once CollectionNeverUpdated.Local *@
 @inject LayoutProvider LayoutProvider
 
-<AuthorizeRouteView
-	RouteData="RouteData"
-	DefaultLayout="_layout">
-	<NotAuthorized>
-		<DynamicComponent Type="ComponentProvider.UnauthorizedView"/>
-	</NotAuthorized>
-</AuthorizeRouteView>
+<CascadingValue
+	Value="@_layout"
+	Name="@CascadingLayoutName">
+	<AuthorizeRouteView
+		RouteData="RouteData"
+		DefaultLayout="_layout">
+		<NotAuthorized>
+			<DynamicComponent Type="ComponentProvider.UnauthorizedView"/>
+		</NotAuthorized>
+	</AuthorizeRouteView>
+</CascadingValue>
 
 @code {
+
+	/// <summary>
+	/// The name of the cascading value which provides the layout name to child components
+	/// </summary>
+	public const string CascadingLayoutName = "Layout";
 
 	private readonly Dictionary<string, Type> _layoutCache = new();
 	private Type _layout = null!;

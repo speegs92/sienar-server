@@ -1,10 +1,15 @@
-﻿namespace Sienar.Layouts;
+﻿using System.Reflection;
+
+namespace Sienar.Layouts;
 
 public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 {
+	private AuthenticationState? _lastAuthState;
+	private Type? _lastPageType;
+
 	private List<List<MenuLink>> _menus = [];
 	private bool _menuOpen;
-	private ComponentDictionary _components = null;
+	private ComponentDictionary _components = null!;
 
 	private bool Open
 	{
@@ -31,17 +36,18 @@ public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 		NotifyOnBreakpointOnly = true
 	};
 
+	// TODO: Notebook #1 
 	/// <summary>
 	/// The type of the layout
 	/// </summary>
 	[Parameter]
 	public required Type LayoutType { get; set; } = null!;
 
-	/// <summary>
-	/// the menu names the nav menu should render
-	/// </summary>
-	[Parameter]
-	public required IEnumerable<string> MenuNames { get; set; }
+	[CascadingParameter]
+	private RouteData RouteData { get; set; } = null!;
+
+	[CascadingParameter]
+	private Task<AuthenticationState>? AuthState { get; set; }
 
 	[Inject]
 	private IBrowserViewportService BrowserViewportService { get; set; } = null!;
@@ -50,22 +56,41 @@ public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 	private ComponentProvider ComponentProvider { get; set; } = null!;
 
 	[Inject]
-	private IMenuGenerator MenuGenerator { get; set; } = null!;
+	private GlobalComponentProvider GlobalComponentProvider { get; set; } = null!;
 
 	[Inject]
-	private AuthenticationStateProvider AuthState { get; set; } = null!;
+	private IMenuGenerator MenuGenerator { get; set; } = null!;
 
 	[Inject]
 	private NavigationManager NavManager { get; set; } = null!;
 
 	/// <inheritdoc />
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
+		// TODO: Notebook #1
 		_components = ComponentProvider.Access(LayoutType);
 
 		NavManager.LocationChanged += OnNavigate;
-		AuthState.AuthenticationStateChanged += UpdateMenuAndRender;
-		UpdateMenuAndRender(AuthState.GetAuthenticationStateAsync());
+		await UpdateMenuAndRender();
+	}
+
+	/// <inheritdoc />
+	protected override async Task OnParametersSetAsync()
+	{
+		AuthenticationState? authState = null;
+		if (AuthState is not null)
+		{
+			authState = await AuthState;
+		}
+
+		if (_lastAuthState != authState ||
+			_lastPageType != RouteData.PageType)
+		{
+			_lastAuthState = authState;
+			_lastPageType = RouteData.PageType;
+
+			await UpdateMenuAndRender();
+		}
 	}
 
 	/// <inheritdoc />
@@ -90,15 +115,19 @@ public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 	/// </summary>
 	protected void ToggleDrawer() => _menuOpen = !_menuOpen;
 
-	private async void UpdateMenuAndRender(Task<AuthenticationState> s)
+	private async Task UpdateMenuAndRender()
 	{
-		await s;
 		_menus.Clear();
-		foreach (var name in MenuNames)
+		var pageType = RouteData.PageType;
+		var menuNames = pageType.GetCustomAttribute<MenusAttribute>()
+			?.Names ?? GlobalComponentProvider.DefaultMenus;
+
+		foreach (var name in menuNames)
 		{
 			_menus.Add(await MenuGenerator.Create(name));
 		}
-		StateHasChanged();
+
+		// StateHasChanged();
 	}
 
 	private void OnNavigate(object? sender, LocationChangedEventArgs e)
@@ -113,7 +142,6 @@ public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 	{
 		await BrowserViewportService.UnsubscribeAsync(this);
 		NavManager.LocationChanged -= OnNavigate;
-		AuthState.AuthenticationStateChanged -= UpdateMenuAndRender;
 		GC.SuppressFinalize(this);
 	}
 }

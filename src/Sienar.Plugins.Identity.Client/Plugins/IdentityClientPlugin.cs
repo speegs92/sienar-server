@@ -63,6 +63,7 @@ public class IdentityClientPlugin : IPlugin
 		_globalComponentProvider.DefaultLayout ??= typeof(DashboardLayout);
 		_globalComponentProvider.NotFoundView ??= typeof(NotFound);
 		_globalComponentProvider.UnauthorizedView ??= typeof(Unauthorized);
+		_globalComponentProvider.DefaultMenus = [IdentityMenus.Main, IdentityMenus.Info];
 	}
 
 	private void SetupMenu()

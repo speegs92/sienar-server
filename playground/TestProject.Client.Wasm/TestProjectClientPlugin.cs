@@ -6,7 +6,6 @@ using Sienar.Layouts;
 using Sienar.Menus;
 using Sienar.Plugins;
 using TestProject.Client.Extensions;
-using TestProject.Client.Layouts;
 using TestProject.Client.UI;
 
 namespace TestProject.Client;
@@ -50,8 +49,8 @@ public class TestProjectClientPlugin : IPlugin
 
 	private void ConfigureComponents()
 	{
-		_globalComponentProvider.DefaultLayout = typeof(MainAppLayout);
-		var mainAppComponents = _componentProvider.Access(typeof(MainAppLayout));
+		_globalComponentProvider.DefaultLayout = typeof(DashboardLayout);
+		var mainAppComponents = _componentProvider.Access(typeof(DashboardLayout));
 		mainAppComponents[DashboardLayoutSections.AppbarLeft] = typeof(Branding);
 	}
 

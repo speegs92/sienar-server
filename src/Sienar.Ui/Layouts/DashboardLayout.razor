@@ -1,9 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 <MudLayout Class="min-vh-100">
-	<NavMenu
-		MenuNames="MenuNames"
-		LayoutType="LayoutType"/>
+	<NavMenu LayoutType="GetType()"/>
 
 	<MudMainContent Class="px-16 pb-16">
 		<MudContainer
