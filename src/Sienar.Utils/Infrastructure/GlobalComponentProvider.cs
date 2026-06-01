@@ -11,6 +11,11 @@ public class GlobalComponentProvider
 	public required Type DefaultLayout { get; set; }
 
 	/// <summary>
+	/// The default menus to render if a page does not define its own menus
+	/// </summary>
+	public required IEnumerable<string> DefaultMenus { get; set; }
+
+	/// <summary>
 	/// The component to render when no route is matched by the router
 	/// </summary>
 	public required Type NotFoundView { get; set; }

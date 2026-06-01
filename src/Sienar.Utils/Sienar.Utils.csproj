@@ -35,14 +35,4 @@
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0"/>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <AdditionalFiles Include="Ui\OptionalComponent.razor" />
-	  <AdditionalFiles Include="Ui\SienarApp.razor" />
-	  <AdditionalFiles Include="Ui\SienarFound.razor" />
-	  <AdditionalFiles Include="Ui\SienarHead.razor" />
-	  <AdditionalFiles Include="Ui\SienarRoutes.razor" />
-	  <AdditionalFiles Include="Ui\Username.razor" />
-	  <AdditionalFiles Include="Ui\_Imports.razor" />
-	</ItemGroup>
-
 </Project>

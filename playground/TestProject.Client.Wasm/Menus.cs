@@ -1,35 +1,32 @@
-﻿using System.ComponentModel;
-
-namespace TestProject.Client;
+﻿namespace TestProject.Client;
 
 /// <summary>
 /// The test app's supported menus
 /// </summary>
-public enum Menus
+public static class Menus
 {
 	/// <summary>
 	/// The main menu
 	/// </summary>
-	Main,
+	public const string Main = "Main";
 
 	/// <summary>
 	/// The menu containing social media links
 	/// </summary>
-	Social,
+	public const string Social = "Social";
 
 	/// <summary>
 	/// The menu containing links to common hobbies
 	/// </summary>
-	Hobbies,
+	public const string Hobbies = "Hobbies";
 
 	/// <summary>
 	/// The menu containing links to sports networks
 	/// </summary>
-	Sports,
+	public const string Sports = "Sports";
 
 	/// <summary>
 	/// The menu containing links to operating systems
 	/// </summary>
-	[Description("Operating systems")]
-	OperatingSystems
+	public const string OperatingSystems = "Operating systems";
 }

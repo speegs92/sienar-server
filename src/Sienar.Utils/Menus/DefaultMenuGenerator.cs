@@ -17,7 +17,7 @@ public class DefaultMenuGenerator : IMenuGenerator
 	}
 
 	/// <inheritdoc />
-	public Task<List<MenuLink>> Create(Enum name)
+	public Task<List<MenuLink>> Create(string name)
 	{
 		var linkDictionary = _provider.Access(name);
 		return ProcessNavLinks(linkDictionary.AggregatePrioritized());
@@ -36,7 +36,8 @@ public class DefaultMenuGenerator : IMenuGenerator
 
 			if (link.ChildMenu is not null)
 			{
-				link.Text ??= link.ChildMenu.GetDescription();
+				// TODO: #117
+				link.Text ??= link.ChildMenu;
 				link.Sublinks = await Create(link.ChildMenu);
 			}
 

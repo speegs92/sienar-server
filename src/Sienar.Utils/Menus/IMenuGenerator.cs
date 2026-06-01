@@ -10,5 +10,5 @@ public interface IMenuGenerator
 	/// </summary>
 	/// <param name="name">The name of the menu to create</param>
 	/// <returns></returns>
-	Task<List<MenuLink>> Create(Enum name);
+	Task<List<MenuLink>> Create(string name);
 }

@@ -1,35 +1,32 @@
-﻿using System.ComponentModel;
-
-namespace Sienar.Infrastructure;
+﻿namespace Sienar.Infrastructure;
 
 /// <summary>
 /// The menus supported by Sienar out of the box
 /// </summary>
-public enum SienarMenus
+public static class IdentityMenus
 {
 	/// <summary>
 	/// The main dashboard menu, rendered in the side menu
 	/// </summary>
-	Main,
+	public const string Main = "sienar-identity-main";
 
 	/// <summary>
 	/// The user settings menu, rendered by the user badge in the footer of the side menu
 	/// </summary>
-	UserSettings,
+	public const string UserSettings = "sienar-identity-user-settings";
 
 	/// <summary>
 	/// The user logout menu, rendered by the user badge in the footer of the side menu
 	/// </summary>
-	UserLogout,
+	public const string UserLogout = "sienar-identity-user-logout";
 
 	/// <summary>
 	/// The info menu, rendered in the side menu
 	/// </summary>
-	Info,
+	public const string Info = "sienar-identity-info";
 
 	/// <summary>
 	/// The user management menu, rendered on the default dashboard homepage
 	/// </summary>
-	[Description("User management")]
-	UserManagement
+	public const string UserManagement = "sienar-identity-user-management";
 }

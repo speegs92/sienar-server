@@ -1,7 +1,7 @@
 ﻿namespace Sienar.Infrastructure;
 
 /// <summary>
-/// Provides the enum key of a page's overridable layout to Sienar
+/// Provides the key of a page's overridable layout to Sienar
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
 public class OverridableLayoutAttribute : Attribute

@@ -1,0 +1,38 @@
+﻿<MudHidden Breakpoint="Breakpoint.LgAndUp">
+	<MudAppBar Elevation="1">
+		<MudIconButton
+			Icon="@Icons.Material.Filled.Menu"
+			Color="Color.Inherit"
+			OnClick="@ToggleDrawer"/>
+	</MudAppBar>
+</MudHidden>
+
+<MudDrawer
+	Elevation="1"
+	@bind-Open="Open"
+	Variant="DrawerVariant">
+	<div class="flex-grow-1">
+		<OptionalComponent Type="@_components.GetComponent(DashboardLayoutSections.SidebarHeader)"/>
+
+		<MudNavMenu>
+			@for (var i = 0; i < _menus.Count; i++)
+			{
+				if (i > 0)
+				{
+					<MudDivider Class="my-3"/>
+				}
+
+				@foreach (var link in _menus[i])
+				{
+					<SidebarNavMenuLink Link="link"/>
+				}
+			}
+		</MudNavMenu>
+	</div>
+
+	<div>
+		<div class="pa-4">
+			<OptionalComponent Type="@_components.GetComponent(DashboardLayoutSections.SidebarFooter)"/>
+		</div>
+	</div>
+</MudDrawer>

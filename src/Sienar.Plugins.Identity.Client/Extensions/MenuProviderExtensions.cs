@@ -13,7 +13,7 @@ public static class MenuProviderExtensions
 	public static MenuProvider CreateMainMenu(this MenuProvider self)
 	{
 		self
-			.Access(SienarMenus.Main)
+			.Access(IdentityMenus.Main)
 			.AddWithNormalPriority(
 				new MenuLink
 				{
@@ -34,7 +34,7 @@ public static class MenuProviderExtensions
 	public static MenuProvider CreateUserSettingsMenu(this MenuProvider self)
 	{
 		self
-			.Access(SienarMenus.UserSettings)
+			.Access(IdentityMenus.UserSettings)
 			.AddWithNormalPriority(
 				new MenuLink
 				{
@@ -66,7 +66,7 @@ public static class MenuProviderExtensions
 				});
 
 		self
-			.Access(SienarMenus.UserLogout)
+			.Access(IdentityMenus.UserLogout)
 			.AddWithNormalPriority(
 				new MenuLink
 				{
@@ -97,7 +97,7 @@ public static class MenuProviderExtensions
 	public static MenuProvider CreateInfoMenu(this MenuProvider self)
 	{
 		self
-			.Access(SienarMenus.Info)
+			.Access(IdentityMenus.Info)
 			.AddWithNormalPriority(
 				new MenuLink
 				{
@@ -118,7 +118,7 @@ public static class MenuProviderExtensions
 		this MenuProvider self)
 	{
 		self
-			.Access(SienarMenus.UserManagement)
+			.Access(IdentityMenus.UserManagement)
 			.AddWithNormalPriority(
 				new MenuLink
 				{
