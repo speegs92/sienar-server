@@ -18,7 +18,7 @@ public static class MenuProviderExtensions
 				new MenuLink
 				{
 					Text = "Dashboard",
-					Icon = Icons.Material.Filled.Dashboard,
+					Icon = "Icons.Material.Filled.Dashboard",
 					Url = DashboardUrls.Index,
 					RequireLoggedIn = true
 				});
@@ -39,28 +39,28 @@ public static class MenuProviderExtensions
 				new MenuLink
 				{
 					Text = "Email",
-					Icon = Icons.Material.Filled.Email,
+					Icon = "Icons.Material.Filled.Email",
 					RequireLoggedIn = true,
 					Url = DashboardUrls.Account.EmailChange.Index
 				},
 				new MenuLink
 				{
 					Text = "Password",
-					Icon = Icons.Material.Filled.Lock,
+					Icon = "Icons.Material.Filled.Lock",
 					RequireLoggedIn = true,
 					Url = DashboardUrls.Account.PasswordChange.Index
 				},
 				new MenuLink
 				{
 					Text = "Personal data",
-					Icon = Icons.Material.Filled.Archive,
+					Icon = "Icons.Material.Filled.Archive",
 					RequireLoggedIn = true,
 					Url = DashboardUrls.Account.PersonalData
 				},
 				new MenuLink
 				{
 					Text = "Delete account",
-					Icon = Icons.Material.Filled.DeleteForever,
+					Icon = "Icons.Material.Filled.DeleteForever",
 					RequireLoggedIn = true,
 					Url = DashboardUrls.Account.Delete
 				});
@@ -71,7 +71,7 @@ public static class MenuProviderExtensions
 				new MenuLink
 				{
 					Text = "Log out",
-					Icon = Icons.Material.Filled.Logout,
+					Icon = "Icons.Material.Filled.Logout",
 					RequireLoggedIn = true,
 					OnClick = async (
 						IStatusActor<LogoutRequest> service,
@@ -102,7 +102,7 @@ public static class MenuProviderExtensions
 				new MenuLink
 				{
 					Text = "About",
-					Icon = Icons.Material.Outlined.Info,
+					Icon = "Icons.Material.Outlined.Info",
 					Url = DashboardUrls.About
 				});
 
@@ -123,14 +123,14 @@ public static class MenuProviderExtensions
 				new MenuLink
 				{
 					Text = "Users",
-					Icon = Icons.Material.Filled.SupervisorAccount,
+					Icon = "Icons.Material.Filled.SupervisorAccount",
 					Url = DashboardUrls.Users.Index,
 					Roles = [Roles.Admin]
 				},
 				new MenuLink
 				{
 					Text = "Lockout reasons",
-					Icon = Icons.Material.Filled.Lock,
+					Icon = "Icons.Material.Filled.Lock",
 					Url = DashboardUrls.LockoutReasons.Index,
 					Roles = [Roles.Admin]
 				});

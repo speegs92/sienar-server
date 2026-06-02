@@ -2,7 +2,7 @@
 
 namespace Sienar.Layouts;
 
-public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
+public partial class NavMenu : IDisposable
 {
 	private AuthenticationState? _lastAuthState;
 	private Type? _lastPageType;
@@ -10,31 +10,6 @@ public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 	private List<List<MenuLink>> _menus = [];
 	private bool _menuOpen;
 	private ComponentDictionary _components = null!;
-
-	private bool Open
-	{
-		get => _breakpoint >= Breakpoint.Lg || _menuOpen;
-		set => _menuOpen = value;
-	}
-
-	private DrawerVariant DrawerVariant => _breakpoint >= Breakpoint.Lg
-		? DrawerVariant.Persistent
-		: DrawerVariant.Temporary;
-
-	/// <summary>
-	/// The current browser breakpoint size
-	/// </summary>
-	private Breakpoint _breakpoint = Breakpoint.Lg;
-
-	/// <inheritdoc />
-	Guid IBrowserViewportObserver.Id { get; } = Guid.NewGuid();
-
-	/// <inheritdoc />
-	ResizeOptions? IBrowserViewportObserver.ResizeOptions { get; } = new()
-	{
-		ReportRate = 250,
-		NotifyOnBreakpointOnly = true
-	};
 
 	/// <summary>
 	/// The type of the layout
@@ -47,9 +22,6 @@ public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 
 	[CascadingParameter]
 	private Task<AuthenticationState>? AuthState { get; set; }
-
-	[Inject]
-	private IBrowserViewportService BrowserViewportService { get; set; } = null!;
 
 	[Inject]
 	private ComponentProvider ComponentProvider { get; set; } = null!;
@@ -91,23 +63,6 @@ public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 		}
 	}
 
-	/// <inheritdoc />
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender)
-		{
-			await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
-		}
-	}
-
-	/// <inheritdoc />
-	Task IBrowserViewportObserver.NotifyBrowserViewportChangeAsync(
-		BrowserViewportEventArgs browserViewportEventArgs)
-	{
-		_breakpoint = browserViewportEventArgs.Breakpoint;
-		return InvokeAsync(StateHasChanged);
-	}
-
 	/// <summary>
 	/// Toggles the open state of the navigation drawer
 	/// </summary>
@@ -130,15 +85,18 @@ public partial class NavMenu : IBrowserViewportObserver, IAsyncDisposable
 
 	private void OnNavigate(object? sender, LocationChangedEventArgs e)
 	{
-		if (!_menuOpen) return;
+		if (!_menuOpen)
+		{
+			return;
+		}
+
 		_menuOpen = false;
 		StateHasChanged();
 	}
 
 	/// <inheritdoc />
-	public async ValueTask DisposeAsync()
+	public void Dispose()
 	{
-		await BrowserViewportService.UnsubscribeAsync(this);
 		NavManager.LocationChanged -= OnNavigate;
 		GC.SuppressFinalize(this);
 	}

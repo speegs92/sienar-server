@@ -7,14 +7,13 @@
 <DocTitle Title="Users listing"/>
 
 <Table
-	@ref="Table"
 	TableTitle="Site users"
 	LoadData="Reader.Read">
 	<ToolBarContent>
 		<MudIconButton
 			Color="Color.Primary"
 			Href="@DashboardUrls.Users.Add"
-			Icon="@Icons.Material.Filled.Add"/>
+			Icon="Icons.Material.Filled.Add"/>
 	</ToolBarContent>
 
 	<HeaderContent>
@@ -37,48 +36,48 @@
 	</HeaderContent>
 
 	<RowTemplate>
-		<MudTd DataLabel="Username">@context.Username</MudTd>
-		<MudTd DataLabel="Email address">@context.Email</MudTd>
+		<MudTd DataLabel="Username">context.Username</MudTd>
+		<MudTd DataLabel="Email address">context.Email</MudTd>
 		<MudTd DataLabel="Confirmed">
 			<div class="d-flex justify-center">
-				<MudIcon Icon="@GetConfirmationIcon(context.EmailConfirmed)"/>
+				<MudIcon Icon="GetConfirmationIcon(context.EmailConfirmed)"/>
 			</div>
 		</MudTd>
 		<MudTd DataLabel="Actions">
 			<div class="d-flex justify-center">
 				<MudIconButton
 					Color="Color.Primary"
-					Href="@($"{DashboardUrls.Users.Index}/{context.Id}")"
-                	Icon="@Icons.Material.Filled.RemoveRedEye"
-					title="@($"View user {context.Username}")"/>
-				@if (context.IsLockedOut())
-				{
-					<MudIconButton
-						Color="Color.Warning"
-						Icon="@Icons.Material.Filled.LockOpen"
-						OnClick="@(() => UnlockUser(context))"
-						title="@($"Unlock {context.Username}'s account")"/>
-				}
-				else
-				{
-					<MudIconButton
-						Color="Color.Warning"
-						Href="@($"{DashboardUrls.Users.Index}/{context.Id}/lock")"
-						Icon="@Icons.Material.Filled.Lock"
-						title="@($"Lock {context.Username}'s account")"/>
-				}
+					Href="{DashboardUrls.Users.Index}/{context.Id}"
+                	Icon="Icons.Material.Filled.RemoveRedEye"
+					title="View user {context.Username}"/>
+				@* @if (context.IsLockedOut()) *@
+				@* { *@
+				@* 	<MudIconButton *@
+				@* 		Color="Color.Warning" *@
+				@* 		Icon="@Icons.Material.Filled.LockOpen" *@
+				@* 		OnClick="@(() => UnlockUser(context))" *@
+				@* 		title="@($"Unlock {context.Username}'s account")"/> *@
+				@* } *@
+				@* else *@
+				@* { *@
+				@* 	<MudIconButton *@
+				@* 		Color="Color.Warning" *@
+				@* 		Href="@($"{DashboardUrls.Users.Index}/{context.Id}/lock")" *@
+				@* 		Icon="@Icons.Material.Filled.Lock" *@
+				@* 		title="@($"Lock {context.Username}'s account")"/> *@
+				@* } *@
 
 				<MudIconButton
 					Color="Color.Warning"
-					Icon="@Icons.Material.Filled.Check"
-					OnClick="@(() => ConfirmUser(context))"
+					Icon="Icons.Material.Filled.Check"
+					OnClick="() => ConfirmUser(context)"
 					Disabled="context.EmailConfirmed"
-					title="@($"Confirm {context.Username}'s account")"/>
+					title="Confirm {context.Username}'s account"/>
 				<MudIconButton
 					Color="Color.Error"
-                	Icon="@Icons.Material.Filled.DeleteForever"
-                	OnClick="@(() => DeleteUser(context))"
-					title="@($"Delete user {context.Username}")"/>
+                	Icon="Icons.Material.Filled.DeleteForever"
+                	OnClick="() => DeleteUser(context)"
+					title="Delete user {context.Username}"/>
 			</div>
 		</MudTd>
 	</RowTemplate>
@@ -91,8 +90,8 @@
 	/// </summary>
 	protected static string GetConfirmationIcon(bool isConfirmed)
 		=> isConfirmed
-			? Icons.Material.Filled.Check
-			: Icons.Material.Filled.Close;
+			? "Icons.Material.Filled.Check"
+			: "Icons.Material.Filled.Close";
 
 	/// <summary>
 	/// Creates a prompt to unlock the specified user's account

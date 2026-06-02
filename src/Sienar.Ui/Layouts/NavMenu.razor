@@ -1,7 +1,7 @@
 ﻿<MudHidden Breakpoint="Breakpoint.LgAndUp">
 	<MudAppBar Elevation="1">
 		<MudIconButton
-			Icon="@Icons.Material.Filled.Menu"
+			Icon="Icons.Material.Filled.Menu"
 			Color="Color.Inherit"
 			OnClick="@ToggleDrawer"/>
 	</MudAppBar>
@@ -9,7 +9,7 @@
 
 <MudDrawer
 	Elevation="1"
-	@bind-Open="Open"
+	bind-Open="_menuOpen"
 	Variant="DrawerVariant">
 	<div class="flex-grow-1">
 		<OptionalComponent Type="@_components.GetComponent(DashboardLayoutSections.SidebarHeader)"/>

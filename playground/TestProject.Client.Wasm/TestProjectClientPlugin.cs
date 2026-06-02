@@ -38,7 +38,7 @@ public class TestProjectClientPlugin : IPlugin
 
 	public void Configure()
 	{
-		_adapter.AddServices(sp => sp.AddDefaultTheme());
+		// _adapter.AddServices(sp => sp.AddDefaultTheme());
 
 		_routableAssemblyProvider.Add(typeof(TestProjectClientPlugin).Assembly);
 		_menuProvider.AddMenu();

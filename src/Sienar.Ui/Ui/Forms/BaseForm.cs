@@ -23,12 +23,6 @@ public class BaseForm<T> : ActionPage
 	public EventCallback<T> ValueChanged { get; set; }
 
 	/// <summary>
-	/// The color of the form
-	/// </summary>
-	[Parameter]
-	public Color ThemeColor { get; set; } = Color.Primary;
-
-	/// <summary>
 	/// A callback to call when the form should be reset
 	/// </summary>
 	[Parameter]

@@ -14,14 +14,13 @@
 </MudText>
 
 <Table
-	@ref="Table"
 	TableTitle="Lockout reasons"
 	LoadData="Reader.Read">
 	<ToolBarContent>
 		<MudIconButton
 			Color="Color.Primary"
 			Href="@DashboardUrls.LockoutReasons.Add"
-			Icon="@Icons.Material.Filled.Add"/>
+			Icon="Icons.Material.Filled.Add"/>
 	</ToolBarContent>
 
 	<HeaderContent>
@@ -34,19 +33,19 @@
 	</HeaderContent>
 
 	<RowTemplate>
-		<MudTd DataLabel="Reason">@context.Reason</MudTd>
+		<MudTd DataLabel="Reason">context.Reason</MudTd>
 
 		<MudTd DataLabel="Actions">
 			<div class="d-flex justify-center">
 				<MudIconButton
 					Color="Color.Primary"
-					Href="@($"{DashboardUrls.LockoutReasons.Index}/{context.Id}")"
-					Icon="@Icons.Material.Filled.RemoveRedEye"
+					Href="DashboardUrls.LockoutReasons.Index}/{context.Id}"
+					Icon="Icons.Material.Filled.RemoveRedEye"
 					title="View lockout reason"/>
 				<MudIconButton
 					Color="Color.Error"
-					Icon="@Icons.Material.Filled.DeleteForever"
-					OnClick="@(() => DeleteReason(context))"
+					Icon="Icons.Material.Filled.DeleteForever"
+					OnClick="() => DeleteReason(context)"
 					title="Delete lockout reason"/>
 			</div>
 		</MudTd>

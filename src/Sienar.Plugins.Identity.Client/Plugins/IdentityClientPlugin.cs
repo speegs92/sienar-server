@@ -131,7 +131,6 @@ public class IdentityClientPlugin : IPlugin
 		public void Configure(SienarAppBuilder builder)
 		{
 			builder
-				.AddPlugin<MudBlazorPlugin>()
 				.AddPlugin<CoreClientPlugin>();
 		}
 	}

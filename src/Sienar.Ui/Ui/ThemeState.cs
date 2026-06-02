@@ -6,7 +6,6 @@
 public class ThemeState : StateProviderBase
 {
 	private bool _isDarkMode = true;
-	private MudTheme _theme = new();
 
 	/// <summary>
 	/// Whether the current theme should render in dark mode
@@ -29,18 +28,18 @@ public class ThemeState : StateProviderBase
 	/// <summary>
 	/// The current theme object
 	/// </summary>
-	public MudTheme Theme
-	{
-		get => _theme;
-		set
-		{
-			if (_theme == value)
-			{
-				return;
-			}
-
-			_theme = value;
-			NotifyStateChanged();
-		}
-	}
+	// public MudTheme Theme
+	// {
+	// 	get => _theme;
+	// 	set
+	// 	{
+	// 		if (_theme == value)
+	// 		{
+	// 			return;
+	// 		}
+	//
+	// 		_theme = value;
+	// 		NotifyStateChanged();
+	// 	}
+	// }
 }

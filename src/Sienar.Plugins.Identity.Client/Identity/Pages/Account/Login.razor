@@ -11,11 +11,11 @@
 		Title="Log in">
 		<Fields>
 			<Textbox
-				@bind-Value="@context.AccountName"
+				bind-Value="@context.AccountName"
 				For="() => context.AccountName"
 				Label="Username or email address"/>
 			<Textbox
-				@bind-Value="@context.Password"
+				bind-Value="@context.Password"
 				For="() => context.Password"
 				InputType="InputType.Password"
 				Label="Password"/>
@@ -23,7 +23,7 @@
 				Class="mt-4"
 				Color="Color.Primary"
 				UncheckedColor="Color.Default"
-				@bind-Value="@context.RememberMe"
+				bind-Value="@context.RememberMe"
 				For="() => context.RememberMe"
 				Label="Remember me"/>
 			<Honeypot @bind-Value="@context.SecretKeyField"/>

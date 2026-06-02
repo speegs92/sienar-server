@@ -9,11 +9,6 @@ public class TablePage<TEntity> : ComponentBase
 	[Inject]
 	protected IEntityDeleteActor<TEntity> Deleter { get; set; } = null!;
 
-	[Inject]
-	protected IDialogService DialogService { get; set; } = null!;
-
-	protected Table<TEntity> Table = null!;
-
 	protected Task DeleteEntity(
 		int id,
 		string? title = null,
@@ -26,9 +21,9 @@ public class TablePage<TEntity> : ComponentBase
 		return ConfirmAction(
 			title,
 			question,
-			() => Deleter.Delete(id),
-			mainColor: Color.Error,
-			cancelColor: Color.Primary);
+			() => Deleter.Delete(id)
+			/*mainColor: Color.Error,
+			cancelColor: Color.Primary*/);
 	}
 
 	protected async Task ConfirmAction<T>(
@@ -36,21 +31,21 @@ public class TablePage<TEntity> : ComponentBase
 		string question,
 		Func<Task<OperationResult<T>>> action,
 		string confirmText = "Yes",
-		string cancelText = "No",
+		string cancelText = "No"/*,
 		Color mainColor = Color.Primary,
-		Color cancelColor = Color.Secondary)
+		Color cancelColor = Color.Secondary*/)
 	{
-		var shouldAct = await DialogService.Confirm(
-			title,
-			question,
-			confirmText,
-			cancelText,
-			mainColor,
-			cancelColor);
-
-		if (shouldAct && (await action()).Status == OperationStatus.Success)
-		{
-			await Table.ReloadTable();
-		}
+		// var shouldAct = await DialogService.Confirm(
+		// 	title,
+		// 	question,
+		// 	confirmText,
+		// 	cancelText,
+		// 	mainColor,
+		// 	cancelColor);
+		//
+		// if (shouldAct && (await action()).Status == OperationStatus.Success)
+		// {
+		// 	await Table.ReloadTable();
+		// }
 	}
 }

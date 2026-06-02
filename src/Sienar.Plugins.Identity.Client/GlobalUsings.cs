@@ -9,8 +9,6 @@ global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using Microsoft.JSInterop;
-global using MudBlazor;
-global using MudBlazor.Services;
 global using System;
 global using System.Collections.Generic;
 global using System.Diagnostics.CodeAnalysis;

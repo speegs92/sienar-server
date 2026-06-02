@@ -16,21 +16,21 @@
 	OnLoaded="@OnLoaded">
 	<Fields>
 		<Textbox
-			@bind-Value="@context.Username"
+			bind-Value="@context.Username"
 			For="() => context.Username"
 			Label="Username"/>
 		<Textbox
-			@bind-Value="@context.Email"
+			bind-Value="@context.Email"
 			For="() => context.Email"
 			InputType="InputType.Email"
 			Label="Email address"/>
 		<Textbox
-			@bind-Value="@context.Password"
+			bind-Value="@context.Password"
 			For="() => context.Password"
 			InputType="InputType.Password"
 			Label="Password"/>
 		<Textbox
-			@bind-Value="@context.ConfirmPassword"
+			bind-Value="@context.ConfirmPassword"
 			For="() => context.ConfirmPassword"
 			InputType="InputType.Password"
 			Label="Confirm password"/>
@@ -60,7 +60,7 @@
 	private ViewUserDto? _user = new();
 
 	private string? Icon => _user?.EmailConfirmed ?? false
-		? Icons.Material.Filled.CheckCircle
+		? "Icons.Material.Filled.CheckCircle"
 		: null;
 
 	private string Title => _user is not null

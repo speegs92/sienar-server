@@ -21,9 +21,6 @@ public class MenuLink
 	/// <summary>
 	/// The icon to show along with the link, if any
 	/// </summary>
-	/// <remarks>
-	/// If using the default Sienar UI, this property should be an SVG string. Sienar uses <see href="https://mudblazor.com/features/icons#icons">MudBlazor icons</see> internally, but this is not required as long as a valid SVG string is used. If providing your own UI, you can use this property however you see fit. For example, you might use FontAwesome icon identifiers, such as <c>fas fa-times</c>.
-	/// </remarks>
 	public string? Icon { get; set; }
 
 	/// <summary>

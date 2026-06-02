@@ -2,14 +2,12 @@
 @using Microsoft.Extensions.Logging
 @using Sienar.Ui
 @inject ILogger<Index> Logger
-@inject ThemeState ThemeState
 
 <h1 class="title">Home</h1>
 
 <MudButton
 	Variant="Variant.Filled"
-	Color="Color.Primary"
-	OnClick="@HandleClick">
+	Color="Color.Primary">
 	Toggle dark mode
 </MudButton>
 
@@ -17,8 +15,8 @@
 
 	private void HandleClick()
 	{
-		ThemeState.IsDarkMode = !ThemeState.IsDarkMode;
-		Logger.LogInformation("(Current darkmode value) = {darkmode}", ThemeState.IsDarkMode);
+		// ThemeState.IsDarkMode = !ThemeState.IsDarkMode;
+		// Logger.LogInformation("(Current darkmode value) = {darkmode}", ThemeState.IsDarkMode);
 	}
 
 }
