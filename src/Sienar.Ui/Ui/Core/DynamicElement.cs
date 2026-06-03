@@ -1,4 +1,5 @@
-﻿namespace Sienar.Ui;
+﻿// ReSharper disable once CheckNamespace
+namespace Sienar.Ui;
 
 /// <summary>
 /// A minimally configurable component which renders as a dynamic HTML element

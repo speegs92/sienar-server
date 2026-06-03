@@ -1,4 +1,5 @@
-﻿namespace Sienar.Ui;
+﻿// ReSharper disable once CheckNamespace
+namespace Sienar.Ui;
 
 /// <summary>
 /// A component used to call startup initialization tasks after the initial render
