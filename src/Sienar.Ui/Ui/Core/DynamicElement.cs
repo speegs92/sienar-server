@@ -21,7 +21,7 @@ public class DynamicElement : ComponentBase
 	/// <summary>
 	/// The developer-provided attributes for the underlying HTML element
 	/// </summary>
-	[Parameter]
+	[Parameter(CaptureUnmatchedValues = true)]
 	public IReadOnlyDictionary<string, object>? Attributes { get; set; }
 
 	/// <summary>
