@@ -78,13 +78,15 @@ public class CoreClientPlugin : IPlugin
 	{
 		public void Configure(SienarAppBuilder builder)
 		{
-			builder.AddStartupServices(sp =>
-			{
-				sp.TryAddSingleton<GlobalComponentProvider>();
-				sp.TryAddSingleton<ComponentProvider>();
-				sp.TryAddSingleton<RoutableAssemblyProvider>();
-				sp.TryAddSingleton<LayoutProvider>();
-			});
+			builder
+				.AddPlugin<BulmaPlugin>()
+				.AddStartupServices(sp =>
+				{
+					sp.TryAddSingleton<GlobalComponentProvider>();
+					sp.TryAddSingleton<ComponentProvider>();
+					sp.TryAddSingleton<RoutableAssemblyProvider>();
+					sp.TryAddSingleton<LayoutProvider>();
+				});
 		}
 	}
 }
