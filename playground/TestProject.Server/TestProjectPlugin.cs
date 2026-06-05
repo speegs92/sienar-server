@@ -14,7 +14,7 @@ using TestProject.UI;
 namespace TestProject;
 
 [AppConfigurer(typeof(SienarAppConfigurer))]
-public class TestProjectServerPlugin : IPlugin
+public class TestProjectPlugin : IPlugin
 {
 	private readonly WebApplicationBuilder _builder;
 	private readonly RoutableAssemblyProvider _routableAssemblyProvider;
@@ -23,7 +23,7 @@ public class TestProjectServerPlugin : IPlugin
 	private readonly MenuProvider _menuProvider;
 	private readonly StyleProvider _styleProvider;
 
-	public TestProjectServerPlugin(
+	public TestProjectPlugin(
 		WebApplicationBuilder builder,
 		RoutableAssemblyProvider routableAssemblyProvider,
 		ComponentProvider componentProvider,
@@ -45,7 +45,7 @@ public class TestProjectServerPlugin : IPlugin
 			.AddDbContextForSienar<AppDbContext>(o => o.UseSienarDb())
 			.AddDefaultTheme();
 
-		_routableAssemblyProvider.Add(typeof(TestProjectServerPlugin).Assembly);
+		_routableAssemblyProvider.Add(typeof(TestProjectPlugin).Assembly);
 		_menuProvider.AddMenu();
 
 		ConfigureStyles();
@@ -69,7 +69,7 @@ public class TestProjectServerPlugin : IPlugin
 	{
 		public void Configure(SienarAppBuilder builder)
 		{
-			builder.AddPlugin<IdentityServerPlugin<AppUser>>();
+			builder.AddPlugin<IdentityPlugin<AppUser>>();
 		}
 	}
 }

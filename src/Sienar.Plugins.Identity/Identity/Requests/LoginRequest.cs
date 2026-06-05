@@ -1,7 +1,7 @@
 namespace Sienar.Identity.Requests;
 
 [RestEndpoint("account/login", HttpMethods.Post)]
-public class LoginRequest : Honeypot, IRequest
+public class LoginRequest : HoneypotDto, IRequest
 {
 	[Required]
 	[DisplayName("Username or email")]

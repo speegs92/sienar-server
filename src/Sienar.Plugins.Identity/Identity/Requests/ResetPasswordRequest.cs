@@ -1,7 +1,7 @@
 namespace Sienar.Identity.Requests;
 
 [RestEndpoint("account/password", HttpMethods.Patch)]
-public class ResetPasswordRequest : Honeypot, IRequest
+public class ResetPasswordRequest : HoneypotDto, IRequest
 {
 	[Required]
 	public int UserId { get; set; }

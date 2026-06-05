@@ -8,8 +8,8 @@ using static Sienar.Infrastructure.ApplicationType;
 namespace Sienar.Plugins;
 
 /// <exclude />
-[AppConfigurer(typeof(IdentityServerAppConfigurer))]
-public class IdentityServerPlugin<TUser> : IPlugin
+[AppConfigurer(typeof(IdentityAppConfigurer))]
+public class IdentityPlugin<TUser> : IPlugin
 	where TUser : class, ISienarIdentityUser<TUser>, new()
 {
 	private readonly WebApplicationBuilder _builder;
@@ -21,7 +21,7 @@ public class IdentityServerPlugin<TUser> : IPlugin
 	private readonly RoutableAssemblyProvider _routableAssemblyProvider;
 	private readonly StyleProvider _styleProvider;
 
-	public IdentityServerPlugin(
+	public IdentityPlugin(
 		WebApplicationBuilder builder,
 		IConfiguration configuration,
 		ComponentProvider componentProvider,
@@ -88,7 +88,7 @@ public class IdentityServerPlugin<TUser> : IPlugin
 
 	private void SetupRoutableAssemblies()
 	{
-		_routableAssemblyProvider.Add(typeof(IdentityServerPlugin<TUser>).Assembly);
+		_routableAssemblyProvider.Add(typeof(IdentityPlugin<TUser>).Assembly);
 	}
 
 	private void SetupStyles()
@@ -106,7 +106,7 @@ public class IdentityServerPlugin<TUser> : IPlugin
 
 		services.TryAddScoped<IPasswordHasher<TUser>, PasswordHasher<TUser>>();
 		services.TryAddScoped<IPasswordManager<TUser>, PasswordManager<TUser>>();
-		services.TryAddScoped<IUserClaimsFactory<TUser>, ServerUserClaimsFactory<TUser>>();
+		services.TryAddScoped<IUserClaimsFactory<TUser>, UserClaimsFactory<TUser>>();
 		services.TryAddScoped<IUserClaimsPrincipalFactory<TUser>, Identity.UserClaimsPrincipalFactory<TUser>>();
 		services.TryAddScoped<IVerificationCodeManager<TUser>, VerificationCodeManager<TUser>>();
 

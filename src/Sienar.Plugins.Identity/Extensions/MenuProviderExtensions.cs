@@ -1,7 +1,7 @@
 ﻿namespace Sienar.Extensions;
 
 /// <summary>
-/// Contains <see cref="MenuProvider"/> extension methods used by the <c>Sienar.Plugins.Identity.Client</c> assembly
+/// Contains <see cref="MenuProvider"/> extension methods used by the <c>Sienar.Plugins.Identity</c> assembly
 /// </summary>
 public static class MenuProviderExtensions
 {

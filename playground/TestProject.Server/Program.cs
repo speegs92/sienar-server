@@ -6,7 +6,7 @@ using TestProject;
 var app = await SienarAppBuilder
 	.Create(args)
 	.AddWebAdapter()
-	.AddPlugin<TestProjectServerPlugin>()
+	.AddPlugin<TestProjectPlugin>()
 	.Build<WebApplication>();
 
 await app.RunAsync();

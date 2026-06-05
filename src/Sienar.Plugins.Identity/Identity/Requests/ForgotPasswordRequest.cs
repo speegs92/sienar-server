@@ -1,7 +1,7 @@
 namespace Sienar.Identity.Requests;
 
 [RestEndpoint("account/password", HttpMethods.Delete)]
-public class ForgotPasswordRequest : Honeypot, IRequest
+public class ForgotPasswordRequest : HoneypotDto, IRequest
 {
 	[Required]
 	[DisplayName("Username or email")]

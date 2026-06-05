@@ -3,9 +3,9 @@
 namespace Sienar.Identity;
 
 /// <summary>
-/// Creates user claims for use by the server application
+/// Creates user claims for use by the application
 /// </summary>
-public class ServerUserClaimsFactory<T> : IUserClaimsFactory<T>
+public class UserClaimsFactory<T> : IUserClaimsFactory<T>
 	where T : class, ISienarIdentityUser<T>
 {
 	/// <inheritdoc />

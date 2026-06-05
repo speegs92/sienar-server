@@ -15,9 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sienar.Utils", "src\Sienar.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sienar.Ui", "src\Sienar.Ui\Sienar.Ui.csproj", "{FB99F387-A199-4CC3-9654-61ADD3087980}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sienar.Plugins.Core.Server", "src\Sienar.Plugins.Core.Server\Sienar.Plugins.Core.Server.csproj", "{EB6E4C24-A9E1-4187-ACAD-37A1A6638516}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sienar.Plugins.Core", "src\Sienar.Plugins.Core\Sienar.Plugins.Core.csproj", "{EB6E4C24-A9E1-4187-ACAD-37A1A6638516}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sienar.Plugins.Identity.Server", "src\Sienar.Plugins.Identity.Server\Sienar.Plugins.Identity.Server.csproj", "{85B1775F-030C-4BE8-AF6A-A473B4AD68EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sienar.Plugins.Identity", "src\Sienar.Plugins.Identity\Sienar.Plugins.Identity.csproj", "{85B1775F-030C-4BE8-AF6A-A473B4AD68EE}"
 EndProject
 s
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sienar.Plugins.MailKit", "src\Sienar.Plugins.MailKit\Sienar.Plugins.MailKit.csproj", "{BDC43676-8F1B-4EF1-8492-248C7EECC3EF}"

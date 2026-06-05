@@ -3,9 +3,9 @@
 namespace Sienar.Extensions;
 
 /// <summary>
-/// Contains <see cref="IServiceCollection"/> extension methods used by the <c>Sienar.Plugins.Core.Server</c> assembly
+/// Contains <see cref="IServiceCollection"/> extension methods used by the <c>Sienar.Plugins.Core</c> assembly
 /// </summary>
-public static class SienarPluginsCoreServerServiceCollectionExtensions
+public static class SienarPluginsCoreServiceCollectionExtensions
 {
 	/// <summary>
 	/// Registers a <see cref="DbContext"/> as an <see cref="IDbContext"/>
