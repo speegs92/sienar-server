@@ -38,7 +38,7 @@ public class DefaultGeneralActor<TRequest, TResult> : IGeneralActor<TRequest, TR
 
 	public virtual async Task<OperationResult<TResult>> Execute(TRequest request)
 	{
-		if (request is Honeypot honeypot && _botDetector.IsSpambot(honeypot))
+		if (request is HoneypotDto honeypot && _botDetector.IsSpambot(honeypot))
 		{
 			return _notifier.HandleOperationResult(new OperationResult<TResult>());
 		}

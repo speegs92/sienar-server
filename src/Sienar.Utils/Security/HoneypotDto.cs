@@ -4,7 +4,7 @@ namespace Sienar.Security;
 /// Represents a DTO that has honeypot capabilities
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class Honeypot : IEntity
+public class HoneypotDto : IEntity
 {
 	/// <inheritdoc />
 	public int Id { get; set; }

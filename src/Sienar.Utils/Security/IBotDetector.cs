@@ -10,5 +10,5 @@ public interface IBotDetector
 	/// </summary>
 	/// <param name="honeypot">The honeypot</param>
 	/// <returns>whether the honeypot caught a bot</returns>
-	bool IsSpambot(Honeypot honeypot);
+	bool IsSpambot(HoneypotDto honeypot);
 }

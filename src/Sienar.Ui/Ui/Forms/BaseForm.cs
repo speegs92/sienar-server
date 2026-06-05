@@ -127,7 +127,7 @@ public class BaseForm<T> : ActionPage
 	protected Task HandleSubmit()
 		=> SubmitRequest(() =>
 		{
-			if (Value is Sienar.Security.Honeypot honeypot)
+			if (Value is Sienar.Security.HoneypotDto honeypot)
 			{
 				honeypot.TimeToComplete = DateTime.Now - _formStartedTime;
 			}

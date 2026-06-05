@@ -69,12 +69,7 @@ public class TestProjectServerPlugin : IPlugin
 	{
 		public void Configure(SienarAppBuilder builder)
 		{
-			builder
-				.AddPlugin<IdentityServerPlugin<AppUser>>()
-				.AddStartupServices(sp =>
-				{
-					sp.AddConfigurer<TestProjectMvcBuilderConfigurer, IMvcBuilder>();
-				});
+			builder.AddPlugin<IdentityServerPlugin<AppUser>>();
 		}
 	}
 }

@@ -13,17 +13,67 @@ public class IdentityServerPlugin<TUser> : IPlugin
 	where TUser : class, ISienarIdentityUser<TUser>, new()
 {
 	private readonly WebApplicationBuilder _builder;
+	private readonly IConfiguration _configuration;
+	private readonly ComponentProvider _componentProvider;
+	private readonly GlobalComponentProvider _globalComponentProvider;
+	private readonly MenuProvider _menuProvider;
 	private readonly PluginDataProvider _pluginDataProvider;
+	private readonly RoutableAssemblyProvider _routableAssemblyProvider;
+	private readonly StyleProvider _styleProvider;
 
 	public IdentityServerPlugin(
 		WebApplicationBuilder builder,
-		PluginDataProvider pluginDataProvider)
+		IConfiguration configuration,
+		ComponentProvider componentProvider,
+		GlobalComponentProvider globalComponentProvider,
+		MenuProvider menuProvider,
+		PluginDataProvider pluginDataProvider,
+		RoutableAssemblyProvider routableAssemblyProvider,
+		StyleProvider styleProvider)
 	{
 		_builder = builder;
+		_configuration = configuration;
+		_componentProvider = componentProvider;
+		_globalComponentProvider = globalComponentProvider;
+		_menuProvider = menuProvider;
 		_pluginDataProvider = pluginDataProvider;
+		_routableAssemblyProvider = routableAssemblyProvider;
+		_styleProvider = styleProvider;
 	}
 
 	public void Configure()
+	{
+		SetupComponents();
+		SetupMenu();
+		SetupPluginData();
+		SetupRoutableAssemblies();
+		SetupStyles();
+		SetupServices();
+	}
+
+	private void SetupComponents()
+	{
+		_componentProvider
+			.Access(typeof(DashboardLayout))
+			.TryAddComponent<DrawerHeader>(DashboardLayoutSections.SidebarHeader)
+			.TryAddComponent<DrawerFooter>(DashboardLayoutSections.SidebarFooter);
+
+		_globalComponentProvider.DefaultLayout ??= typeof(DashboardLayout);
+		_globalComponentProvider.NotFoundView ??= typeof(NotFound);
+		_globalComponentProvider.UnauthorizedView ??= typeof(Unauthorized);
+		_globalComponentProvider.DefaultMenus = [IdentityMenus.Main, IdentityMenus.Info];
+	}
+	
+	private void SetupMenu()
+	{
+		_menuProvider
+			.CreateMainMenu()
+			.CreateUserSettingsMenu()
+			.CreateInfoMenu()
+			.CreateUserManagementMenu();
+	}
+
+	private void SetupPluginData()
 	{
 		_pluginDataProvider.Add(new PluginData
 		{
@@ -34,7 +84,21 @@ public class IdentityServerPlugin<TUser> : IPlugin
 			Homepage = "https://sienar.io",
 			Version = Version.Parse("0.1.1")
 		});
+	}
 
+	private void SetupRoutableAssemblies()
+	{
+		_routableAssemblyProvider.Add(typeof(IdentityServerPlugin<TUser>).Assembly);
+	}
+
+	private void SetupStyles()
+	{
+		_styleProvider.Add("/_content/Sienar.Ui/sienar.css");
+		_styleProvider.Add("/_content/Sienar.Ui/Sienar.Ui.bundle.scp.css");
+	}
+
+	private void SetupServices()
+	{
 		var services = _builder.Services;
 		var config = _builder.Configuration;
 

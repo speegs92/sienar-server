@@ -12,7 +12,7 @@ public class DefaultBotDetector : IBotDetector
 		_logger = logger;
 	}
 
-	public bool IsSpambot(Honeypot honeypot)
+	public bool IsSpambot(HoneypotDto honeypot)
 	{
 		_logger.LogInformation(
 			"Form submission completed in {time} seconds",
