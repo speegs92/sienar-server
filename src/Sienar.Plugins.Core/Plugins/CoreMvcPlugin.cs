@@ -34,19 +34,7 @@ public class CoreMvcPlugin : IPlugin
 		_builder.Services
 			.AddEndpointsApiExplorer()
 			.AddSwaggerGen()
-			.AddScoped<ICsrfTokenRefresher, CsrfTokenRefresher>()
-			.AddScoped<IReadableNotifier, RestNotifier>()
-			.AddScoped<INotifier>(
-				sp => sp.GetRequiredService<IReadableNotifier>())
-			.AddScoped<IOperationResultMapper, DefaultOperationResultMapper>()
-			.AddScoped(typeof(IReadActionOrchestrator<,>), typeof(DefaultReadActionOrchestrator<,>))
-			.AddScoped(typeof(IReadAllActionOrchestrator<,>), typeof(DefaultReadAllActionOrchestrator<,>))
-			.AddScoped(typeof(ICreateActionOrchestrator<,>), typeof(DefaultCreateActionOrchestrator<,>))
-			.AddScoped(typeof(IUpdateActionOrchestrator<,>), typeof(DefaultUpdateActionOrchestrator<,>))
-			.AddScoped(typeof(IDeleteActionOrchestrator<>), typeof(DefaultDeleteActionOrchestrator<>))
-			.AddScoped(typeof(IGeneralActionOrchestrator<,>), typeof(DefaultGeneralActionOrchestrator<,>))
-			.AddScoped(typeof(IStatusActionOrchestrator<>), typeof(DefaultStatusActionOrchestrator<>))
-			.AddScoped(typeof(IResultActionOrchestrator<>), typeof(DefaultResultActionOrchestrator<>));
+			.AddScoped<INotifier, DefaultNotifier>();
 
 		// Add and configure MVC
 		var mvcbuilder = _builder.Services.AddMvc(o =>
