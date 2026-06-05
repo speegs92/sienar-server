@@ -9,12 +9,8 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// Adds universal Sienar utilities to the DI container
 	/// </summary>
 	/// <param name="self">the service collection</param>
-	/// <param name="appType">the application type</param>
-	/// <returns>the service collection</returns>
 	[ExcludeFromCodeCoverage]
-	public static IServiceCollection AddSienarCoreUtilities(
-		this IServiceCollection self,
-		ApplicationType appType)
+	public static IServiceCollection AddSienarCoreUtilities(this IServiceCollection self)
 	{
 		self.TryAddScoped(typeof(IStatusActor<>), typeof(DefaultStatusActor<>), appType);
 		self.TryAddScoped(typeof(IGeneralActor<,>), typeof(DefaultGeneralActor<,>), appType);
@@ -321,191 +317,94 @@ public static class SienarUtilsServiceCollectionExtensions
 	/// Adds a general processor
 	/// </summary>
 	/// <param name="self">the service collection</param>
-	/// <param name="appType">the application type</param>
 	/// <typeparam name="TProcessor">the processor implementation</typeparam>
 	/// <typeparam name="TRequest">the data type of the request</typeparam>
 	/// <typeparam name="TResult">the data type of the result</typeparam>
 	/// <returns>the service collection</returns>
-	public static IServiceCollection AddGeneralProcessor<TProcessor, TRequest, TResult>(
-		this IServiceCollection self,
-		ApplicationType appType)
+	public static IServiceCollection AddGeneralProcessor<TProcessor, TRequest, TResult>(this IServiceCollection self)
 		where TProcessor : class, IGeneralProcessor<TRequest, TResult>
 		where TRequest : IRequest
 		where TResult : IResult
-		=> AddScoped<IGeneralProcessor<TRequest, TResult>, TProcessor>(self, appType);
+	{
+		self.AddScoped<IGeneralProcessor<TRequest, TResult>, TProcessor>();
+		return self;
+	}
 
 	/// <summary>
 	/// Adds a general processor
 	/// </summary>
 	/// <param name="self">the service collection</param>
-	/// <param name="appType">the application type</param>
 	/// <typeparam name="TProcessor">the processor implementation</typeparam>
 	/// <typeparam name="TRequest">the data type of the request</typeparam>
 	/// <typeparam name="TResult">the data type of the result</typeparam>
 	/// <returns>the service collection</returns>
-	public static IServiceCollection TryAddGeneralProcessor<TProcessor, TRequest, TResult>(
-		this IServiceCollection self,
-		ApplicationType appType)
+	public static IServiceCollection TryAddGeneralProcessor<TProcessor, TRequest, TResult>(this IServiceCollection self)
 		where TProcessor : class, IGeneralProcessor<TRequest, TResult>
 		where TRequest : IRequest
 		where TResult : IResult
-		=> TryAddScoped<IGeneralProcessor<TRequest, TResult>, TProcessor>(self, appType);
+	{
+		self.TryAddScoped<IGeneralProcessor<TRequest, TResult>, TProcessor>();
+		return self;
+	}
 
 	/// <summary>
 	/// Adds a status processor (<c>IProcessor&lt;TRequest, bool&gt;</c>
 	/// </summary>
 	/// <param name="self">the service collection</param>
-	/// <param name="appType">the application type</param>
 	/// <typeparam name="TProcessor">the processor implementation</typeparam>
 	/// <typeparam name="TRequest">the data type of the request</typeparam>
 	/// <returns>the service collection</returns>
-	public static IServiceCollection AddStatusProcessor<TProcessor, TRequest>(
-		this IServiceCollection self,
-		ApplicationType appType)
+	public static IServiceCollection AddStatusProcessor<TProcessor, TRequest>(this IServiceCollection self)
 		where TProcessor : class, IStatusProcessor<TRequest>
 		where TRequest : IRequest
-		=> AddScoped<IStatusProcessor<TRequest>, TProcessor>(self, appType);
+	{
+		self.AddScoped<IStatusProcessor<TRequest>, TProcessor>();
+		return self;
+	}
 
 	/// <summary>
 	/// Adds a status processor (<c>IProcessor&lt;TRequest, bool&gt;</c>
 	/// </summary>
 	/// <param name="self">the service collection</param>
-	/// <param name="appType">the application type</param>
 	/// <typeparam name="TProcessor">the processor implementation</typeparam>
 	/// <typeparam name="TRequest">the data type of the request</typeparam>
 	/// <returns>the service collection</returns>
-	public static IServiceCollection TryAddStatusProcessor<TProcessor, TRequest>(
-		this IServiceCollection self,
-		ApplicationType appType)
+	public static IServiceCollection TryAddStatusProcessor<TProcessor, TRequest>(this IServiceCollection self)
 		where TProcessor : class, IStatusProcessor<TRequest>
 		where TRequest : IRequest
-		=> TryAddScoped<IStatusProcessor<TRequest>, TProcessor>(self, appType);
+	{
+		self.TryAddScoped<IStatusProcessor<TRequest>, TProcessor>();
+		return self;
+	}
+
 
 	/// <summary>
 	/// Adds a result processor (<c>IProcessor&lt;TRequest&gt;</c>)
 	/// </summary>
 	/// <param name="self">the service collection</param>
-	/// <param name="appType">the application type</param>
 	/// <typeparam name="TProcessor">the processor implementation</typeparam>
 	/// <typeparam name="TResult">the data type of the result</typeparam>
 	/// <returns>the service collection</returns>
-	public static IServiceCollection AddResultProcessor<TProcessor, TResult>(
-		this IServiceCollection self,
-		ApplicationType appType)
+	public static IServiceCollection AddResultProcessor<TProcessor, TResult>(this IServiceCollection self)
 		where TProcessor : class, IResultProcessor<TResult>
 		where TResult : IResult
-		=> AddScoped<IResultProcessor<TResult>, TProcessor>(self, appType);
+	{
+		self.AddScoped<IResultProcessor<TResult>, TProcessor>();
+		return self;
+	}
 
 	/// <summary>
 	/// Adds a result processor (<c>IProcessor&lt;TRequest&gt;</c>)
 	/// </summary>
 	/// <param name="self">the service collection</param>
-	/// <param name="appType">the application type</param>
 	/// <typeparam name="TProcessor">the processor implementation</typeparam>
 	/// <typeparam name="TResult">the data type of the result</typeparam>
 	/// <returns>the service collection</returns>
-	public static IServiceCollection TryAddResultProcessor<TProcessor, TResult>(
-		this IServiceCollection self,
-		ApplicationType appType)
+	public static IServiceCollection TryAddResultProcessor<TProcessor, TResult>(this IServiceCollection self)
 		where TProcessor : class, IResultProcessor<TResult>
 		where TResult : IResult
-		=> TryAddScoped<IResultProcessor<TResult>, TProcessor>(self, appType);
-
-	/// <summary>
-	/// Adds a scoped service in a way that supports the application type of the app registering the service
-	/// </summary>
-	/// <remarks>
-	/// This method inspects the <see cref="ApplicationType"/> and adds the given service in a way which is closest to the idea of a scoped-lifetime service for the given <see cref="ApplicationType"/>. An <see cref="ApplicationType.Client">ApplicationType.Client</see>, for example, will add such a service as <see cref="ServiceLifetime.Transient">ServiceLifetime.Transient</see> because Blazor WASM does not functionally distinguish between scoped- and singleton-lifetime services.
-	/// </remarks>
-	/// <param name="self">The service collection</param>
-	/// <param name="appType">The application type</param>
-	/// <typeparam name="TService">The type of the service</typeparam>
-	/// <typeparam name="TImplementation">The type of the service's implementation</typeparam>
-	/// <returns>The service collection</returns>
-	public static IServiceCollection AddScoped<TService, TImplementation>(
-		this IServiceCollection self,
-		ApplicationType appType)
-		where TImplementation : class, TService
-		=> AddScoped(self, typeof(TService), typeof(TImplementation), appType);
-
-	/// <summary>
-	/// Adds a scoped service in a way that supports the application type of the app registering the service
-	/// </summary>
-	/// <remarks>
-	/// This method inspects the <see cref="ApplicationType"/> and adds the given service in a way which is closest to the idea of a scoped-lifetime service for the given <see cref="ApplicationType"/>. An <see cref="ApplicationType.Client">ApplicationType.Client</see>, for example, will add such a service as <see cref="ServiceLifetime.Transient">ServiceLifetime.Transient</see> because Blazor WASM does not functionally distinguish between scoped- and singleton-lifetime services.
-	/// </remarks>
-	/// <param name="self">The service collection</param>
-	/// <param name="serviceType">The type of the service</param>
-	/// <param name="implementationType">The type of the service's implementation</param>
-	/// <param name="appType">The application type</param>
-	/// <returns>The service collection</returns>
-	public static IServiceCollection AddScoped(
-		this IServiceCollection self,
-		Type serviceType,
-		Type implementationType,
-		ApplicationType appType)
 	{
-		var lifetime = CreateTraditionallyScopedServiceLifetime(appType);
-
-		var descriptor = new ServiceDescriptor(
-			serviceType,
-			implementationType,
-			lifetime);
-
-		self.Add(descriptor);
-
+		self.TryAddScoped<IResultProcessor<TResult>, TProcessor>();
 		return self;
 	}
-
-	/// <summary>
-	/// Tries to add a scoped service in a way that supports the application type of the app registering the service
-	/// </summary>
-	/// <remarks>
-	/// This method inspects the <see cref="ApplicationType"/> and adds the given service in a way which is closest to the idea of a scoped-lifetime service for the given <see cref="ApplicationType"/>. An <see cref="ApplicationType.Client">ApplicationType.Client</see>, for example, will add such a service as <see cref="ServiceLifetime.Transient">ServiceLifetime.Transient</see> because Blazor WASM does not functionally distinguish between scoped- and singleton-lifetime services.
-	/// </remarks>
-	/// <param name="self">The service collection</param>
-	/// <param name="appType">The application type</param>
-	/// <typeparam name="TService">The type of the service</typeparam>
-	/// <typeparam name="TImplementation">The type of the service's implementation</typeparam>
-	/// <returns>The service collection</returns>
-	public static IServiceCollection TryAddScoped<TService, TImplementation>(
-		this IServiceCollection self,
-		ApplicationType appType)
-		=> TryAddScoped(self, typeof(TService), typeof(TImplementation), appType);
-
-	/// <summary>
-	/// Tries to add a scoped service in a way that supports the application type of the app registering the service
-	/// </summary>
-	/// <remarks>
-	/// This method inspects the <see cref="ApplicationType"/> and adds the given service in a way which is closest to the idea of a scoped-lifetime service for the given <see cref="ApplicationType"/>. An <see cref="ApplicationType.Client">ApplicationType.Client</see>, for example, will add such a service as <see cref="ServiceLifetime.Transient">ServiceLifetime.Transient</see> because Blazor WASM does not functionally distinguish between scoped- and singleton-lifetime services.
-	/// </remarks>
-	/// <param name="self">The service collection</param>
-	/// <param name="serviceType">The type of the service</param>
-	/// <param name="implementationType">The type of the service's implementation</param>
-	/// <param name="appType">The application type</param>
-	/// <returns>The service collection</returns>
-	public static IServiceCollection TryAddScoped(
-		this IServiceCollection self,
-		Type serviceType,
-		Type implementationType,
-		ApplicationType appType)
-	{
-		var lifetime = CreateTraditionallyScopedServiceLifetime(appType);
-
-		var descriptor = new ServiceDescriptor(
-			serviceType,
-			implementationType,
-			lifetime);
-
-		self.TryAdd(descriptor);
-
-		return self;
-	}
-
-	private static ServiceLifetime CreateTraditionallyScopedServiceLifetime(ApplicationType appType)
-		=> appType switch
-		{
-			ApplicationType.Client => ServiceLifetime.Transient,
-			_ => ServiceLifetime.Scoped
-		};
 }

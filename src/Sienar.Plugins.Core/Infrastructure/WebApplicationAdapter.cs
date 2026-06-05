@@ -12,20 +12,6 @@ public class WebApplicationAdapter : IApplicationAdapter<WebApplicationBuilder>
 	public WebApplicationBuilder Builder { get; private set; } = null!;
 
 	/// <inheritdoc />
-	public void Create(
-		string[] args,
-		IServiceCollection startupServices)
-	{
-		Builder = WebApplication.CreateBuilder(args);
-
-		startupServices
-			.AddSingleton(Builder)
-			.AddSingleton(Builder.Environment)
-			.AddSingleton<IConfiguration>(Builder.Configuration)
-			.AddSingleton<IApplicationAdapter>(this);
-	}
-
-	/// <inheritdoc />
 	public async Task<T> Build<T>(IServiceProvider sp)
 		where T : class
 	{
