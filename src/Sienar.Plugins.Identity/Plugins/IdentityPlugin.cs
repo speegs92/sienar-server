@@ -3,7 +3,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Sienar.Identity.Processors;
-using static Sienar.Infrastructure.ApplicationType;
 
 namespace Sienar.Plugins;
 
@@ -124,46 +123,46 @@ public class IdentityPlugin<TUser> : IPlugin
 
 		// CRUD
 		services
-			.AddEfEntity<ViewUserDto, ViewUserMapper<TUser>, UpsertUserDto, UpsertUserMapper<TUser>, UpsertUserDto, UpsertUserMapper<TUser>, TUser, SienarUserFilterProcessor<TUser>>(Server)
-			.AddAccessValidator<UserIsAdminAccessValidator<TUser>, TUser>(Server)
-			.AddBeforeDeleteActionHook<RemoveIdentityRelationsOnUserDeleted<TUser>, TUser>(Server)
-			.AddStateValidator<EnsureUsernameUniqueOnUpsert<TUser>, TUser>(Server)
-			.AddStateValidator<EnsureEmailUniqueOnUpsert<TUser>, TUser>(Server)
-			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper<TUser>, LockoutReasonToDtoMapper<TUser>, LockoutReason<TUser>, LockoutReasonFilterProcessor<TUser>>(Server)
+			.AddEfEntity<ViewUserDto, ViewUserMapper<TUser>, UpsertUserDto, UpsertUserMapper<TUser>, UpsertUserDto, UpsertUserMapper<TUser>, TUser, SienarUserFilterProcessor<TUser>>()
+			.AddAccessValidator<UserIsAdminAccessValidator<TUser>, TUser>()
+			.AddBeforeDeleteActionHook<RemoveIdentityRelationsOnUserDeleted<TUser>, TUser>()
+			.AddStateValidator<EnsureUsernameUniqueOnUpsert<TUser>, TUser>()
+			.AddStateValidator<EnsureEmailUniqueOnUpsert<TUser>, TUser>()
+			.AddEfEntity<LockoutReasonDto, LockoutReasonToEntityMapper<TUser>, LockoutReasonToDtoMapper<TUser>, LockoutReason<TUser>, LockoutReasonFilterProcessor<TUser>>()
 
 		// Security
-			.AddGeneralProcessor<LoginProcessor<TUser>, LoginRequest, LoginResult>(Server)
-			.AddStatusProcessor<LogoutProcessor<TUser>, LogoutRequest>(Server)
-			.AddResultProcessor<PersonalDataProcessor<TUser>, PersonalDataResult>(Server)
-			.AddAccessValidator<UserIsAdminAccessValidator<AddUserToRoleRequest>, AddUserToRoleRequest>(Server)
-			.AddAccessValidator<UserIsAdminAccessValidator<RemoveUserFromRoleRequest>, RemoveUserFromRoleRequest>(Server)
-			.AddStatusProcessor<LockUserAccountProcessor<TUser>, LockUserAccountRequest>(Server)
-			.AddAccessValidator<UserIsAdminAccessValidator<LockUserAccountRequest>, LockUserAccountRequest>(Server)
-			.AddStatusProcessor<UnlockUserAccountProcessor<TUser>, UnlockUserAccountRequest>(Server)
-			.AddAccessValidator<UserIsAdminAccessValidator<UnlockUserAccountRequest>, UnlockUserAccountRequest>(Server)
-			.AddStatusProcessor<ManuallyConfirmUserAccountProcessor<TUser>, ManuallyConfirmUserAccountRequest>(Server)
-			.AddAccessValidator<UserIsAdminAccessValidator<ManuallyConfirmUserAccountRequest>, ManuallyConfirmUserAccountRequest>(Server)
-			.AddStatusProcessor<ChangePasswordProcessor<TUser>, ChangePasswordRequest>(Server)
-			.AddStatusProcessor<ForgotPasswordProcessor<TUser>, ForgotPasswordRequest>(Server)
-			.AddStatusProcessor<ResetPasswordProcessor<TUser>, ResetPasswordRequest>(Server)
-			.AddResultProcessor<GetAccountDataProcessor, AccountDataResult>(Server)
-			.AddGeneralProcessor<GetLockoutReasonsProcessor<TUser>, AccountLockoutRequest, AccountLockoutResult>(Server)
+			.AddGeneralProcessor<LoginProcessor<TUser>, LoginRequest, LoginResult>()
+			.AddStatusProcessor<LogoutProcessor<TUser>, LogoutRequest>()
+			.AddResultProcessor<PersonalDataProcessor<TUser>, PersonalDataResult>()
+			.AddAccessValidator<UserIsAdminAccessValidator<AddUserToRoleRequest>, AddUserToRoleRequest>()
+			.AddAccessValidator<UserIsAdminAccessValidator<RemoveUserFromRoleRequest>, RemoveUserFromRoleRequest>()
+			.AddStatusProcessor<LockUserAccountProcessor<TUser>, LockUserAccountRequest>()
+			.AddAccessValidator<UserIsAdminAccessValidator<LockUserAccountRequest>, LockUserAccountRequest>()
+			.AddStatusProcessor<UnlockUserAccountProcessor<TUser>, UnlockUserAccountRequest>()
+			.AddAccessValidator<UserIsAdminAccessValidator<UnlockUserAccountRequest>, UnlockUserAccountRequest>()
+			.AddStatusProcessor<ManuallyConfirmUserAccountProcessor<TUser>, ManuallyConfirmUserAccountRequest>()
+			.AddAccessValidator<UserIsAdminAccessValidator<ManuallyConfirmUserAccountRequest>, ManuallyConfirmUserAccountRequest>()
+			.AddStatusProcessor<ChangePasswordProcessor<TUser>, ChangePasswordRequest>()
+			.AddStatusProcessor<ForgotPasswordProcessor<TUser>, ForgotPasswordRequest>()
+			.AddStatusProcessor<ResetPasswordProcessor<TUser>, ResetPasswordRequest>()
+			.AddResultProcessor<GetAccountDataProcessor, AccountDataResult>()
+			.AddGeneralProcessor<GetLockoutReasonsProcessor<TUser>, AccountLockoutRequest, AccountLockoutResult>()
 
 		// Registration
-			.AddStateValidator<RegistrationOpenValidator, RegisterRequest>(Server)
-			.AddStateValidator<AcceptTosValidator, RegisterRequest>(Server)
-			.AddStateValidator<EnsureUsernameUniqueOnRegister<TUser>, RegisterRequest>(Server)
-			.AddStateValidator<EnsureEmailUniqueOnRegister<TUser>, RegisterRequest>(Server)
-			.AddStatusProcessor<RegisterProcessor<TUser>, RegisterRequest>(Server)
+			.AddStateValidator<RegistrationOpenValidator, RegisterRequest>()
+			.AddStateValidator<AcceptTosValidator, RegisterRequest>()
+			.AddStateValidator<EnsureUsernameUniqueOnRegister<TUser>, RegisterRequest>()
+			.AddStateValidator<EnsureEmailUniqueOnRegister<TUser>, RegisterRequest>()
+			.AddStatusProcessor<RegisterProcessor<TUser>, RegisterRequest>()
 
 		// Email
-			.AddStatusProcessor<ConfirmAccountProcessor<TUser>, ConfirmAccountRequest>(Server)
-			.AddStatusProcessor<InitiateEmailChangeProcessor<TUser>, InitiateEmailChangeRequest>(Server)
-			.AddStatusProcessor<PerformEmailChangeProcessor<TUser>, PerformEmailChangeRequest>(Server)
+			.AddStatusProcessor<ConfirmAccountProcessor<TUser>, ConfirmAccountRequest>()
+			.AddStatusProcessor<InitiateEmailChangeProcessor<TUser>, InitiateEmailChangeRequest>()
+			.AddStatusProcessor<PerformEmailChangeProcessor<TUser>, PerformEmailChangeRequest>()
 
 		// Personal data
-			.AddBeforeStatusActionHook<RemoveIdentityRelationsOnOwnAccountDeleted<TUser>, DeleteAccountRequest>(Server)
-			.AddStatusProcessor<DeleteAccountProcessor<TUser>, DeleteAccountRequest>(Server);
+			.AddBeforeStatusActionHook<RemoveIdentityRelationsOnOwnAccountDeleted<TUser>, DeleteAccountRequest>()
+			.AddStatusProcessor<DeleteAccountProcessor<TUser>, DeleteAccountRequest>();
 
 
 		/********

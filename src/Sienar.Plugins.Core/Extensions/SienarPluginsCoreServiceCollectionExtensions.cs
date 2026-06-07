@@ -64,18 +64,16 @@ public static class SienarPluginsCoreServiceCollectionExtensions
 	/// Adds the necessary services to use an entity via an EF repository
 	/// </summary>
 	/// <param name="self">The service collection</param>
-	/// <param name="appType">The application type</param>
 	/// <typeparam name="TEntity">The type of the entity</typeparam>
 	/// <typeparam name="TFilterProcessor">The type of the filter processor</typeparam>
 	/// <returns>The service collection</returns>
 	public static IServiceCollection AddEfEntity<TEntity, TFilterProcessor>(
-		this IServiceCollection self,
-		ApplicationType appType)
+		this IServiceCollection self)
 		where TEntity : class, IEntity
 		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
 	{
-		self.AddBeforeCreateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>(appType);
-		self.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>(appType);
+		self.AddBeforeCreateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>();
+		self.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>();
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 
@@ -86,7 +84,6 @@ public static class SienarPluginsCoreServiceCollectionExtensions
 	/// Adds the necessary services to use an entity via Entity Framework
 	/// </summary>
 	/// <param name="self">The service collection</param>
-	/// <param name="appType">The application type</param>
 	/// <typeparam name="TDto">The type of the DTO</typeparam>
 	/// <typeparam name="TDtoToEntityMapper">The type of the DTO-to-entity mapper</typeparam>
 	/// <typeparam name="TEntityToDtoMapper">The type of the entity-to-DTO mapper</typeparam>
@@ -98,21 +95,18 @@ public static class SienarPluginsCoreServiceCollectionExtensions
 		TDtoToEntityMapper,
 		TEntityToDtoMapper,
 		TEntity,
-		TFilterProcessor>(
-		this IServiceCollection self,
-		ApplicationType appType)
+		TFilterProcessor>(this IServiceCollection self)
 		where TDto : class, new()
 		where TDtoToEntityMapper : class, IMapper<TDto, TEntity>
 		where TEntityToDtoMapper : class, IMapper<TEntity, TDto>
 		where TEntity : class, IEntity, new()
 		where TFilterProcessor : class, IEfFilterProcessor<TEntity>
-		=> AddEfEntity<TDto, TEntityToDtoMapper, TDto, TDtoToEntityMapper, TDto, TDtoToEntityMapper, TEntity, TFilterProcessor>(self, appType);
+		=> self.AddEfEntity<TDto, TEntityToDtoMapper, TDto, TDtoToEntityMapper, TDto, TDtoToEntityMapper, TEntity, TFilterProcessor>();
 
 	/// <summary>
 	/// Adds the necessary services to use an entity via Entity Framework
 	/// </summary>
 	/// <param name="self">The service collection</param>
-	/// <param name="appType">The application type</param>
 	/// <typeparam name="TViewDto">The type of the view DTO</typeparam>
 	/// <typeparam name="TEntityToViewDtoMapper">The type of the entity-to-view-DTO mapper</typeparam>
 	/// <typeparam name="TAddDto">The type of the add DTO</typeparam>
@@ -130,9 +124,7 @@ public static class SienarPluginsCoreServiceCollectionExtensions
 		TEditDto,
 		TEditDtoToEntityMapper,
 		TEntity,
-		TFilterProcessor>(
-		this IServiceCollection self,
-		ApplicationType appType)
+		TFilterProcessor>(this IServiceCollection self)
 		where TViewDto : class, new()
 		where TEntityToViewDtoMapper : class, IMapper<TEntity, TViewDto>
 		where TAddDto : class, new()
@@ -151,8 +143,8 @@ public static class SienarPluginsCoreServiceCollectionExtensions
 		}
 
 		self
-			.AddBeforeCreateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>(appType)
-			.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>(appType);
+			.AddBeforeCreateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>()
+			.AddBeforeUpdateActionHook<ConcurrencyStampUpdater<TEntity>, TEntity>();
 		self.TryAddScoped<IStateValidator<TEntity>, ConcurrencyStampValidator<TEntity>>();
 		self.TryAddScoped<IEfFilterProcessor<TEntity>, TFilterProcessor>();
 

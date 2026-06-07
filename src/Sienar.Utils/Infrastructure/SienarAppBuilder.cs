@@ -10,7 +10,7 @@ public sealed class SienarAppBuilder
 {
 	private readonly List<Type> _plugins = [];
 	private readonly IServiceCollection _startupServices;
-	private readonly WebApplicationBuilder? _builder;
+	private readonly WebApplicationBuilder _builder;
 
 	/// <summary>
 	/// Creates a new <see cref="SienarAppBuilder"/> and registers core Sienar services on its startup service collection
@@ -86,8 +86,7 @@ public sealed class SienarAppBuilder
 	/// Builds the final application and returns it
 	/// </summary>
 	/// <returns>The new application</returns>
-	public async Task<TApp> Build<TApp>()
-		where TApp : class
+	public WebApplication Build()
 	{
 		_builder.Services
 			.AddSienarCoreUtilities();
@@ -102,16 +101,13 @@ public sealed class SienarAppBuilder
 			plugin.Configure();
 		}
 
-		_builder.AddServices(services =>
-		{
-			services
-				.AddSingleton(sp.GetRequiredService<MenuProvider>())
-				.AddSingleton(sp.GetRequiredService<PluginDataProvider>())
-				.AddSingleton(sp.GetRequiredService<ScriptProvider>())
-				.AddSingleton(sp.GetRequiredService<StyleProvider>())
-				.AddSingleton(sp.GetRequiredService<RoleProvider>());
-		});
+		_builder.Services
+			.AddSingleton(sp.GetRequiredService<MenuProvider>())
+			.AddSingleton(sp.GetRequiredService<PluginDataProvider>())
+			.AddSingleton(sp.GetRequiredService<ScriptProvider>())
+			.AddSingleton(sp.GetRequiredService<StyleProvider>())
+			.AddSingleton(sp.GetRequiredService<RoleProvider>());
 
-		return await _builder.Build<TApp>(sp);
+		return _builder.Build();
 	}
 }

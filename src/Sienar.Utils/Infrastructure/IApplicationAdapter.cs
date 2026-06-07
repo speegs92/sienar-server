@@ -6,11 +6,6 @@
 public interface IApplicationAdapter
 {
 	/// <summary>
-	/// The specific type of application the adapter represents
-	/// </summary>
-	ApplicationType ApplicationType { get; }
-
-	/// <summary>
 	/// Calls the underlying app builder's <c>Create()</c> method
 	/// </summary>
 	/// <param name="args">The application startup CLI arguments</param>
