@@ -4,7 +4,6 @@
 @inject RoutableAssemblyProvider AssemblyProvider
 
 <CascadingAuthenticationState>
-	<SienarStartupActor/>
 	<MudProviders/>
 
 	<Router
@@ -25,7 +24,6 @@
 
 	private Assembly _rootAssembly = null!;
 	private List<Assembly> _assemblies = null!;
-	private Dictionary<Enum, Type> _layoutCache = new();
 
 	/// <inheritdoc />
 	protected override void OnInitialized()

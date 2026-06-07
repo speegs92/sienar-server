@@ -29,7 +29,10 @@ public sealed class SienarAppBuilder
 			.AddSingleton<PluginDataProvider>()
 			.AddSingleton<ScriptProvider>()
 			.AddSingleton<StyleProvider>()
-			.AddSingleton<RoleProvider>();
+			.AddSingleton<RoleProvider>()
+			.AddSingleton<MiddlewareProvider>()
+			.AddSingleton<IStatusActor<Startup>, StartupStatusActor>()
+			.AddLogging();
 	}
 
 	/// <summary>
@@ -86,14 +89,14 @@ public sealed class SienarAppBuilder
 	/// Builds the final application and returns it
 	/// </summary>
 	/// <returns>The new application</returns>
-	public WebApplication Build()
+	public async Task<WebApplication> Build()
 	{
 		_builder.Services
 			.AddSienarCoreUtilities();
 
 		var container = _startupServices.BuildServiceProvider();
-		using var scope = container.CreateScope();
-		var sp = scope.ServiceProvider;
+		await using var startupScope = container.CreateAsyncScope();
+		var sp = startupScope.ServiceProvider;
 
 		foreach (var pluginType in _plugins)
 		{
@@ -101,13 +104,26 @@ public sealed class SienarAppBuilder
 			plugin.Configure();
 		}
 
+		var actor = sp.GetRequiredService<IStatusActor<Startup>>();
+		await actor.Execute(new Startup());
+
 		_builder.Services
 			.AddSingleton(sp.GetRequiredService<MenuProvider>())
 			.AddSingleton(sp.GetRequiredService<PluginDataProvider>())
 			.AddSingleton(sp.GetRequiredService<ScriptProvider>())
 			.AddSingleton(sp.GetRequiredService<StyleProvider>())
-			.AddSingleton(sp.GetRequiredService<RoleProvider>());
+			.AddSingleton(sp.GetRequiredService<RoleProvider>())
+			.AddSingleton<LayoutProvider>();
 
-		return _builder.Build();
+		var app = _builder.Build();
+
+		var middlewareProvider = sp.GetRequiredService<MiddlewareProvider>();
+
+		foreach (var middleware in middlewareProvider.AggregatePrioritized())
+		{
+			middleware(app);
+		}
+
+		return app;
 	}
 }

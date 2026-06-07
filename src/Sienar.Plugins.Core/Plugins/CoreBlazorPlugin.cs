@@ -48,7 +48,7 @@ public class CoreBlazorPlugin : IPlugin
 			.AddScoped<AuthenticationStateProvider, SienarAuthenticationStateProvider>();
 		var blazorBuilder = _builder.Services
 			.AddRazorComponents(o => _blazorConfigurer?.Configure(o))
-			.AddInteractiveWebAssemblyComponents();
+			.AddInteractiveServerComponents();
 
 		foreach (var configurer in _additionalBlazorConfigurers)
 		{
@@ -60,7 +60,7 @@ public class CoreBlazorPlugin : IPlugin
 			app =>
 			{
 				var blazorEndpointBuilder = app.MapRazorComponents<SienarApp>()
-					.AddInteractiveWebAssemblyRenderMode();
+					.AddInteractiveServerRenderMode();
 
 				foreach (var assembly in _routableAssemblyProvider)
 				{

@@ -24,7 +24,7 @@ public static class SienarUtilsServiceCollectionExtensions
 		self.TryAddScoped(typeof(IMapper<,>), typeof(DefaultMapper<,>));
 		self.TryAddScoped<IOperationResultNotifier, DefaultOperationResultNotifier>();
 
-		return self.AddStatusProcessor<StartupProcessor, Startup>();
+		return self;
 	}
 
 	/// <summary>
@@ -356,4 +356,17 @@ public static class SienarUtilsServiceCollectionExtensions
 		self.TryAddScoped<IResultProcessor<TResult>, TProcessor>();
 		return self;
 	}
+
+	/// <summary>
+	/// Adds a startup processor to the startup service collection
+	/// </summary>
+	/// <remarks>
+	/// This method should only be used when registering startup services. The registered <c>IStatusProcessor&lt;Startup&gt;</c> implementations are only requested once, at app startup. As such, this should only be used within a call to <see cref="SienarAppBuilder.AddStartupServices"/> or the <see cref="IConfigurer{TOptions}.Configure"/> method of a configuration class referenced by an <see cref="AppConfigurerAttribute"/>.
+	/// </remarks>
+	/// <param name="self">the service collection</param>
+	/// <typeparam name="TProcessor">the processor implementation</typeparam>
+	/// <returns>the service collection</returns>
+	public static IServiceCollection AddStartupProcessor<TProcessor>(this IServiceCollection self)
+		where TProcessor : class, IStatusProcessor<Startup>
+		=> self.AddSingleton<IStatusProcessor<Startup>, TProcessor>();
 }

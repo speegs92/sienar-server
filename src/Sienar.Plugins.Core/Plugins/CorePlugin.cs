@@ -20,9 +20,7 @@ public class CorePlugin : IPlugin
 	/// <inheritdoc />
 	public void Configure()
 	{
-		_builder.Services
-			.AddEntityFramework()
-			.AddBeforeStatusActionHook<EnsureBaseDirectoryCreated, Startup>();
+		_builder.Services.AddEntityFramework();
 	}
 
 	private class SienarAppConfigurer : IConfigurer<SienarAppBuilder>
@@ -33,7 +31,8 @@ public class CorePlugin : IPlugin
 				.AddPlugin<CoreSecurityPlugin>()
 				.AddPlugin<CoreMvcPlugin>()
 				.AddPlugin<CoreBlazorPlugin>()
-				.AddStartupServices(sp => sp.AddSingleton<MiddlewareProvider>());
+				.AddPlugin<MudBlazorPlugin>()
+				.AddStartupServices(sp => sp.AddStartupProcessor<EnsureBaseDirectoryCreated>());
 		}
 	}
 }
