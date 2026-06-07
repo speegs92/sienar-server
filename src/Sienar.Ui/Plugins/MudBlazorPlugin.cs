@@ -1,11 +1,13 @@
-﻿namespace Sienar.Plugins;
+﻿using Microsoft.AspNetCore.Builder;
+
+namespace Sienar.Plugins;
 
 /// <summary>
 /// Configures the Sienar app to support MudBlazor
 /// </summary>
 public class MudBlazorPlugin : IPlugin
 {
-	private readonly IApplicationAdapter _adapter;
+	private readonly WebApplicationBuilder _builder;
 	private readonly ScriptProvider _scriptProvider;
 	private readonly StyleProvider _styleProvider;
 	private readonly IConfigurer<MudServicesConfiguration>? _mudConfigurer;
@@ -14,12 +16,12 @@ public class MudBlazorPlugin : IPlugin
 	/// Creates a new instance of <c>MudBlazorPlugin</c>
 	/// </summary>
 	public MudBlazorPlugin(
-		IApplicationAdapter adapter,
+		WebApplicationBuilder builder,
 		ScriptProvider scriptProvider,
 		StyleProvider styleProvider,
 		IConfigurer<MudServicesConfiguration>? mudConfigurer = null)
 	{
-		_adapter = adapter;
+		_builder = builder;
 		_scriptProvider = scriptProvider;
 		_styleProvider = styleProvider;
 		_mudConfigurer = mudConfigurer;
@@ -28,10 +30,9 @@ public class MudBlazorPlugin : IPlugin
 	/// <inheritdoc />
 	public void Configure()
 	{
-		_adapter.AddServices(
-			sp => sp.AddMudServices(
-				o => _mudConfigurer?.Configure(o)));
-
+		_builder.Services.AddMudServices(
+			o => _mudConfigurer?.Configure(o));
+		
 		_scriptProvider.Add(new ScriptResource
 		{
 			Src = "/_content/MudBlazor/MudBlazor.min.js",

@@ -1,9 +1,9 @@
 ﻿using System;
 using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Sienar.Extensions;
-using Sienar.Infrastructure;
 using Sienar.Plugins;
 
 namespace Sienar.Email;
@@ -13,7 +13,7 @@ namespace Sienar.Email;
 /// </summary>
 public class MailKitPlugin : IPlugin
 {
-	private readonly IApplicationAdapter _adapter;
+	private readonly WebApplicationBuilder _builder;
 	private readonly IConfiguration _configuration;
 	private readonly PluginDataProvider _pluginDataProvider;
 
@@ -21,11 +21,11 @@ public class MailKitPlugin : IPlugin
 	/// Creates a new instance of <c>MailKitPlugin</c>
 	/// </summary>
 	public MailKitPlugin(
-		IApplicationAdapter adapter,
+		WebApplicationBuilder builder,
 		IConfiguration configuration,
 		PluginDataProvider pluginDataProvider)
 	{
-		_adapter = adapter;
+		_builder = builder;
 		_configuration = configuration;
 		_pluginDataProvider = pluginDataProvider;
 	}
@@ -43,13 +43,10 @@ public class MailKitPlugin : IPlugin
 			Homepage = "https://sienar.io/plugins/mailkit"
 		});
 
-		_adapter.AddServices(sp =>
-		{
-			sp
-				.AddScoped<IEmailSender, MailKitSender>()
-				.AddScoped<ISmtpClient, SmtpClient>()
-				.ApplyDefaultConfiguration<SmtpOptions>(
-					_configuration.GetSection("Sienar:Email:Smtp"));
-		});
+		_builder.Services
+			.AddScoped<IEmailSender, MailKitSender>()
+			.AddScoped<ISmtpClient, SmtpClient>()
+			.ApplyDefaultConfiguration<SmtpOptions>(
+				_configuration.GetSection("Sienar:Email:Smtp"));
 	}
 }

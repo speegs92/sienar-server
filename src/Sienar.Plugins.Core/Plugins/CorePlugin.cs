@@ -6,26 +6,23 @@
 [AppConfigurer(typeof(SienarAppConfigurer))]
 public class CorePlugin : IPlugin
 {
-	private readonly IApplicationAdapter _adapter;
+	private readonly WebApplicationBuilder _builder;
 
 	/// <summary>
 	/// Creates a new instance of <c>CorePlugin</c>
 	/// </summary>
-	/// <param name="adapter">The application adapter</param>
-	public CorePlugin(IApplicationAdapter adapter)
+	/// <param name="builder">The application builder</param>
+	public CorePlugin(WebApplicationBuilder builder)
 	{
-		_adapter = adapter;
+		_builder = builder;
 	}
 
 	/// <inheritdoc />
 	public void Configure()
 	{
-		_adapter.AddServices(sp =>
-		{
-			sp
-				.AddEntityFramework()
-				.AddBeforeStatusActionHook<EnsureBaseDirectoryCreated, Startup>();
-		});
+		_builder.Services
+			.AddEntityFramework()
+			.AddBeforeStatusActionHook<EnsureBaseDirectoryCreated, Startup>();
 	}
 
 	private class SienarAppConfigurer : IConfigurer<SienarAppBuilder>
